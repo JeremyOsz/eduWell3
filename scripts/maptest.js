@@ -51,7 +51,6 @@ function loadGeoJSON(map){
 function bullyingColor(GeoJSON){
     GeoJSON.setStyle({fillColor: 'red'})
     GeoJSON.eachLayer(function(layer) {
-        console.log(layer)
         layer.setStyle({fillColor: getColor(layer.feature.properties.Indicator)})
             .bindPopup('Bullying rate: ' + layer.feature.properties.Indicator )
     })
@@ -91,17 +90,78 @@ function addSchoolMarkers(data, map){
 
 
     for(i = 0; i < data.length; i++){
-        let lat = data[i].X
-        let lon = data[i].Y
-        let latlon = L.latLng(lon,lat)
+        if(data[i].Type.includes("Pri")){
 
-        marker = new L.marker(latlon)
-        markersList.push(marker)
-        markers.addLayer(marker)
+            let icon = getIcon(data[i])
+            let latlon = L.latLng(data[i].Latitude,data[i].Longitude)
+            marker = L.marker(latlon,{icon: icon})
+            marker.bindPopup(data[i].School_Name)
+            markersList.push(marker)
+            markers.addLayer(marker)
+            markers.bind
+        }
      }
+
 
      map.addLayer(markers)
 }
+
+function getIcon(data){
+
+    console.log(data)
+    switch(data.Sector){
+        case "Government":
+            var icon = L.icon({
+                iconUrl: "icons/icons8-Govt.png"
+            })
+            break
+        case "Independent":
+            var icon = L.icon({
+                iconUrl: "icons/icons8-Private.png"
+            })
+            break
+        case "Catholic":
+            var icon = L.icon({
+                iconUrl: "icons/icons8-Catholic.png"
+            })
+            break
+        default:
+            var icon = L.icon({
+                iconUrl: "icons/icons8-Govt.png"
+            })
+    }
+    icon.options.iconSize = [data.totalScaled,data.totalScaled];
+    return icon
+}
+
+// function getIconSize(data){
+//     let schoolID = data.schoolID2
+//     $.ajax({
+//         dataType: "json",
+//         url: "data/enrolled.json",
+//         asynch: false,
+//         success: function (json) {
+//
+//             for(i in json) {
+//                 if(json[i].schoolID2 == schoolID){
+//                     console.log(json[i].School_Name)
+//                     let size = json[i]['Grand.Total']
+//                     // let returnSize = [size,size]
+//                 }
+//                 // if(data.schoolID2 == schoolID){
+//                 //     console.log(data)
+//                 // }
+//             }
+//         },
+//         error: function () {
+//             map.spin(false)
+//             console.log('error')
+//         }
+//
+//     })
+// }
+
+
 
 buildMap()
 
