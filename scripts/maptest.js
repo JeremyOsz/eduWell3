@@ -12,10 +12,15 @@ function buildMap(){
         accessToken: 'pk.eyJ1Ijoiam9zenRyZWljaGVyIiwiYSI6ImNqNmJicmxtczE3ZnUydnFybWl4am94bnAifQ.AqK2Zt30_RpbcPHLatRS2A'
     }).addTo(mymap);
 
+
+
     mymap.spin(true)
     getSchoolList(mymap)
     loadGeoJSON(mymap)
+    // infoControl(mymap)
     mymap.spin(false)
+
+    return mymap
 }
 
 //Load LGA
@@ -59,31 +64,28 @@ function bullyingColor(GeoJSON){
 
 // get color depending on bulling proportion value
 function getColor(d) {
-    if(d > 13){
-        return 'black'
+    if(d < 12.5){
+        return '#34ff00'
+    }
+    else if(d >= 12.5 && d < 17.5){
+        return '#fdff00'
     }
     else{
-        return 'blue'
+        return '#ff001b'
     }
 }
 
 
-//Create markers and add to map
-function addMarkers(map){
-
-    // for (let i = 0; i < markers.length; i++){
-    //     marker = new L.marker([markers[i][0],markers[i][1]]).addTo(map);
-    // }
-    getSchoolList(map)
-}
 
 
+//Get school and add marker
 function getSchoolList(map) {
     $.getJSON("data/schoolList.json", function(json) {
         addSchoolMarkers(json, map)
     });
 }
 
+//Add marker
 function addSchoolMarkers(data, map){
     var markers = L.markerClusterGroup({ animateAddingMarkers : true });
     var markersList = [];
@@ -95,7 +97,8 @@ function addSchoolMarkers(data, map){
             let icon = getIcon(data[i])
             let latlon = L.latLng(data[i].Latitude,data[i].Longitude)
             marker = L.marker(latlon,{icon: icon})
-            marker.bindPopup(data[i].School_Name)
+            marker.properties = data[i]
+            marker.on('click',clickSchool)
             markersList.push(marker)
             markers.addLayer(marker)
             markers.bind
@@ -106,9 +109,9 @@ function addSchoolMarkers(data, map){
      map.addLayer(markers)
 }
 
+//Define marker
 function getIcon(data){
 
-    console.log(data)
     switch(data.Sector){
         case "Government":
             var icon = L.icon({
@@ -134,81 +137,45 @@ function getIcon(data){
     return icon
 }
 
-// function getIconSize(data){
-//     let schoolID = data.schoolID2
-//     $.ajax({
-//         dataType: "json",
-//         url: "data/enrolled.json",
-//         asynch: false,
-//         success: function (json) {
-//
-//             for(i in json) {
-//                 if(json[i].schoolID2 == schoolID){
-//                     console.log(json[i].School_Name)
-//                     let size = json[i]['Grand.Total']
-//                     // let returnSize = [size,size]
-//                 }
-//                 // if(data.schoolID2 == schoolID){
-//                 //     console.log(data)
-//                 // }
-//             }
-//         },
-//         error: function () {
-//             map.spin(false)
-//             console.log('error')
-//         }
-//
-//     })
+mymap = buildMap()
+
+// //build Info control
+// function infoControl(map){
+    let info = L.control()
+
+    info.onAdd = function(map) {
+        this._div = L.DomUtil.create('div','info')
+        this.update()
+        return this._div
+    }
+
+    info.update = function(props){
+        this._div.innerHTML =  (props ?
+            '<h4>' + props.School_Name + '</h4><br>'
+            + '<b>Address: </b>' + props.Address1
+            + props.Address2 + ",<br> " +
+            props.Town + " " + props.PPostcode
+            + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
+            + "<b>Students enrolled: </b>" + parseInt(props.Total)
+            : 'Click a school to see info');
+    }
+
+    info.addTo(mymap)
+
 // }
 
 
 
-buildMap()
+//Click school event
+function clickSchool(e){
+    console.log(e.target.properties)
+    info.update(e.target.properties)
+}
 
 
-//
-// $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(data) {
-//     console.log(JSON.stringify(data, null, 2));
-// });
-
-// fetch('getschooldata.php').then(function (response) {
-// 		console.log(response)
-// 		return response
-//     }
-// ).then(function(json){
-//     console.log(json)
-// })
-//
-// function getDatabaseRows()
-// {
-//     $.getJSON('schooldata.json', function(json) {
-//         console.log(json);
-//
-//     });
-// }
-//
-// var xmlhttp = new XMLHttpRequest();
-//
-// xmlhttp.onreadystatechange = function() {
-//     if (this.readyState == 4 && this.status == 200) {
-//         var myObj = this.responseText;
-//         document.getElementById("demo").innerHTML = myObj[2];
-//     }
-// };
-// xmlhttp.open("GET", "getschooldata.php", true);
-// xmlhttp.send();
 
 
-// var googleLayer = new L.Google('ROADMAP');
-//     mymap.addLayer(googleLayer);
-
-// function(x){
-// 	for each(x){
-// 	}
-// }
-// markers.addTo(mymap)
 
 
-//Create polygons (Local Govt Areas)
 
-//new L.LGAs = L.Shapefile(arrayBuffer or url[,options][,importUrl]);
+
