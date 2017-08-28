@@ -14,7 +14,7 @@
     <script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="scripts/leaflet.markercluster-src.js"></script>
-	<script src="scripts/spin/spin.js"></script>
+	<script src="scripts/spin/dist/spin.js"></script>
 	<script src="scripts/leaflet.spin.min.js"></script>
 
 
@@ -47,16 +47,66 @@
 	#mapwrapper {
 		position: relative;
 	}
-	#searchbar {
-		margin-top: 60px;
-		background-color: white;
-		width: 200px;
+	.mapBox{
+		background-color: rgba(245, 253, 242, 0.75);
+		border-radius:5px;
+		width: 220px;
 		position: relative;
 		z-index: 9999;
-		height: 30px;
 		margin-left: 10px;
-		padding: 10 10 0 10;
-		overflow: hidden;
+		padding: 10 10 10 10;
+	}
+	#searchbar {
+		margin-top: 60px;
+		width: 220px;
+		position: relative;
+		z-index: 9999;
+		height: 40px;
+	}
+	#searchbox {
+		height: 40px;
+		font-size: 14pt;
+		width:80%;
+	}
+	#submitSearch{
+		width: 18%;
+		height: 31px;
+		background: url(icons/icons8-Search-48.png);
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		padding-top: 0px;
+	}
+	#Filter {
+		margin-top: 10px;
+		height: 200px;
+		display: inline-block;
+	}
+	div.Low {
+		width: 15px;
+		height: 15px;
+		display: inline-block;
+		background-color: #34ff00;
+	}
+	div.Med {
+		width: 15px;
+		height: 15px;
+		display: inline-block;
+		background-color: #fdff00;
+	}
+	div.High {
+		width: 15px;
+		height: 15px;
+		display: inline-block;
+		background-color: #ff001b;
+	}
+	.legend {
+		line-height: 18px;
+		color: #555;
+		height: 100%;
+		margin-right: 8px;
+		padding-right: 15px;
+		padding-left: 15px;
 	}
 
 
@@ -68,12 +118,18 @@
 	<div id='mapwrapper'>
 		<div id='mapid'>
 			<input id="basics" style=""/>
-			<div id="searchbar">
+			<div class="mapBox" id="searchbar">
 				<form id="search">
-					<input id="#searchbox">
-					<input type="submit" value="search">
+					<input id="searchbox">
+					<input id="submitSearch" type="submit" value="">
 				</form>
 
+			</div>
+			<div class="mapBox" id="Filter">
+				<h2>Filters</h2>
+				<form id="form2">
+					<input type="radio"> sadgag
+				</form>
 			</div>
 		</div>
 

@@ -17,8 +17,7 @@ function buildMap(){
     mymap.spin(true)
     loadGeoJSON(mymap)
     getSchoolList(mymap)
-    // infoControl(mymap)
-    mymap.spin(false)
+
 
     return mymap
 }
@@ -112,31 +111,56 @@ function addSchoolMarkers(data, map){
 }
 
 //Define marker
-function getIcon(data){
+let getIcon = (data) => {
 
-
-    if(data.is)
-    switch(data.Sector){
-        case "Government":
-            var icon = L.icon({
-                iconUrl: "icons/icons8-Govt2.png"
-            })
-            break
-        case "Independent":
-            var icon = L.icon({
-                iconUrl: "icons/icons8-Private.png"
-            })
-            break
-        case "Catholic":
-            var icon = L.icon({
-                iconUrl: "icons/icons8-Catholic.png"
-            })
-            break
-        default:
-            var icon = L.icon({
-                iconUrl: "icons/icons8-Govt.png"
-            })
+    if(data.LGBT) {
+        switch (data.Sector) {
+            case "Government":
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Govt2-LGBT.png"
+                })
+                break
+            case "Independent":
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Private-LGBT.png"
+                })
+                break
+            case "Catholic":
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Catholic-LGBT.png"
+                })
+                break
+            default:
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Govt-LGBT.png"
+                })
+        }
     }
+
+    if(!data.LGBT){
+        switch(data.Sector){
+            case "Government":
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Govt2.png"
+                })
+                break
+            case "Independent":
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Private.png"
+                })
+                break
+            case "Catholic":
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Catholic.png"
+                })
+                break
+            default:
+                var icon = L.icon({
+                    iconUrl: "icons/icons8-Govt.png"
+                })
+        }
+    }
+
     icon.options.iconSize = [data.totalScaled,data.totalScaled];
     return icon
 }
@@ -153,37 +177,82 @@ mymap = buildMap()
 defineSearch()
 
 // //build Info control
-// function infoControl(map){
+
+
     let info = L.control()
 
-    info.onAdd = function(map) {
-        this._div = L.DomUtil.create('div','info')
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info')
         this.update()
         return this._div
     }
 
-    info.update = function(props){
-        this._div.innerHTML =  (props ?
-            '<h4>' + props.School_Name + '</h4><br>'
+
+    let isLGBT = (props) => {
+        if(props.LGBT){
+            return "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
+        }
+        else{
+            return ""
+        }
+    }
+
+    info.update = function (props) {
+        this._div.innerHTML = (props ?
+            '<h3>' + props.School_Name + '</h3><br>'
             + '<b>Address: </b>' + props.Address1
             + props.Address2 + ",<br> " +
             props.Town + " " + props.PPostcode
             + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
-            + "<b>Students enrolled: </b>" + parseInt(props.Total)
-            : 'Click a school to see info');
+            + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
+            + "<h4>Special Progrmas Offered</h4>" + isLGBT(props)
+            : '<h3>Click a school to see info</h3>');
+
+
     }
 
     info.addTo(mymap)
 
+// build Legend control
 
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (mymap) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = ["Low", "Medium", "High"],
+        labels = [];
+
+    // Set bullying rate legend
+    div.innerHTML = "<h3>Legend</h3>" + "<h4>Bullying Rate</h4>" + "<div class='Low'></div> " +
+         grades[0] + '<br>' +
+        "<div class='Med'></div> " +
+        grades[1] + '<br>' +
+        "<div class='High'></div> " +
+        grades[2];
+
+    // Set school type legend
+    div.innerHTML += "<br><br><h4>School Type</h4>" +
+                    "<img src='icons/icons8-Govt2.png' height='30'> Government School <br>" +
+                    "<img src='icons/icons8-Catholic.png' height='30'> Catholic School <br>" +
+                    "<img src='icons/icons8-Private.png' height='30'> Private/ Independent School <br>"+
+                    "<img src='icons/cluster.png' height='30'> School Cluster <br>"
+
+    // Set programs legend
+    div.innerHTML += "<br><br><h4>School Type</h4>" +
+        "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
+
+    return div;
+};
+
+legend.addTo(mymap);
 
 //Click school event
 function clickSchool(e){
-    console.log(e.target.properties)
     info.update(e.target.properties)
 }
 
-
+mymap.spin(false)
 
 
 
