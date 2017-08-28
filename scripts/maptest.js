@@ -15,8 +15,8 @@ function buildMap(){
 
 
     mymap.spin(true)
-    getSchoolList(mymap)
     loadGeoJSON(mymap)
+    getSchoolList(mymap)
     // infoControl(mymap)
     mymap.spin(false)
 
@@ -87,7 +87,9 @@ function getSchoolList(map) {
 
 //Add marker
 function addSchoolMarkers(data, map){
-    var markers = L.markerClusterGroup({ animateAddingMarkers : true });
+
+
+    var markers = L.markerClusterGroup({ animateAddingMarkers : true});
     var markersList = [];
 
 
@@ -115,7 +117,7 @@ function getIcon(data){
     switch(data.Sector){
         case "Government":
             var icon = L.icon({
-                iconUrl: "icons/icons8-Govt.png"
+                iconUrl: "icons/icons8-Govt2.png"
             })
             break
         case "Independent":
@@ -136,6 +138,8 @@ function getIcon(data){
     icon.options.iconSize = [data.totalScaled,data.totalScaled];
     return icon
 }
+
+
 
 mymap = buildMap()
 
@@ -164,7 +168,27 @@ mymap = buildMap()
 
 // }
 
-
+/* Configure Search geocoding */
+// var geocoder = new google.maps.Geocoder();
+// function googleGeocoding(text, callResponse)
+// {
+//     geocoder.geocode({address: text}, callResponse);
+// }
+//
+// function formatJSON(rawjson)
+// {
+//     var json = {},
+//         key, loc, disp = [];
+//     for(var i in rawjson)
+//     {
+//         key = rawjson[i].formatted_address;
+//
+//         loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
+//
+//         json[ key ]= loc;	//key,value format
+//     }
+//     return json;
+// }
 
 //Click school event
 function clickSchool(e){
