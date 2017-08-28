@@ -114,6 +114,8 @@ function addSchoolMarkers(data, map){
 //Define marker
 function getIcon(data){
 
+
+    if(data.is)
     switch(data.Sector){
         case "Government":
             var icon = L.icon({
@@ -139,9 +141,16 @@ function getIcon(data){
     return icon
 }
 
+function defineSearch(){
+    $.getJSON("data/localities.json", function(json) {
+        const options = json
+        $("#basics").easyAutocomplete(options)
+    })
+}
 
 
 mymap = buildMap()
+defineSearch()
 
 // //build Info control
 // function infoControl(map){
@@ -166,29 +175,7 @@ mymap = buildMap()
 
     info.addTo(mymap)
 
-// }
 
-/* Configure Search geocoding */
-// var geocoder = new google.maps.Geocoder();
-// function googleGeocoding(text, callResponse)
-// {
-//     geocoder.geocode({address: text}, callResponse);
-// }
-//
-// function formatJSON(rawjson)
-// {
-//     var json = {},
-//         key, loc, disp = [];
-//     for(var i in rawjson)
-//     {
-//         key = rawjson[i].formatted_address;
-//
-//         loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
-//
-//         json[ key ]= loc;	//key,value format
-//     }
-//     return json;
-// }
 
 //Click school event
 function clickSchool(e){
