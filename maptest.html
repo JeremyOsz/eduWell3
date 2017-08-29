@@ -16,14 +16,30 @@
 	<script src="scripts/leaflet.markercluster-src.js"></script>
 	<script src="scripts/spin/dist/spin.js"></script>
 	<script src="scripts/leaflet.spin.min.js"></script>
+	<script src="scripts/leaflet.spin.min.js"></script>
 
+	<!-- JS file -->
+	<script src="scripts/jquery.easy-autocomplete.min.js"></script>
 
+	<!-- CSS file -->
+	<link rel="stylesheet" href="stylesheets/easy-autocomplete.css">
+
+	<!-- Additional CSS Themes file - not required-->
+	<link rel="stylesheet" href="stylesheets/easy-autocomplete.themes.css">
 
 
 
 
 
 	<style type="text/css">
+	h4 {
+		margin: 0 0 5px;
+		color: #777;
+		font-size: 12pt;
+	}
+	h3{
+		font-size: 14pt;
+	}
    	#mapid {
    		height: 95%;
    		width: 90%;
@@ -48,11 +64,11 @@
 		position: relative;
 	}
 	.mapBox{
-		background-color: rgba(245, 253, 242, 0.75);
+		background-color: rgba(245, 253, 242, 0.85);
 		border-radius:5px;
 		width: 220px;
 		position: relative;
-		z-index: 9999;
+		z-index: 9998;
 		margin-left: 10px;
 		padding: 10 10 10 10;
 	}
@@ -61,15 +77,16 @@
 		width: 220px;
 		position: relative;
 		z-index: 9999;
-		height: 40px;
+		height: 80px;
 	}
 	#searchbox {
 		height: 40px;
 		font-size: 14pt;
-		width:80%;
+		width:90%;
+		z-index: 9999;
 	}
 	#submitSearch{
-		width: 18%;
+		width: 90%;
 		height: 31px;
 		background: url(icons/icons8-Search-48.png);
 		background-size: contain;
@@ -79,8 +96,11 @@
 	}
 	#Filter {
 		margin-top: 10px;
-		height: 200px;
+		height: 600px;
 		display: inline-block;
+		font-size: 10pt;
+		color: #555;
+		overflow:hidden;
 	}
 	div.Low {
 		width: 15px;
@@ -108,9 +128,56 @@
 		padding-right: 15px;
 		padding-left: 15px;
 	}
+	input[type=checkbox]
+	{
+		/* Double-sized Checkboxes */
+		-ms-transform: scale(2); /* IE */
+		-moz-transform: scale(2); /* FF */
+		-webkit-transform: scale(2); /* Safari and Chrome */
+		-o-transform: scale(2); /* Opera */
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+	input[type=radio]
+	{
+		/* Double-sized Checkboxes */
+		-ms-transform: scale(2); /* IE */
+		-moz-transform: scale(2); /* FF */
+		-webkit-transform: scale(2); /* Safari and Chrome */
+		-o-transform: scale(2); /* Opera */
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+	input[type=button]
+	{
+		/* Double-sized Checkboxes */
+		margin-top: 10px;
+		height: 40px;
+		width: 80%;
+		background-color: darkseagreen;
+		border-radius: 10px;
+		font-size: 14pt;
+		font-weight: 600;
+		color: white;
+	}
+	.leaflet-marker-icon:focus{
+		border: solid 4px;
+		border-radius:50px;
+		border-color: #3266fe;
+	}
+	.leaflet-marker-icon:hover{
+		border: solid 5px;
+		border-radius:50px;
+		border-color: #3266fe;
+	}
+	#error{
+		color: red;
+	}
 
 
-   </style>
+
+
+	</style>
 
 </head>
 
@@ -127,9 +194,19 @@
 			</div>
 			<div class="mapBox" id="Filter">
 				<h2>Filters</h2>
-				<form id="form2">
-					<input type="radio"> sadgag
-				</form>
+					<h4>School Type</h4>
+					<input id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public <br>
+					<input id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent <br>
+					<input id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic <br>
+					<h4>Programs Offered</h4>
+					<input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
+					<h4>Statistics</h4>
+					<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
+					<h4>Size by</h4>
+					<input type = radio checked> Students enrolled <br>
+					<div style="text-align: center"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
+					<span id="error"></span></div>
+
 			</div>
 		</div>
 

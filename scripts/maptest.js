@@ -1,8 +1,9 @@
 //Establish leaflet map
+let mymap = L.map('mapid',{
+    loadingControl: true
+}).setView([-37.814, 144.96332],13);
+
 function buildMap(){
-    let mymap = L.map('mapid',{
-        loadingControl: true
-    }).setView([-37.814, 144.96332],13);
 
     // Load tiles
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -19,6 +20,7 @@ function buildMap(){
     getSchoolList(mymap)
 
 
+
     return mymap
 }
 
@@ -26,6 +28,7 @@ function buildMap(){
 function loadGeoJSON(map){
 
     let LGA = new L.geoJson();
+    LGA.setStyle({fillColor: 'red'})
     LGA.addTo(map);
 
     //Get GeoJSON data on LGAs
@@ -34,21 +37,22 @@ function loadGeoJSON(map){
         url: "data/LGA_geojson.geojson",
         asynch: false,
         success: function (data) {
-
             //Bind LGA to map
             $(data.features).each(function (key, data) {
                 LGA.addData(data);
             })
 
             //Colour LGA by bullying rate
-            bullyingColor(LGA)
+            if(document.getElementById("bullyingChecked").checked){
+                bullyingColor(LGA)
+            }
+            map.spin(false)
+
         },
         error: function () {
-            map.spin(false)
             console.log('error')
         }
     })
-    map.spin(false)
 }
 
 //Colour LGA by bullying rate
@@ -97,7 +101,7 @@ function addSchoolMarkers(data, map){
 
             let icon = getIcon(data[i])
             let latlon = L.latLng(data[i].Latitude,data[i].Longitude)
-            marker = L.marker(latlon,{icon: icon})
+            var marker = L.marker(latlon,{icon: icon})
             marker.properties = data[i]
             marker.on('click',clickSchool)
             markersList.push(marker)
@@ -113,7 +117,7 @@ function addSchoolMarkers(data, map){
 //Define marker
 let getIcon = (data) => {
 
-    if(data.LGBT) {
+    if(data.LGBT && document.getElementById("LGBTchecked").checked) {
         switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
@@ -137,7 +141,7 @@ let getIcon = (data) => {
         }
     }
 
-    if(!data.LGBT){
+    if(!data.LGBT || !document.getElementById("LGBTchecked").checked){
         switch(data.Sector){
             case "Government":
                 var icon = L.icon({
@@ -162,14 +166,24 @@ let getIcon = (data) => {
     }
 
     icon.options.iconSize = [data.totalScaled,data.totalScaled];
+    icon.options.className = "leafletIcon";
     return icon
 }
 
 function defineSearch(){
-    $.getJSON("data/localities.json", function(json) {
-        const options = json
-        $("#basics").easyAutocomplete(options)
-    })
+    var options = {
+        url: "data/localities.json",
+
+        getValue: "Locality",
+
+        list: {
+            match: {
+                enabled: true
+            }
+        }
+    };
+
+    $("#searchbox").easyAutocomplete(options);
 }
 
 
@@ -246,11 +260,39 @@ legend.onAdd = function (mymap) {
 };
 
 legend.addTo(mymap);
-
+$( ".leaflet-marker-icon" ).on( "click", function() {
+    console.log(this)
+    this.style = "border:solid;"
+} );
 //Click school event
-function clickSchool(e){
+function clickSchool(e) {
     info.update(e.target.properties)
 }
+
+
+
+function filterMap(map) {
+    let error = document.getElementById("error")
+    let govt = document.getElementById("GovernmentCheck").checked
+    let private = document.getElementById("PrivateCheck").checked
+    let catholic = document.getElementById("CatholicCheck").checked
+
+    error.innerHTML = ""
+
+    if(!govt && !private && !catholic){
+        console.log("Click a school")
+        error.innerHTML = "Please select at least one school type"
+    }
+    else{
+        console.log(map)
+        mymap.eachLayer(function (layer) {
+            mymap.removeLayer(layer);
+        });
+        buildMap()
+    }
+}
+
+$("#filterApply").click(filterMap(mymap))
 
 mymap.spin(false)
 
