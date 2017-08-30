@@ -292,7 +292,7 @@ function filterMap(map) {
 
 //Find nearby schools to specified area
 function nearbySchools(latlon){
-    document.getElementById('sidebar').innerHTML = "<h2>Nearby Schools</h2>"
+    document.getElementById('schoolDisplay').innerHTML = "<h2>Nearby Schools</h2>"
     let area = latlon //Area from which nearby schools is measured
     let threshold = 3000 //Threshold for distance to travel
     let nearbySchools = []
@@ -312,8 +312,10 @@ function nearbySchools(latlon){
         });
 
         nearbySchools.map((school) => {
-            document.getElementById('sidebar').innerHTML += "<div class='schoolListEntry'><h4>" + school.School_Name + "</h4>"
-                + '<b>Distance:</b> ' + (school.distance/1000).toFixed(2) + "km" + "</div>";
+            document.getElementById('schoolDisplay').innerHTML += "<div class='schoolListEntry'><div class='favbox'><input class='favcheck' type='checkbox' id='" + school.School_Id + "'></div><h4>" + school.School_Name + "</h4>"
+                + '<b>Distance:</b> ' + (school.distance/1000).toFixed(2) + "km"
+                + "<br><b>School Type: </b>" + school.Sector +
+                "<br><b>Students: </b>" + parseInt(school.Total) + "</div>";
         })
     })
 }
@@ -325,8 +327,10 @@ function nearbySchools(latlon){
 // }
 
 //Activate Search
+let searchMarker = new  L.marker()
 function localeSearch(){
 
+    mymap.removeLayer(searchMarker)
     document.getElementById('searcherror').innerHTML = ""
     let query = document.getElementById('searchbox').value;
     $.getJSON("data/localities.json", function(json) {
@@ -336,10 +340,12 @@ function localeSearch(){
                 x = 1
                 let searchLocale2 = L.latLng(item.Lat, item.Lon)
                 console.log(searchLocale2)
-                searchMarker = L.marker(searchLocale2).addTo(mymap);
-                mymap.setView(searchLocale2,13);
-                nearbySchools(searchLocale2)
-                return x
+                if(searchLocale2.Lat !== "undefined"){
+                    searchMarker = L.marker(searchLocale2).addTo(mymap);
+                    mymap.setView(searchLocale2,13);
+                    nearbySchools(searchLocale2)
+                    return x
+                }
             }
         return x
         })
@@ -353,8 +359,21 @@ function localeSearch(){
     })
 }
 
+//Fetch IDs for schools in which compare is checked
+function compare(){
+    let favList = []
+    let favs = $(".favcheck")
+    console.log(favs);
+    for(i = 0; i < favs.length; i++){
+        if(favs[i].checked){
+            favList.push(favs[i].id)
+        }
+    }
+    console.log(favList)
+    return favList
+}
 
-//Add event listeners
+
 
 
 
