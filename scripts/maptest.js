@@ -1,10 +1,27 @@
+$(document).ready(function() {
+    console.log('ready')
+    $("#filterApply").click(filterMap(mymap))
+    $("#searchbox").keyup(function (e) {
+        if (e.which == 13) {
+            localeSearch()
+        }
+    });
+});
+
+
 //Establish leaflet map
 let mymap = L.map('mapid',{
     loadingControl: true
-}).setView([-37.814, 144.96332],13);
+})
+mymap.zoomControl.setPosition('bottomright');
 
 function buildMap(){
 
+    let latlon = L.latLng(-37.814,144.96332);
+
+    nearbySchools(latlon)
+
+    mymap.setView([-37.814, 144.96332],13);
     // Load tiles
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -27,10 +44,12 @@ function buildMap(){
 //Load LGA
 function loadGeoJSON(map){
 
+
+
     let LGA = new L.geoJson();
     LGA.setStyle({fillColor: 'red'})
-    LGA.addTo(map);
 
+    console.log(LGA)
     //Get GeoJSON data on LGAs
     $.ajax({
         dataType: "json",
@@ -52,7 +71,7 @@ function loadGeoJSON(map){
         error: function () {
             console.log('error')
         }
-    })
+    }).then(LGA.addTo(map))
 }
 
 //Colour LGA by bullying rate
@@ -85,7 +104,7 @@ function getColor(d) {
 function getSchoolList(map) {
     $.getJSON("data/schoolList.json", function(json) {
         addSchoolMarkers(json, map)
-    });
+    })
 }
 
 //Add marker
@@ -95,23 +114,36 @@ function addSchoolMarkers(data, map){
     var markers = L.markerClusterGroup({ animateAddingMarkers : true});
     var markersList = [];
 
+    let addmarker = (data) => {
+        let icon = getIcon(data)
+        let latlon = L.latLng(data.Latitude,data.Longitude)
+        var marker = L.marker(latlon,{icon: icon})
+        marker.properties = data
+        marker.on('click',clickSchool)
+        markersList.push(marker)
+        markers.addLayer(marker)
+        markers.bind
+    }
 
     for(i = 0; i < data.length; i++){
         if(data[i].Type.includes("Pri")){
+            if(data[i].Sector == "Government" && document.getElementById("GovernmentCheck").checked){
+                addmarker(data[i])
+            }
+            if(data[i].Sector == "Independent" && document.getElementById("PrivateCheck").checked){
+                addmarker(data[i])
+            }
+            if(data[i].Sector == "Catholic" && document.getElementById("CatholicCheck").checked){
+                addmarker(data[i])
+            }
 
-            let icon = getIcon(data[i])
-            let latlon = L.latLng(data[i].Latitude,data[i].Longitude)
-            var marker = L.marker(latlon,{icon: icon})
-            marker.properties = data[i]
-            marker.on('click',clickSchool)
-            markersList.push(marker)
-            markers.addLayer(marker)
-            markers.bind
+
+
         }
      }
 
+    map.addLayer(markers)
 
-     map.addLayer(markers)
 }
 
 //Define marker
@@ -170,11 +202,12 @@ let getIcon = (data) => {
     return icon
 }
 
+//Configure easy complete search bar
 function defineSearch(){
     var options = {
         url: "data/localities.json",
 
-        getValue: "Locality",
+        getValue: "SearchName",
 
         list: {
             match: {
@@ -220,50 +253,14 @@ defineSearch()
             + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
             + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
             + "<h4>Special Progrmas Offered</h4>" + isLGBT(props)
-            : '<h3>Click a school to see info</h3>');
+            : '<h4>Click a school to see info</h4>');
 
 
     }
 
     info.addTo(mymap)
 
-// build Legend control
 
-var legend = L.control({position: 'bottomright'});
-
-legend.onAdd = function (mymap) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = ["Low", "Medium", "High"],
-        labels = [];
-
-    // Set bullying rate legend
-    div.innerHTML = "<h3>Legend</h3>" + "<h4>Bullying Rate</h4>" + "<div class='Low'></div> " +
-         grades[0] + '<br>' +
-        "<div class='Med'></div> " +
-        grades[1] + '<br>' +
-        "<div class='High'></div> " +
-        grades[2];
-
-    // Set school type legend
-    div.innerHTML += "<br><br><h4>School Type</h4>" +
-                    "<img src='icons/icons8-Govt2.png' height='30'> Government School <br>" +
-                    "<img src='icons/icons8-Catholic.png' height='30'> Catholic School <br>" +
-                    "<img src='icons/icons8-Private.png' height='30'> Private/ Independent School <br>"+
-                    "<img src='icons/cluster.png' height='30'> School Cluster <br>"
-
-    // Set programs legend
-    div.innerHTML += "<br><br><h4>School Type</h4>" +
-        "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
-
-    return div;
-};
-
-legend.addTo(mymap);
-$( ".leaflet-marker-icon" ).on( "click", function() {
-    console.log(this)
-    this.style = "border:solid;"
-} );
 //Click school event
 function clickSchool(e) {
     info.update(e.target.properties)
@@ -292,7 +289,76 @@ function filterMap(map) {
     }
 }
 
-$("#filterApply").click(filterMap(mymap))
+
+//Find nearby schools to specified area
+function nearbySchools(latlon){
+    document.getElementById('sidebar').innerHTML = "<h2>Nearby Schools</h2>"
+    let area = latlon //Area from which nearby schools is measured
+    let threshold = 3000 //Threshold for distance to travel
+    let nearbySchools = []
+    $.getJSON("data/schoolList.json", function(json) {
+        json.map((item) =>{
+            let schoolLoc = L.latLng(item.Latitude,item.Longitude)
+            let distance = area.distanceTo(schoolLoc)
+            if(distance < threshold){
+                item.distance = distance
+                nearbySchools.push(item)
+
+            }
+        })
+
+        nearbySchools.sort(function(a, b) {
+            return parseFloat(a.distance) - parseFloat(b.distance);
+        });
+
+        nearbySchools.map((school) => {
+            document.getElementById('sidebar').innerHTML += "<div class='schoolListEntry'><h4>" + school.School_Name + "</h4>"
+                + '<b>Distance:</b> ' + (school.distance/1000).toFixed(2) + "km" + "</div>";
+        })
+    })
+}
+
+// //Generate nearby school list
+// function nearbySchoolList(school, distance){
+//     document.getElementById('sidebar').innerHTML += "<div class='schoolListEntry'><h4>" + school.School_Name + "</h4>"
+//         + '<b>Distance:</b> ' + (distance/1000).toFixed(2) + "km" + "</div>";
+// }
+
+//Activate Search
+function localeSearch(){
+
+    document.getElementById('searcherror').innerHTML = ""
+    let query = document.getElementById('searchbox').value;
+    $.getJSON("data/localities.json", function(json) {
+        let x = 0
+        json.map((item) =>{
+            if(item.SearchName == query){
+                x = 1
+                let searchLocale2 = L.latLng(item.Lat, item.Lon)
+                console.log(searchLocale2)
+                searchMarker = L.marker(searchLocale2).addTo(mymap);
+                mymap.setView(searchLocale2,13);
+                nearbySchools(searchLocale2)
+                return x
+            }
+        return x
+        })
+        if(x == 0){
+            document.getElementById('searcherror').innerHTML = "Please enter a valid locality"
+            console.log("Invalid Query")
+        }else{
+            console.log("Valid Query")
+
+        }
+    })
+}
+
+
+//Add event listeners
+
+
+
+
 
 mymap.spin(false)
 
