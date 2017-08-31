@@ -1,0 +1,328 @@
+
+body {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px
+}
+h4 {
+    margin: 0 0 5px;
+    color: #777;
+    font-size: 12pt !IMPORTANT;
+}
+h3{
+    font-size: 14pt;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 5px;
+}
+h2{
+    margin-top:0;
+    font-size: 16pt !IMPORTANT;
+    color: #969888;
+}
+#mapid {
+    height: 100%;
+    width: 100%;
+    background-color: #000000;
+    display: inline-block;
+}
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+.sidebar{
+    background-color: #e6efdc;
+    border-radius:2px;
+    font: 12px/14px Arial, Helvetica, sans-serif;
+    box-shadow: 5px 5px 2.5px #888888;
+    vertical-align: top;
+    height: 100%;
+    margin-bottom: 10px;
+}
+.schoolListEntry{
+    background-color: white;
+    fill-opacity: .7;
+    border-radius: 5px;
+    padding: 10 10 10 10;
+    margin-bottom: 5px;
+    height:100px;
+    overflow: hidden;
+}
+.schoolListEntry:hover{
+    background-color: white;
+    fill-opacity: .7;
+    border-radius: 5px;
+    padding: 10 10 10 10;
+    margin-bottom: 5px;
+    height:200px;
+}
+/*#mapwrapper {*/
+    /*position: relative;*/
+    /*display: inline-block;*/
+    /*width:75%;*/
+/*}*/
+.mapBox{
+    background-color: rgba(245, 253, 242, 0.85);
+    border-radius:5px;
+    /*width: 220px;*/
+    position: relative;
+    z-index: 9998;
+    margin-left: 10px;
+    padding: 10 10 10 10;
+
+}
+
+#searchbar{
+    padding-top: 0px;
+    margin-left: 5px;
+    /*width: 220px;*/
+    position: relative;
+    display:inline-block;
+    z-index: 9999;
+    height: 100%;
+    background-image: none;
+    overflow: hidden;
+}
+#searchbox {
+    height: 40px;
+    font-size: 12pt;
+    width:100%;
+    z-index: 9999;
+}
+#submitSearch{
+    width: 15%;
+    height: 31px;
+    background: url(../icons/icons8-Search-48.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding-top: 0px;
+}
+#Filter {
+    padding-top: 2px;
+    width:60px;
+    height:20px;
+    padding-left: 0px;
+    margin-top: 10px;
+    max-height: 70VH;
+    display: inline-block;
+    font-size: 10pt;
+    color: #555;
+    overflow:hidden;
+}
+#Filter:hover {
+    width:200px;
+    height:70VH;
+    border: solid;
+}
+#Filtermenu h2{
+    margin-top:0;
+    color: #969888;
+    font: 16pt Helvetica, Arial, sans-serif;
+}
+#Filtermenu{
+    margin-top: 2px;
+    padding-top: 2px;
+    height: 80%;
+    padding-left: 0;
+    margin-left: 0;
+    background-color: transparent ;
+
+}
+div.Low {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-color: #34ff00;
+}
+div.Med {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-color: #fdff00;
+}
+div.High {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-color: #ff001b;
+}
+
+.easy-autocomplete{
+    width: 180px;
+    margin-right: 0;
+    display: inline-block;
+}
+
+/*input[type=checkbox]*/
+/*{*/
+/*!* Double-sized Checkboxes *!*/
+/*-ms-transform: scale(2); !* IE *!*/
+/*-moz-transform: scale(2); !* FF *!*/
+/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
+/*-o-transform: scale(2); !* Opera *!*/
+/*padding: 10px;*/
+/*margin-bottom: 10px;*/
+/*}*/
+/*input[type=radio]*/
+/*{*/
+/*!* Double-sized Checkboxes *!*/
+/*-ms-transform: scale(2); !* IE *!*/
+/*-moz-transform: scale(2); !* FF *!*/
+/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
+/*-o-transform: scale(2); !* Opera *!*/
+/*padding: 10px;*/
+/*margin-bottom: 10px;*/
+/*}*/
+input[type=button]
+{
+    /* Double-sized Checkboxes */
+    margin-top: 10px;
+    height: 40px;
+    width: 80%;
+    background-color: darkseagreen;
+    border-radius: 10px;
+    font-size: 14pt;
+    font-weight: 600;
+    color: white;
+}
+.leaflet-marker-icon:focus{
+    border: solid 4px;
+    border-radius:50px;
+    border-color: #3266fe;
+}
+.leaflet-marker-icon:hover{
+    border: solid 5px;
+    border-radius:50px;
+    border-color: #3266fe;
+}
+.error{
+    color: red;
+}
+
+.legendblock{
+    display: inline-block;
+    width: 20%;
+    height:200px;
+}
+#compare{
+    cursor: pointer;
+    z-index: 3;
+    display: inline-block;
+    position: relative; /*newly added*/
+    width:100%;
+    border-radius: 3px;
+    text-align:center;
+    font-size: 14pt;
+    font-weight:200;
+    color: white;
+    height:40px;
+    vertical-align: bottom;
+}
+#schoolDisplay{
+    z-index: 1;
+    max-height: 90%;
+    overflow: scroll;
+    padding: 10 10 10 10;
+}
+.favbox{
+    background-color: transparent;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    float: right;
+    text-align: right;
+}
+#searchsection{
+    margin: 5px 5px 5px 5px;
+    z-index: 9999999;
+    display: inline-block;
+    position: relative;
+    display: block;
+}
+#selectedSchool{
+    display: inline-block;
+    padding: 10px 10px 10px 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 70px;
+    width:100%;
+
+}
+.header{
+    height: 60px;
+    background-color: black;
+    margin-bottom: 5px;
+    width: 100%;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !IMPORTANT;
+    font-size: 14px !IMPORTANT;
+    color: #f5f5f5!IMPORTANT;
+}
+a{
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !IMPORTANT;
+    font-size: 16px !IMPORTANT;
+    color: #f5f5f5!IMPORTANT;
+}
+.footer{
+    height: 60px;
+    background-color: black;
+    vertical-align: bottom;
+}
+#logo{
+    display: inline-block;
+    width: 200px;
+    background-image: url('http://35.189.23.222/wp-content/uploads/2017/08/cropped-1.png');
+    height: 100%;
+    background-size: contain;
+
+}
+#content{
+    margin: 10px 10px 10px 10px;
+}
+#showSchoolBlock{
+    max-height: 100%;
+    overflow: hidden;
+}
+.row{
+    width:100VW !important;
+    margin-bottom: 5px;
+}
+.mapsection{
+    height:60%;
+}
+#row2{
+    margin-top: 10px;
+    height: 20%;
+}
+.eduwellButton{
+    width: 100% !important;
+    border: none !important;
+    border-radius: 3px !important;
+    background-color: #1e7e34 !important;
+    color: white !important;
+}
+#searchRadius{
+    display:inline-block;
+    width:30%;
+}
+.glyphicon:before {
+    visibility: visible;
+}
+.glyphicon.glyphicon-star-empty:checked:before {
+    content: "\e006";
+}
+input[type=checkbox].glyphicon{
+    visibility: hidden;
+}
+
+
+

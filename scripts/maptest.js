@@ -6,6 +6,10 @@ $(document).ready(function() {
             localeSearch()
         }
     });
+    $(document).on('change', 'input[type="checkbox"]', function(e){
+        $(".favcheck").click(selectedFavList())
+    });
+
 });
 
 
@@ -44,8 +48,6 @@ function buildMap(){
 //Load LGA
 function loadGeoJSON(map){
 
-
-
     let LGA = new L.geoJson();
     LGA.setStyle({fillColor: 'red'})
 
@@ -61,8 +63,10 @@ function loadGeoJSON(map){
             if (document.getElementById("bullyingChecked").checked) {
                 bullyingColor(LGA)
             }
-            map.spin(false)
-            }).then(LGA.addTo(map))
+
+            console.log(LGA)
+            LGA.addTo(map).done(map.spin(false))
+            })
 }
 
 //Colour LGA by bullying rate
@@ -118,18 +122,9 @@ function addSchoolMarkers(data, map){
 
     for(i = 0; i < data.length; i++){
         if(data[i].Type.includes("Pri")){
-            if(data[i].Sector == "Government" && document.getElementById("GovernmentCheck").checked){
+            if(sectorEnabled(data[i])){
                 addmarker(data[i])
             }
-            if(data[i].Sector == "Independent" && document.getElementById("PrivateCheck").checked){
-                addmarker(data[i])
-            }
-            if(data[i].Sector == "Catholic" && document.getElementById("CatholicCheck").checked){
-                addmarker(data[i])
-            }
-
-
-
         }
      }
 
@@ -231,7 +226,7 @@ defineSearch()
             return "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
         }
         else{
-            return ""
+            return "None Available"
         }
     }
     //
@@ -256,17 +251,21 @@ defineSearch()
 function clickSchool(e) {
     let props = e.target.properties;
     // info.update(e.target.properties);
-    document.getElementById("selectedSchool").style.height = "200px";
-    document.getElementById("selectedSchool").style.height = "200px";
+    document.getElementById("selectedSchool").style.height = "40%";
+    document.getElementById("schoolDisplay").style.height = "60%";
     document.getElementById("selectedSchool").innerHTML = (props ?
+        "<div class='favbox'><input class='favcheck' type='checkbox' id='" +
+        props.School_Id + "'></div>" +
         '<h3>' + props.School_Name + '</h3><br>'
         + '<b>Address: </b>' + props.Address1
         + props.Address2 + ",<br> " +
         props.Town + " " + props.PPostcode
         + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
         + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
-        + "<h4>Special Progrmas Offered</h4>" + isLGBT(props)
+        + "<h4>Special Programs:</h4>" + isLGBT(props)
         : '<h4>Click a school to see info</h4>')
+
+    nearbySchools(L.latLng(props.Latitude, props.Longitude))
 }
 
 
@@ -297,16 +296,23 @@ function filterMap(map) {
 function nearbySchools(latlon){
     document.getElementById('schoolDisplay').innerHTML = "<h2>Nearby Schools</h2>"
     let area = latlon //Area from which nearby schools is measured
-    let threshold = 3000 //Threshold for distance to travel
+
+    let threshold = document.getElementById('searchRadius').value*1000 //Threshold for distance to travel
+    //default to 3000 if invalid
+    console.log(threshold)
+    if(threshold == undefined || threshold < 1000 || threshold > 10000){
+        threshold = 3000
+    }
     let nearbySchools = []
     $.getJSON("data/schoolList.json", function(json) {
         json.map((item) =>{
             let schoolLoc = L.latLng(item.Latitude,item.Longitude)
             let distance = area.distanceTo(schoolLoc)
-            if(distance < threshold){
+            if(distance < threshold && distance > 0){
                 item.distance = distance
-                nearbySchools.push(item)
-
+                if(sectorEnabled(item)){
+                    nearbySchools.push(item)
+                }
             }
         })
 
@@ -315,7 +321,9 @@ function nearbySchools(latlon){
         });
 
         nearbySchools.map((school) => {
-            document.getElementById('schoolDisplay').innerHTML += "<div class='schoolListEntry'><div class='favbox'><input class='favcheck' type='checkbox' id='" + school.School_Id + "'></div><h4>" + school.School_Name + "</h4>"
+            document.getElementById('schoolDisplay').innerHTML += "<div class='schoolListEntry'>" +
+                "<div class='favbox'><input class='favcheck glyphicon glyphicon-star-empty' type='checkbox' id='" +
+                school.School_Id + "'></div><h4>" + school.School_Name + "</h4>"
                 + '<b>Distance:</b> ' + (school.distance/1000).toFixed(2) + "km"
                 + "<br><b>School Type: </b>" + school.Sector +
                 "<br><b>Students: </b>" + parseInt(school.Total) + "</div>";
@@ -332,7 +340,7 @@ function nearbySchools(latlon){
 //Activate Search
 let searchMarker = new  L.marker()
 function localeSearch(){
-
+    console.log(document.getElementById('searchRadius').value)
     mymap.removeLayer(searchMarker)
     document.getElementById('searcherror').innerHTML = ""
     let query = document.getElementById('searchbox').value;
@@ -345,6 +353,10 @@ function localeSearch(){
                 console.log(searchLocale2)
                 if(searchLocale2.Lat !== "undefined"){
                     searchMarker = L.marker(searchLocale2).addTo(mymap);
+                    searchMarker.bindPopup(item.SearchName)
+                    document.getElementById("selectedSchool").style.height = "15%";
+                    document.getElementById("schoolDisplay").style.height = "85%";
+                    document.getElementById("selectedSchool").innerHTML = '<h3>' + item.SearchName + '</h3>'
                     mymap.setView(searchLocale2,13);
                     nearbySchools(searchLocale2)
                     return x
@@ -355,6 +367,8 @@ function localeSearch(){
         if(x == 0){
             document.getElementById('searcherror').innerHTML = "Please enter a valid locality"
             console.log("Invalid Query")
+        }else if(document.getElementById('searchRadius').value < 1 || document.getElementById('searchRadius').value > 10){
+            document.getElementById('searcherror').innerHTML = "Please enter a distance between 1-10km"
         }else{
             console.log("Valid Query")
 
@@ -373,12 +387,61 @@ function compare(){
         }
     }
     console.log(favList)
+    localStorage[1] = favList
     return favList
 }
 
+function selectedFavList(){
+    {
+        let favList = []
+        let favs = $(".favcheck")
+        for(i = 0; i < favs.length; i++){
+            if(favs[i].checked){
+                favList.push(favs[i].id)
+            }
+        }
+        let favNum = favList.length
 
 
+        document.getElementById('numToCompare').innerHTML = favNum;
+        document.getElementById('selectedSchools').innerHTML = "";
 
+        let favNames = []
+        favList.map((e)=>{
+            $.getJSON("data/schoolList.json", function(json) {
+                json.map((school) => {
+                    if(school.School_Id == e){
+                        favNames.push(school.School_Name)
+                    }
+                    return(favNames)
+                })
+                return(favNames)
+            }).then(() =>{
+                document.getElementById('selectedSchools').innerHTML = "";
+                for(i = 0; i < favNames.length; i++){
+                    console.log(favNames[i])
+                    document.getElementById('selectedSchools').innerHTML += "<li>" + favNames[i] + "</li>";
+                }
+            })
+        })
+    }
+}
+
+
+function sectorEnabled(item){
+    if(item.Sector == "Government" && document.getElementById("GovernmentCheck").checked){
+        return true
+    }
+    else if(item.Sector == "Independent" && document.getElementById("PrivateCheck").checked){
+        return true
+    }
+    else if(item.Sector == "Catholic" && document.getElementById("CatholicCheck").checked){
+        return true
+    }
+    else{
+        false
+    }
+}
 
 
 

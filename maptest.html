@@ -1,23 +1,45 @@
 <head>
 
+	<!-- If IE use the latest rendering engine -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<!-- Set the page to the width of the device and set the zoon level -->
+	<meta name="viewport" content="width = device-width, initial-scale = 1">
+	<title>EduWell</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+
 	<!-- Stylesheets -->
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
-	   integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
-	   crossorigin=""/>
+		  integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+		  crossorigin=""/>
 	<link rel="stylesheet" href="stylesheets/MarkerCluster.css" />
 	<link rel="stylesheet" href="stylesheets/MarkerCluster.Default.css" />
+	<link rel="stylesheet" href="stylesheets/styles.css">
 
 	<!-- script -->
-     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
-   integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
-   crossorigin=""></script>
-    <script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>
+	<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+			integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+			crossorigin=""></script>
+	<script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="scripts/leaflet.markercluster-src.js"></script>
 	<script src="scripts/spin/dist/spin.js"></script>
 	<script src="scripts/leaflet.spin.min.js"></script>
 	<script src="scripts/leaflet.spin.min.js"></script>
 
+	<!-- Bootstrap from https://getbootstrap.com/ -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+	<!-- Easy Auto-complete from http://easyautocomplete.com/ -->
 	<!-- JS file -->
 	<script src="scripts/jquery.easy-autocomplete.min.js"></script>
 
@@ -27,424 +49,137 @@
 	<!-- Additional CSS Themes file - not required-->
 	<link rel="stylesheet" href="stylesheets/easy-autocomplete.themes.css">
 
-
-
-
-
-	<style type="text/css">
-		body {
-			margin-top: 0px;
-			margin-right: 0px;
-			margin-bottom: 0px;
-			margin-left: 0px
-		}
-		h4 {
-			margin: 0 0 5px;
-			color: #777;
-			font-size: 12pt;
-		}
-		h3{
-			font-size: 14pt;
-			padding-top: 3px;
-			padding-bottom: 3px;
-		}
-		h2{
-			margin-top:0;
-			font-size: 16pt;
-			color: #969888;
-		}
-		#mapid {
-			height: 85%;
-			width: 100%;
-			background-color: #000000;
-			display: inline-block;
-		}
-		.info {
-			padding: 6px 8px;
-			font: 14px/16px Arial, Helvetica, sans-serif;
-			background: white;
-			background: rgba(255,255,255,0.8);
-			box-shadow: 0 0 15px rgba(0,0,0,0.2);
-			border-radius: 5px;
-		}
-		.info h4 {
-			margin: 0 0 5px;
-			color: #777;
-		}
-		#sidebar{
-			background-color: #e6efdc;
-			display: inline-block;
-			min-width: 200px;
-			max-width: 700px;
-			height: 85%;
-			border-radius:2px;
-			font: 14px/16px Arial, Helvetica, sans-serif;
-			box-shadow: 5px 5px 2.5px #888888;
-			vertical-align: top;
-		}
-		.schoolListEntry{
-			background-color: white;
-			fill-opacity: .7;
-			border-radius: 5px;
-			padding: 10 10 10 10;
-			margin-bottom: 5px;
-			height:100px;
-		}
-		.schoolListEntry:hover{
-			background-color: white;
-			fill-opacity: .7;
-			border-radius: 5px;
-			padding: 10 10 10 10;
-			margin-bottom: 5px;
-			height:200px;
-		}
-		#mapwrapper {
-			position: relative;
-			display: inline-block;
-			width:75%;
-		}
-		.mapBox{
-			background-color: rgba(245, 253, 242, 0.85);
-			border-radius:5px;
-			width: 220px;
-			position: relative;
-			z-index: 9998;
-			margin-left: 10px;
-			padding: 10 10 10 10;
-
-		}
-
-		#searchbar{
-			 padding-top: 0px;
-			 margin-top: 5px;
-			 width: 220px;
-			 position: absolute;
-			 z-index: 9999;
-			 height: 80%;
-			 background-image: none;
-			 overflow: hidden;
-		}
-		#searchbox {
-			height: 40px;
-			font-size: 12pt;
-			width:100%;
-			z-index: 9999;
-		}
-		#submitSearch{
-			width: 15%;
-			height: 31px;
-			background: url(icons/icons8-Search-48.png);
-			background-size: contain;
-			background-repeat: no-repeat;
-			background-position: center;
-			padding-top: 0px;
-		}
-		#Filter {
-			padding-top: 2px;
-			width:60px;
-			height:20px;
-			padding-left: 0px;
-			margin-top: 10px;
-			max-height: 70VH;
-			display: inline-block;
-			font-size: 10pt;
-			color: #555;
-			overflow:hidden;
-		}
-		#Filter:hover {
-			width:200px;
-			height:70VH;
-			border: solid;
-		}
-		#Filtermenu h2{
-			margin-top:0;
-			color: #969888;
-			font: 16pt Helvetica, Arial, sans-serif;
-		}
-		#Filtermenu{
-			margin-top: 2px;
-			padding-top: 2px;
-			height: 80%;
-			overflow: scroll;
-			padding-left: 0;
-			margin-left: 0;
-			background-color: transparent ;
-
-		}
-		div.Low {
-			width: 15px;
-			height: 15px;
-			display: inline-block;
-			background-color: #34ff00;
-		}
-		div.Med {
-			width: 15px;
-			height: 15px;
-			display: inline-block;
-			background-color: #fdff00;
-		}
-		div.High {
-			width: 15px;
-			height: 15px;
-			display: inline-block;
-			background-color: #ff001b;
-		}
-		#legend {
-			line-height: 18px;
-			color: #555;
-			margin-right: 8px;
-			margin-top: 8px;
-			padding-right: 15px;
-			padding-top: 10px;
-			padding-left: 15px;
-			background-color: #e6efdc;
-			height: 200px;
-			width: 78%;
-			border-radius: 20px;
-			fill-opacity: .8;
-			border-radius:2px;
-			font: 14px/16px Arial, Helvetica, sans-serif;
-			box-shadow: 5px 5px 2.5px #888888;
-
-		}
-		.easy-autocomplete{
-			width: 180px;
-			margin-right: 0;
-			display: inline-block;
-		}
-
-		/*input[type=checkbox]*/
-		/*{*/
-			/*!* Double-sized Checkboxes *!*/
-			/*-ms-transform: scale(2); !* IE *!*/
-			/*-moz-transform: scale(2); !* FF *!*/
-			/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
-			/*-o-transform: scale(2); !* Opera *!*/
-			/*padding: 10px;*/
-			/*margin-bottom: 10px;*/
-		/*}*/
-		/*input[type=radio]*/
-		/*{*/
-			/*!* Double-sized Checkboxes *!*/
-			/*-ms-transform: scale(2); !* IE *!*/
-			/*-moz-transform: scale(2); !* FF *!*/
-			/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
-			/*-o-transform: scale(2); !* Opera *!*/
-			/*padding: 10px;*/
-			/*margin-bottom: 10px;*/
-		/*}*/
-		input[type=button]
-		{
-			/* Double-sized Checkboxes */
-			margin-top: 10px;
-			height: 40px;
-			width: 80%;
-			background-color: darkseagreen;
-			border-radius: 10px;
-			font-size: 14pt;
-			font-weight: 600;
-			color: white;
-		}
-		.leaflet-marker-icon:focus{
-			border: solid 4px;
-			border-radius:50px;
-			border-color: #3266fe;
-		}
-		.leaflet-marker-icon:hover{
-			border: solid 5px;
-			border-radius:50px;
-			border-color: #3266fe;
-		}
-		.error{
-			color: red;
-		}
-
-		.legendblock{
-			display: inline-block;
-			width: 20%;
-			height:200px;
-			overflow: scroll;
-
-		}
-		#compare{
-			cursor: pointer;
-			z-index: 3;
-			display: inline-block;
-			position: relative; /*newly added*/
-			width:100%;
-			background-color: #7f99d9;
-			border-radius: 3px;
-			text-align:center;
-			font-size: 14pt;
-			font-weight:200;
-			color: white;
-			height:40px;
-			vertical-align: bottom;
-		}
-		#schoolDisplay{
-			z-index: 1;
-			max-height: 70%;
-			overflow: scroll;
-			padding: 10 10 10 10;
-		}
-		.favbox{
-			background-color: yellow;
-			height: 30px;
-			width: 30px;
-			display: inline-block;
-			float: right;
-		}
-		#searchsection{
-			z-index: 9999999;
-			display: inline-block;
-			position: relative;
-			display: block;
-		}
-		#selectedSchool{
-			display: inline-block;
-			padding: 10px 10px 10px 10px;
-			margin-left: 10px;
-			margin-top: 10px;
-			height: 30px;
-
-		}
-		.header{
-			height: 60px;
-			background-color: black;
-			margin-bottom: 5px;
-		}
-		.footer{
-			height: 60px;
-			background-color: black;
-			vertical-align: bottom;
-		}
-		#logo{
-			display: inline-block;
-			width: 200px;
-			background-image: url('http://35.189.23.222/wp-content/uploads/2017/08/cropped-1.png');
-			height: 100%;
-			background-size: contain;
-
-		}
-		#content{
-			margin: 10px 10px 10px 10px;
-		}
-		#showSchoolBlock{
-			max-height: 90%;
-			overflow: hidden;
-		}
-
-
-
-
-
-
-	</style>
-
 </head>
+<body>
 
 <section>
-<section class="header">
-	<div id="logo">
-
-	</div>
-</section>
-<section id="content">
-<div class="mapBox" id="searchbar">
-	<div id="searchsection">
-		<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
-		<p id="searcherror" class="error"></p>
-		<input id="searchbox">
-		<input id="submitSearch" type="button" value="" onclick="localeSearch()">
-	</div>
-
-	<div class="mapBox" id="Filtermenu">
-		<div class="mapBox" id="Filtermenu">
-			<h2>Filters</h2>
-			<p id="Filters">
-			<h4>School Type</h4>
-			<input id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public <br>
-			<input id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent <br>
-			<input id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic <br>
-			</p>
-			<p id="DisplayBadges">
-			<h4>  Display Badges</h4>
-			<h5>Special Programs</h5>
-			<input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
-			</p>
-			<p id="Statistics">
-			<h4>Statistics</h4>
-			<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
-			</p>
+	<section class="header">
+		<div id="logo">
 
 		</div>
-		<div style="text-align: center"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
-			<span id="error" class="error"></span></div>
-	</div>
-</div>
-	<div id='mapwrapper'>
-		<div id='mapid'>
+		<div style="display: inline-block;float: right; font-family: Roboto, Helvetica, Arial, sans-serif;">
+			<div id="main-navigation" class="collapse navbar-collapse"><ul id="menu-homepage" class="nav navbar-nav navbar-right"><li id="menu-item-223" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-223"><a title="Home" href="http://35.189.23.222/">Home</a></li>
+				<li id="menu-item-40" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a title="Data Sources" href="http://35.189.23.222/index.php/data-sources/">Data Sources</a></li>
+				<li id="menu-item-221" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-221"><a title="Explore" href="http://35.189.23.222#about">Explore</a></li>
+				<li id="menu-item-224" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-224"><a title="About Us" href="http://35.189.23.222#team">About Us</a></li>
+				<li id="menu-item-225" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-225"><a title="Contact" href="http://35.189.23.222#contact">Contact</a></li>
+			</ul></div>			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="sr-only">Toggle Navigation</span>
+		</div>
 
+	</button>
+
+
+	</section>
+
+
+	<section id="content" class="container">
+		<div class = "row" style="height:80%;">
+			<div class=" col-lg-2 col-m-2 col-sm-3 col-xs-12 sidebar" id="searchbar">
+				<div id="searchsection">
+					<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
+					<p id="searcherror" class="error"></p>
+					<input id="searchbox">
+					<input id="submitSearch" type="button" value="" onclick="localeSearch()">
+					<div style="margin-top:5px;">
+						<input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
+						km Search Radius
+					</div>
+				</div>
+
+
+				<div class="mapBox" id="Filtermenu">
+					<div class="mapBox" id="Filtermenu">
+						<h2>Filters</h2>
+						<p id="Filters">
+						<h4>School Type</h4>
+						<input id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public <br>
+						<input id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent <br>
+						<input id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic <br>
+						</p>
+						<p id="DisplayBadges">
+						<h4>  Display Badges</h4>
+						<h5><b>Special Programs</b></h5>
+						<input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
+						</p>
+						<p id="Statistics">
+						<h4>Statistics</h4>
+						<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
+						</p>
+
+					</div>
+					<div style="text-align: center"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
+						<span id="error" class="error"></span></div>
+				</div>
+			</div>
+
+			<div id='mapwrapper' class="col-lg-7 col-md-6 col-sm-8 col-xs-12">
+				<div id='mapid'>
+
+				</div>
 			</div>
 
 
-
-
-		</div>
-			<!--<div class="mapBox" id="Filter">-->
-
-		<!--</div>-->
-
-	</div>
-	<div id="sidebar">
-		<div id="showSchoolBlock">
-			<div id="selectedSchool" class="schoolListEntry">
-				<h4>Click a school to get more info</h4>
-			</div>
-			<div id="schoolDisplay">
-
-				<h2>Nearby Schools</h2>
+			<div id="sidebar" class="col-lg-2 col-md-4 col-sm-10 col-xs-12 sidebar">
+				<div id="showSchoolBlock">
+					<div id="selectedSchool" class="schoolListEntry">
+						<h4><b>Click a school to get more info<b></h4>
+					</div>
+					<div id="schoolDisplay">
+						<h2>Nearby Schools</h2>
+					</div>
+				</div>
 			</div>
 		</div>
+		<div class="row" id="row2">
+			<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12 sidebar">
+				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+					<h4>Legend</h4>
+					<img src='icons/cluster.png' height='30'> School Cluster<br>
+					<img src='icons/marker.png' height='30'> Search Location
+				</div>
+
+				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+					<h4>Bullying Rate</h4>
+					<div class='Low'></div> Low <br>
+					<div class='Med'></div> Medium <br>
+					<div class='High'></div> High
+				</div>
+				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+					<h4>School Type</h4>
+					<img src='icons/icons8-Govt2.png' height='30'> Government School <br>
+					<img src='icons/icons8-Catholic.png' height='30'> Catholic School <br>
+					<img src='icons/icons8-Private.png' height='30'> Private/ Independent School <br>
+				</div>
+				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+					<h4><b>Programs offered</b></h4>
+
+					<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support)
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 sidebar" style="margin-left: 5px; padding-top: 5px;">
 
 
+				<div class="dropdown">
+					<button class="btn dropdown-toggle eduwellButton" type="button" data-toggle="dropdown"><h4>Selected schools (<span id="numToCompare">0</span>)
+						<span class="caret"></span><h4></button>
+					<ul id='selectedSchools' class="dropdown-menu">
 
-		<input type="button" id="compare" value="Compare" onclick="compare()">
-
-	</input>
-
-
-	</div>
-
-	<div id="legend">
-		<div><h3>Legend</h3></div>
-		<div class="legendblock">
-			<h4>Bullying Rate</h4>
-			<div class='Low'></div> Low <br>
-			<div class='Med'></div> Medium <br>
-			<div class='High'></div> High
+					</ul>
+				</div>
+				<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">
+			</div>
 		</div>
-		<div class="legendblock" style>
-			<h4>School Type</h4>
-			<img src='icons/icons8-Govt2.png' height='30'> Government School <br>
-			<img src='icons/icons8-Catholic.png' height='30'> Catholic School <br>
-			<img src='icons/icons8-Private.png' height='30'> Private/ Independent School <br>
-		</div>
-		<div class="legendblock">
-			<h4>Programs offered</h4>
-			<img src='icons/cluster.png' height='30'> School Cluster <br>
-			<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support)
-		</div>
 
+		<script type="text/javascript" src="scripts/maptest.js"></script>
+	</section>
+	<section class="footer">
 
-
-
-	</div>
-	<script type="text/javascript" src="scripts/maptest.js"></script>
-</section>
-<section class="footer">
-
-</section>
+	</section>
 </body>
 
-	egsdgshszh
+</body>
+
