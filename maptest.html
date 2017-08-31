@@ -44,6 +44,8 @@
 	}
 	h2{
 		margin-top:0;
+		font-size: 16pt;
+		color: #969888;
 	}
    	#mapid {
    		height: 85%;
@@ -105,43 +107,16 @@
 		padding: 10 10 10 10;
 
 	}
-	#searchbar {
-		margin-top: 5px;
-		height: 20px;
-		width:20px;
-		background-image: url('icons/icons8-Search-48.png');
-		background-size: contain;
-		overflow: hidden;
-	}
-	#searchbar:hover {
-		padding-top: 0px;
-		margin-top: 5px;
-		width: 220px;
-		position: relative;
-		z-index: 9999;
-		height: 160px;
-		background-image: none;
-		overflow: visible;
-	}
-	#searchbar:focus {
-		padding-top: 0px;
-		margin-top: 5px;
-		width: 220px;
-		position: relative;
-		z-index: 9999;
-		height: 160px;
-		background-image: none;
-		overflow: visible;
-	}
-	#searchbar:active {
-		padding-top: 0px;
-		margin-top: 5px;
-		width: 220px;
-		position: relative;
-		z-index: 9999;
-		height: 160px;
-		background-image: none;
-		overflow: visible;
+
+	#searchbar{
+		 padding-top: 0px;
+		 margin-top: 5px;
+		 width: 220px;
+		 position: absolute;
+		 z-index: 9999;
+		 height: 80%;
+		 background-image: none;
+		 overflow: hidden;
 	}
 	#searchbox {
 		height: 40px;
@@ -176,10 +151,19 @@
 		border: solid;
 	}
 	#Filtermenu h2{
-		font-size: 10pt;
+		margin-top:0;
+		color: #969888;
+		font: 16pt Helvetica, Arial, sans-serif;
 	}
 	#Filtermenu{
+		margin-top: 2px;
 		padding-top: 2px;
+		height: 80%;
+		overflow: scroll;
+		padding-left: 0;
+		margin-left: 0;
+		background-color: transparent ;
+
 	}
 	div.Low {
 		width: 15px;
@@ -304,6 +288,12 @@
 		display: inline-block;
 		float: right;
 	}
+	#searchsection{
+		z-index: 9999999;
+		display: inline-block;
+		position: relative;
+		display: block;
+	}
 
 
 
@@ -315,38 +305,58 @@
 </head>
 
 <body>
+<div class="mapBox" id="searchbar">
+	<div id="searchsection">
+		<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
+		<p id="searcherror" class="error"></p>
+		<input id="searchbox">
+		<input id="submitSearch" type="button" value="" onclick="localeSearch()">
+	</div>
+
+	<div class="mapBox" id="Filtermenu">
+		<div class="mapBox" id="Filtermenu">
+			<h2>Filters</h2>
+			<p id="Filters">
+			<h4>School Type</h4>
+			<input id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public <br>
+			<input id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent <br>
+			<input id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic <br>
+			</p>
+			<p id="DisplayBadges">
+			<h4>  Display Badges</h4>
+			<h5>Special Programs</h5>
+			<input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
+			</p>
+			<p id="Statistics">
+			<h4>Statistics</h4>
+			<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
+			</p>
+
+		</div>
+		<div style="text-align: center"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
+			<span id="error" class="error"></span></div>
+	</div>
+</div>
 	<div id='mapwrapper'>
 		<div id='mapid'>
-			<div class="mapBox" id="searchbar">
-				<p id="searchinst"><br><br>Enter a suburb or postcode to find nearby schools</p>
-				<p id="searcherror" class="error"></p>
-					<input id="searchbox">
-					<input id="submitSearch" type="button" value="" onclick="localeSearch()">
-
 
 			</div>
-			<div class="mapBox" id="Filter">
-				<div class="mapBox" id="Filtermenu">
-				<h2>Filter</h2>
-					<h4>School Type</h4>
-					<input id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public <br>
-					<input id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent <br>
-					<input id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic <br>
-					<h4>Programs Offered</h4>
-					<input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
-					<h4>Statistics</h4>
-					<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
-				</div>
-					<div style="text-align: center"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
-					<span id="error" class="error"></span></div>
 
-			</div>
+
+
+
 		</div>
+			<!--<div class="mapBox" id="Filter">-->
+
+		<!--</div>-->
 
 	</div>
 	<div id="sidebar">
 
 		<div id="schoolDisplay">
+			<div id="selectedSchool">
+
+			</div>>
 			<h2>Nearby Schools</h2>
 		</div>
 		<input type="button" id="compare" value="Compare" onclick="compare()">
