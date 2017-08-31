@@ -32,268 +32,307 @@
 
 
 	<style type="text/css">
-	h4 {
-		margin: 0 0 5px;
-		color: #777;
-		font-size: 12pt;
-	}
-	h3{
-		font-size: 14pt;
-		padding-top: 3px;
-		padding-bottom: 3px;
-	}
-	h2{
-		margin-top:0;
-		font-size: 16pt;
-		color: #969888;
-	}
-   	#mapid {
-   		height: 85%;
-   		width: 100%;
-   		background-color: #000000;
-		display: inline-block;
-   	}
-	.info {
-		padding: 6px 8px;
-		font: 14px/16px Arial, Helvetica, sans-serif;
-		background: white;
-		background: rgba(255,255,255,0.8);
-		box-shadow: 0 0 15px rgba(0,0,0,0.2);
-		border-radius: 5px;
-	}
-	.info h4 {
-		margin: 0 0 5px;
-		color: #777;
-	}
-	#sidebar{
-		background-color: #e6efdc;
-		display: inline-block;
-		min-width: 200px;
-		max-width: 700px;
-		height: 85%;
-		border-radius:2px;
-		font: 14px/16px Arial, Helvetica, sans-serif;
-		box-shadow: 5px 5px 2.5px #888888;
-		vertical-align: top;
-	}
-	.schoolListEntry{
-		background-color: white;
-		fill-opacity: .7;
-		border-radius: 5px;
-		padding: 10 10 10 10;
-		margin-bottom: 5px;
-		height:100px;
-	}
-	.schoolListEntry:hover{
-		background-color: white;
-		fill-opacity: .7;
-		border-radius: 5px;
-		padding: 10 10 10 10;
-		margin-bottom: 5px;
-		height:200px;
-	}
-	#mapwrapper {
-		position: relative;
-		display: inline-block;
-		width:75%;
-	}
-	.mapBox{
-		background-color: rgba(245, 253, 242, 0.85);
-		border-radius:5px;
-		width: 220px;
-		position: relative;
-		z-index: 9998;
-		margin-left: 10px;
-		padding: 10 10 10 10;
+		body {
+			margin-top: 0px;
+			margin-right: 0px;
+			margin-bottom: 0px;
+			margin-left: 0px
+		}
+		h4 {
+			margin: 0 0 5px;
+			color: #777;
+			font-size: 12pt;
+		}
+		h3{
+			font-size: 14pt;
+			padding-top: 3px;
+			padding-bottom: 3px;
+		}
+		h2{
+			margin-top:0;
+			font-size: 16pt;
+			color: #969888;
+		}
+		#mapid {
+			height: 85%;
+			width: 100%;
+			background-color: #000000;
+			display: inline-block;
+		}
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+		#sidebar{
+			background-color: #e6efdc;
+			display: inline-block;
+			min-width: 200px;
+			max-width: 700px;
+			height: 85%;
+			border-radius:2px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			box-shadow: 5px 5px 2.5px #888888;
+			vertical-align: top;
+		}
+		.schoolListEntry{
+			background-color: white;
+			fill-opacity: .7;
+			border-radius: 5px;
+			padding: 10 10 10 10;
+			margin-bottom: 5px;
+			height:100px;
+		}
+		.schoolListEntry:hover{
+			background-color: white;
+			fill-opacity: .7;
+			border-radius: 5px;
+			padding: 10 10 10 10;
+			margin-bottom: 5px;
+			height:200px;
+		}
+		#mapwrapper {
+			position: relative;
+			display: inline-block;
+			width:75%;
+		}
+		.mapBox{
+			background-color: rgba(245, 253, 242, 0.85);
+			border-radius:5px;
+			width: 220px;
+			position: relative;
+			z-index: 9998;
+			margin-left: 10px;
+			padding: 10 10 10 10;
 
-	}
+		}
 
-	#searchbar{
-		 padding-top: 0px;
-		 margin-top: 5px;
-		 width: 220px;
-		 position: absolute;
-		 z-index: 9999;
-		 height: 80%;
-		 background-image: none;
-		 overflow: hidden;
-	}
-	#searchbox {
-		height: 40px;
-		font-size: 12pt;
-		width:100%;
-		z-index: 9999;
-	}
-	#submitSearch{
-		width: 15%;
-		height: 31px;
-		background: url(icons/icons8-Search-48.png);
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: center;
-		padding-top: 0px;
-	}
-	#Filter {
-		padding-top: 2px;
-		width:60px;
-		height:20px;
-		padding-left: 0px;
-		margin-top: 10px;
-		max-height: 70VH;
-		display: inline-block;
-		font-size: 10pt;
-		color: #555;
-		overflow:hidden;
-	}
-	#Filter:hover {
-		width:200px;
-		height:70VH;
-		border: solid;
-	}
-	#Filtermenu h2{
-		margin-top:0;
-		color: #969888;
-		font: 16pt Helvetica, Arial, sans-serif;
-	}
-	#Filtermenu{
-		margin-top: 2px;
-		padding-top: 2px;
-		height: 80%;
-		overflow: scroll;
-		padding-left: 0;
-		margin-left: 0;
-		background-color: transparent ;
+		#searchbar{
+			 padding-top: 0px;
+			 margin-top: 5px;
+			 width: 220px;
+			 position: absolute;
+			 z-index: 9999;
+			 height: 80%;
+			 background-image: none;
+			 overflow: hidden;
+		}
+		#searchbox {
+			height: 40px;
+			font-size: 12pt;
+			width:100%;
+			z-index: 9999;
+		}
+		#submitSearch{
+			width: 15%;
+			height: 31px;
+			background: url(icons/icons8-Search-48.png);
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			padding-top: 0px;
+		}
+		#Filter {
+			padding-top: 2px;
+			width:60px;
+			height:20px;
+			padding-left: 0px;
+			margin-top: 10px;
+			max-height: 70VH;
+			display: inline-block;
+			font-size: 10pt;
+			color: #555;
+			overflow:hidden;
+		}
+		#Filter:hover {
+			width:200px;
+			height:70VH;
+			border: solid;
+		}
+		#Filtermenu h2{
+			margin-top:0;
+			color: #969888;
+			font: 16pt Helvetica, Arial, sans-serif;
+		}
+		#Filtermenu{
+			margin-top: 2px;
+			padding-top: 2px;
+			height: 80%;
+			overflow: scroll;
+			padding-left: 0;
+			margin-left: 0;
+			background-color: transparent ;
 
-	}
-	div.Low {
-		width: 15px;
-		height: 15px;
-		display: inline-block;
-		background-color: #34ff00;
-	}
-	div.Med {
-		width: 15px;
-		height: 15px;
-		display: inline-block;
-		background-color: #fdff00;
-	}
-	div.High {
-		width: 15px;
-		height: 15px;
-		display: inline-block;
-		background-color: #ff001b;
-	}
-	#legend {
-		line-height: 18px;
-		color: #555;
-		margin-right: 8px;
-		margin-top: 8px;
-		padding-right: 15px;
-		padding-top: 10px;
-		padding-left: 15px;
-		background-color: #e6efdc;
-		height: 200px;
-		width: 78%;
-		border-radius: 20px;
-		fill-opacity: .8;
-		border-radius:2px;
-		font: 14px/16px Arial, Helvetica, sans-serif;
-		box-shadow: 5px 5px 2.5px #888888;
+		}
+		div.Low {
+			width: 15px;
+			height: 15px;
+			display: inline-block;
+			background-color: #34ff00;
+		}
+		div.Med {
+			width: 15px;
+			height: 15px;
+			display: inline-block;
+			background-color: #fdff00;
+		}
+		div.High {
+			width: 15px;
+			height: 15px;
+			display: inline-block;
+			background-color: #ff001b;
+		}
+		#legend {
+			line-height: 18px;
+			color: #555;
+			margin-right: 8px;
+			margin-top: 8px;
+			padding-right: 15px;
+			padding-top: 10px;
+			padding-left: 15px;
+			background-color: #e6efdc;
+			height: 200px;
+			width: 78%;
+			border-radius: 20px;
+			fill-opacity: .8;
+			border-radius:2px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			box-shadow: 5px 5px 2.5px #888888;
 
-	}
-	.easy-autocomplete{
-		width: 180px;
-		margin-right: 0;
-		display: inline-block;
-	}
+		}
+		.easy-autocomplete{
+			width: 180px;
+			margin-right: 0;
+			display: inline-block;
+		}
 
-	/*input[type=checkbox]*/
-	/*{*/
-		/*!* Double-sized Checkboxes *!*/
-		/*-ms-transform: scale(2); !* IE *!*/
-		/*-moz-transform: scale(2); !* FF *!*/
-		/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
-		/*-o-transform: scale(2); !* Opera *!*/
-		/*padding: 10px;*/
-		/*margin-bottom: 10px;*/
-	/*}*/
-	/*input[type=radio]*/
-	/*{*/
-		/*!* Double-sized Checkboxes *!*/
-		/*-ms-transform: scale(2); !* IE *!*/
-		/*-moz-transform: scale(2); !* FF *!*/
-		/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
-		/*-o-transform: scale(2); !* Opera *!*/
-		/*padding: 10px;*/
-		/*margin-bottom: 10px;*/
-	/*}*/
-	input[type=button]
-	{
-		/* Double-sized Checkboxes */
-		margin-top: 10px;
-		height: 40px;
-		width: 80%;
-		background-color: darkseagreen;
-		border-radius: 10px;
-		font-size: 14pt;
-		font-weight: 600;
-		color: white;
-	}
-	.leaflet-marker-icon:focus{
-		border: solid 4px;
-		border-radius:50px;
-		border-color: #3266fe;
-	}
-	.leaflet-marker-icon:hover{
-		border: solid 5px;
-		border-radius:50px;
-		border-color: #3266fe;
-	}
-	.error{
-		color: red;
-	}
+		/*input[type=checkbox]*/
+		/*{*/
+			/*!* Double-sized Checkboxes *!*/
+			/*-ms-transform: scale(2); !* IE *!*/
+			/*-moz-transform: scale(2); !* FF *!*/
+			/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
+			/*-o-transform: scale(2); !* Opera *!*/
+			/*padding: 10px;*/
+			/*margin-bottom: 10px;*/
+		/*}*/
+		/*input[type=radio]*/
+		/*{*/
+			/*!* Double-sized Checkboxes *!*/
+			/*-ms-transform: scale(2); !* IE *!*/
+			/*-moz-transform: scale(2); !* FF *!*/
+			/*-webkit-transform: scale(2); !* Safari and Chrome *!*/
+			/*-o-transform: scale(2); !* Opera *!*/
+			/*padding: 10px;*/
+			/*margin-bottom: 10px;*/
+		/*}*/
+		input[type=button]
+		{
+			/* Double-sized Checkboxes */
+			margin-top: 10px;
+			height: 40px;
+			width: 80%;
+			background-color: darkseagreen;
+			border-radius: 10px;
+			font-size: 14pt;
+			font-weight: 600;
+			color: white;
+		}
+		.leaflet-marker-icon:focus{
+			border: solid 4px;
+			border-radius:50px;
+			border-color: #3266fe;
+		}
+		.leaflet-marker-icon:hover{
+			border: solid 5px;
+			border-radius:50px;
+			border-color: #3266fe;
+		}
+		.error{
+			color: red;
+		}
 
-	.legendblock{
-		display: inline-block;
-		width: 20%;
-		height:200px;
-		overflow: scroll;
+		.legendblock{
+			display: inline-block;
+			width: 20%;
+			height:200px;
+			overflow: scroll;
 
-	}
-	#compare{
-		cursor: pointer;
-		z-index: 3;
-		display: inline-block;
-		position: relative; /*newly added*/
-		width:100%;
-		background-color: #7f99d9;
-		border-radius: 3px;
-		text-align:center;
-		font-size: 14pt;
-		font-weight:200;
-		color: white;
-		height:40px;
-		vertical-align: bottom;
-	}
-	#schoolDisplay{
-		z-index: 1;
-		max-height: 90%;
-		overflow: scroll;
-		padding: 10 10 10 10;
-	}
-	.favbox{
-		background-color: yellow;
-		height: 30px;
-		width: 30px;
-		display: inline-block;
-		float: right;
-	}
-	#searchsection{
-		z-index: 9999999;
-		display: inline-block;
-		position: relative;
-		display: block;
-	}
+		}
+		#compare{
+			cursor: pointer;
+			z-index: 3;
+			display: inline-block;
+			position: relative; /*newly added*/
+			width:100%;
+			background-color: #7f99d9;
+			border-radius: 3px;
+			text-align:center;
+			font-size: 14pt;
+			font-weight:200;
+			color: white;
+			height:40px;
+			vertical-align: bottom;
+		}
+		#schoolDisplay{
+			z-index: 1;
+			max-height: 70%;
+			overflow: scroll;
+			padding: 10 10 10 10;
+		}
+		.favbox{
+			background-color: yellow;
+			height: 30px;
+			width: 30px;
+			display: inline-block;
+			float: right;
+		}
+		#searchsection{
+			z-index: 9999999;
+			display: inline-block;
+			position: relative;
+			display: block;
+		}
+		#selectedSchool{
+			display: inline-block;
+			padding: 10px 10px 10px 10px;
+			margin-left: 10px;
+			margin-top: 10px;
+			height: 30px;
+
+		}
+		.header{
+			height: 60px;
+			background-color: black;
+			margin-bottom: 5px;
+		}
+		.footer{
+			height: 60px;
+			background-color: black;
+			vertical-align: bottom;
+		}
+		#logo{
+			display: inline-block;
+			width: 200px;
+			background-image: url('http://35.189.23.222/wp-content/uploads/2017/08/cropped-1.png');
+			height: 100%;
+			background-size: contain;
+
+		}
+		#content{
+			margin: 10px 10px 10px 10px;
+		}
+		#showSchoolBlock{
+			max-height: 90%;
+			overflow: hidden;
+		}
 
 
 
@@ -304,7 +343,13 @@
 
 </head>
 
-<body>
+<section>
+<section class="header">
+	<div id="logo">
+
+	</div>
+</section>
+<section id="content">
 <div class="mapBox" id="searchbar">
 	<div id="searchsection">
 		<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
@@ -352,13 +397,18 @@
 
 	</div>
 	<div id="sidebar">
+		<div id="showSchoolBlock">
+			<div id="selectedSchool" class="schoolListEntry">
+				<h4>Click a school to get more info</h4>
+			</div>
+			<div id="schoolDisplay">
 
-		<div id="schoolDisplay">
-			<div id="selectedSchool">
-
-			</div>>
-			<h2>Nearby Schools</h2>
+				<h2>Nearby Schools</h2>
+			</div>
 		</div>
+
+
+
 		<input type="button" id="compare" value="Compare" onclick="compare()">
 
 	</input>
@@ -391,4 +441,8 @@
 
 	</div>
 	<script type="text/javascript" src="scripts/maptest.js"></script>
+</section>
+<section class="footer">
+
+</section>
 </body>

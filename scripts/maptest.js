@@ -51,27 +51,18 @@ function loadGeoJSON(map){
 
     console.log(LGA)
     //Get GeoJSON data on LGAs
-    $.ajax({
-        dataType: "json",
-        url: "data/LGA_geojson.geojson",
-        asynch: false,
-        success: function (data) {
+    $.getJSON("data/LGA_geojson.GeoJSON", function (data) {
             //Bind LGA to map
             $(data.features).each(function (key, data) {
                 LGA.addData(data);
             })
 
             //Colour LGA by bullying rate
-            if(document.getElementById("bullyingChecked").checked){
+            if (document.getElementById("bullyingChecked").checked) {
                 bullyingColor(LGA)
             }
             map.spin(false)
-
-        },
-        error: function () {
-            console.log('error')
-        }
-    }).then(LGA.addTo(map))
+            }).then(LGA.addTo(map))
 }
 
 //Colour LGA by bullying rate
@@ -226,15 +217,15 @@ defineSearch()
 // //build Info control
 
 
-    let info = L.control()
-
-    info.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'info')
-        this.update()
-        return this._div
-    }
-
-
+    // let info = L.control()
+    //
+    // info.onAdd = function (map) {
+    //     this._div = L.DomUtil.create('div', 'info')
+    //     this.update()
+    //     return this._div
+    // }
+    //
+    //
     let isLGBT = (props) => {
         if(props.LGBT){
             return "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
@@ -243,27 +234,39 @@ defineSearch()
             return ""
         }
     }
-
-    info.update = function (props) {
-        this._div.innerHTML = (props ?
-            '<h3>' + props.School_Name + '</h3><br>'
-            + '<b>Address: </b>' + props.Address1
-            + props.Address2 + ",<br> " +
-            props.Town + " " + props.PPostcode
-            + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
-            + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
-            + "<h4>Special Progrmas Offered</h4>" + isLGBT(props)
-            : '<h4>Click a school to see info</h4>');
-
-
-    }
-
-    info.addTo(mymap)
+    //
+    // info.update = function (props) {
+    //     this._div.innerHTML = (props ?
+    //         '<h3>' + props.School_Name + '</h3><br>'
+    //         + '<b>Address: </b>' + props.Address1
+    //         + props.Address2 + ",<br> " +
+    //         props.Town + " " + props.PPostcode
+    //         + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
+    //         + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
+    //         + "<h4>Special Progrmas Offered</h4>" + isLGBT(props)
+    //         : '<h4>Click a school to see info</h4>');
+    //
+    //
+    // }
+    //
+    // info.addTo(mymap)
 
 
 //Click school event
 function clickSchool(e) {
-    info.update(e.target.properties)
+    let props = e.target.properties;
+    // info.update(e.target.properties);
+    document.getElementById("selectedSchool").style.height = "200px";
+    document.getElementById("selectedSchool").style.height = "200px";
+    document.getElementById("selectedSchool").innerHTML = (props ?
+        '<h3>' + props.School_Name + '</h3><br>'
+        + '<b>Address: </b>' + props.Address1
+        + props.Address2 + ",<br> " +
+        props.Town + " " + props.PPostcode
+        + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
+        + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
+        + "<h4>Special Progrmas Offered</h4>" + isLGBT(props)
+        : '<h4>Click a school to see info</h4>')
 }
 
 
