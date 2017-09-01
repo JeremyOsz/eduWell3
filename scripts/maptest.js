@@ -10,8 +10,21 @@ $(document).ready(function() {
         $(".favcheck").click(selectedFavList())
     });
 
+
+
 });
 
+//Create default filter options
+if(!localStorage[99]){
+    localStorage[2] = true //Govt
+    localStorage[3] = true //Private
+    localStorage[4] = true //Catholic
+    localStorage[5] = 3 //Radius
+    localStorage[6] = 1 //Programs (1 = LGBT)
+    localStorage[7] = 1 //State (1 = Bulying)
+    localStorage[98] = -37.814
+    localStorage[97] = 144.96332
+}
 
 //Establish leaflet map
 let mymap = L.map('mapid',{
@@ -21,11 +34,12 @@ mymap.zoomControl.setPosition('bottomright');
 
 function buildMap(){
 
-    let latlon = L.latLng(-37.814,144.96332);
+
+    let latlon = L.latLng(localStorage[98],localStorage[97])
 
     nearbySchools(latlon)
 
-    mymap.setView([-37.814, 144.96332],13);
+    mymap.setView(latlon,13);
     // Load tiles
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -37,10 +51,13 @@ function buildMap(){
 
 
     mymap.spin(true)
-    loadGeoJSON(mymap)
+    if (localStorage[7] !== 0){
+        loadGeoJSON(mymap)
+    }
+    else{
+        console.log('GeoJSON disabled')
+    }
     getSchoolList(mymap)
-
-
 
     return mymap
 }
@@ -65,8 +82,8 @@ function loadGeoJSON(map){
             }
 
             console.log(LGA)
-            LGA.addTo(map).done(map.spin(false))
-            })
+            LGA.addTo(map)
+            }).then(mymap.spin(false))
 }
 
 //Colour LGA by bullying rate
@@ -135,7 +152,7 @@ function addSchoolMarkers(data, map){
 //Define marker
 let getIcon = (data) => {
 
-    if(data.LGBT && document.getElementById("LGBTchecked").checked) {
+    if(data.LGBT && localStorage[6]) {
         switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
@@ -159,7 +176,7 @@ let getIcon = (data) => {
         }
     }
 
-    if(!data.LGBT || !document.getElementById("LGBTchecked").checked){
+    if(!data.LGBT || !localStorage[6]){
         switch(data.Sector){
             case "Government":
                 var icon = L.icon({
@@ -275,6 +292,8 @@ function filterMap(map) {
     let govt = document.getElementById("GovernmentCheck").checked
     let private = document.getElementById("PrivateCheck").checked
     let catholic = document.getElementById("CatholicCheck").checked
+    let LGBT = document.getElementById("LGBTchecked").checked
+    let Bullying = document.getElementById("bullyingChecked").checked
 
     error.innerHTML = ""
 
@@ -283,7 +302,21 @@ function filterMap(map) {
         error.innerHTML = "Please select at least one school type"
     }
     else{
-        console.log(map)
+        if(govt){
+            localStorage[2] == true
+        }
+        if(private){
+            localStorage[3] == true
+        }
+        if(catholic){
+            localStorage[4] == true
+        }
+        if(LGBT){
+            localStorage[6] == true
+        }
+        if(Bullying){
+            localStorage[7] == true
+        }
         mymap.eachLayer(function (layer) {
             mymap.removeLayer(layer);
         });
@@ -380,13 +413,11 @@ function localeSearch(){
 function compare(){
     let favList = []
     let favs = $(".favcheck")
-    console.log(favs);
     for(i = 0; i < favs.length; i++){
         if(favs[i].checked){
             favList.push(favs[i].id)
         }
     }
-    console.log(favList)
     localStorage[1] = favList
     return favList
 }
@@ -441,6 +472,12 @@ function sectorEnabled(item){
     else{
         false
     }
+}
+
+function test(){
+    $.getJSON("data/schoolList.json", function(json) {
+        console.log(json);
+    })
 }
 
 

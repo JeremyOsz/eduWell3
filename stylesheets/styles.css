@@ -158,7 +158,7 @@ div.High {
 }
 
 .easy-autocomplete{
-    width: 180px;
+    width: 100%;
     margin-right: 0;
     display: inline-block;
 }
@@ -293,7 +293,7 @@ a{
     overflow: hidden;
 }
 .row{
-    width:100VW !important;
+    width:100% !important;
     margin-bottom: 5px;
 }
 .mapsection{

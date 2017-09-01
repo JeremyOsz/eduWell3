@@ -1,0 +1,194 @@
+<head>
+
+    <!-- If IE use the latest rendering engine -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Set the page to the width of the device and set the zoon level -->
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>EduWell</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+          integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+          crossorigin=""/>
+    <link rel="stylesheet" href="stylesheets/MarkerCluster.css" />
+    <link rel="stylesheet" href="stylesheets/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="stylesheets/styles.css">
+
+    <!-- script -->
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+            integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+            crossorigin=""></script>
+    <script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="scripts/leaflet.markercluster-src.js"></script>
+    <script src="scripts/spin/dist/spin.js"></script>
+    <script src="scripts/leaflet.spin.min.js"></script>
+    <script src="scripts/leaflet.spin.min.js"></script>
+
+    <!-- Bootstrap from https://getbootstrap.com/ -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+    <!-- Easy Auto-complete from http://easyautocomplete.com/ -->
+    <!-- JS file -->
+    <script src="scripts/jquery.easy-autocomplete.min.js"></script>
+
+    <!-- CSS file -->
+    <link rel="stylesheet" href="stylesheets/easy-autocomplete.css">
+
+    <!-- Additional CSS Themes file - not required-->
+    <link rel="stylesheet" href="stylesheets/easy-autocomplete.themes.css">
+
+    <style>
+        #main-search-section{
+            align-items: center;
+            padding-left: 20%;
+            padding-right: 20%;
+            padding-top: 20%;
+            height: 90VH;
+            width: 99VW!important;
+            background-color:greenyellow;
+        }
+        #searchblock{
+            overflow: auto;
+        }
+        #mainsearch{
+            height:60px;
+            font-size: 18px !important;
+            width:100%;
+            display: inline-block;
+        }
+        .easyautocomplete{
+            font-size: 16px !important;
+            width: 80% !important;
+            display: inline-block;
+        }
+        #searchbutton{
+            width: 20%;
+            height:50px;
+
+        }
+        .mainoption{
+            display: inline-block;
+        }
+        #schoolTypes{
+            margin-top: 10px;
+            align-items: center;
+            left: 50%;
+            right: 50%;
+        }
+        #optionsPanel{
+            text-align: center;
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+        #mainsearchbutton{
+            width: 200px!important;
+            margin-top: 10px;
+        }
+        #searcherror{
+            color: red;
+        }
+
+    </style>
+
+
+</head>
+<body>
+
+<section>
+    <section class="header">
+        <div id="logo">
+
+        </div>
+        <div style="display: inline-block;float: right; font-family: Roboto, Helvetica, Arial, sans-serif;">
+            <div id="main-navigation" class="collapse navbar-collapse"><ul id="menu-homepage" class="nav navbar-nav navbar-right"><li id="menu-item-223" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-223"><a title="Home" href="http://35.189.23.222/">Home</a></li>
+                <li id="menu-item-40" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a title="Data Sources" href="http://35.189.23.222/index.php/data-sources/">Data Sources</a></li>
+                <li id="menu-item-221" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-221"><a title="Explore" href="http://35.189.23.222#about">Explore</a></li>
+                <li id="menu-item-224" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-224"><a title="About Us" href="http://35.189.23.222#team">About Us</a></li>
+                <li id="menu-item-225" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-225"><a title="Contact" href="http://35.189.23.222#contact">Contact</a></li>
+            </ul></div>			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="sr-only">Toggle Navigation</span>
+        </div>
+
+        </button>
+
+
+    </section>
+
+
+    <section id="content" class="container">
+        <div class="row" id="main-search-section">
+            <div class="jumbotron">
+                <h4>Enter a suburb or postcode to start exploring schools in the area</h4>
+                <span id="searcherror"></span>
+                <input type="text" class="" id="mainsearch">
+
+                <div class="container" id="optionsPanel">
+                    <div class="row" id="schoolTypes">
+                        <h4>School Type</h4>
+                        <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
+                            <input class="mainoption" id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public
+                        </div>
+                        <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
+                            <input class="mainoption" id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic
+                        </div>
+                        <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
+                            <input class="mainoption" id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent
+                        </div>
+                    </div>
+                    <div class="row" id="schoolTypes col-lg-4 col-m-4 col-sm-4 col-xs-4">
+                        <button class="eduwellButton btn" id="mainsearchbutton">Search</button>
+                    </div>
+                    <div class="row" id="schoolTypes">
+
+                        <button id="advanced_options" data-toggle="collapse" data-target="#demo">Advanced Options</button>
+
+                        <div id="demo" class="collapse">
+                            <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
+                                <h5>Search Radius</h4>
+                                    <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
+                                    km
+                            </div>
+                            <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
+                                <h5>Program to highlight<h4>
+                                    <select id="programs" class="form-control" type="select" data-toggle="dropdown">
+                                        <option>None</option>
+                                        <option>Safe Schools (LGBT Support)</option>
+                                    </select>
+                            </div>
+                            <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
+                                <h5>Statistical data<h4>
+                                    <select id="stats" class="form-control" type="select" data-toggle="dropdown">
+                                        <option>None</option>
+                                        <option>Bullying Rate</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <script type="text/javascript" src="scripts/mainsearch.js"></script>
+</body>
+
+
+
