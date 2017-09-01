@@ -76,101 +76,110 @@
 	</section>
 
 
-	<section id="content" class="container">
-		<div class = "row" style="height:80%;">
-			<div class=" col-lg-2 col-m-2 col-sm-3 col-xs-12 sidebar" id="searchbar">
-				<div id="searchsection">
-					<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
-					<p id="searcherror" class="error"></p>
-					<input id="searchbox">
-					<input id="submitSearch" type="button" value="" onclick="localeSearch()">
-					<div style="margin-top:5px;">
-						<input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
-						km Search Radius
+	<section id="content" class="container" style="padding-left: 0px">
+		<div class = "row" style="height:80%; width: 99VW!important;">
+			<div class=" col-lg-2 col-m-2 col-sm-3 col-xs-12 " id="searchbar">
+				<div class="col-md-12 sidebar" style="padding-top: 10px">
+					<div id="searchsection">
+						<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
+						<p id="searcherror" class="error"></p>
+						<input id="searchbox">
+						<input id="submitSearch" type="button" value="" onclick="localeSearch()">
+						<div style="margin-top:5px;">
+							<input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
+							km Search Radius
+						</div>
 					</div>
-				</div>
 
 
-				<div class="mapBox" id="Filtermenu">
 					<div class="mapBox" id="Filtermenu">
-						<h2>Filters</h2>
-						<p id="Filters">
-						<h4>School Type</h4>
-						<input id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public <br>
-						<input id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent <br>
-						<input id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic <br>
-						</p>
-						<p id="DisplayBadges">
-						<h4>  Display Badges</h4>
-						<h5><b>Special Programs</b></h5>
-						<input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
-						</p>
-						<p id="Statistics">
-						<h4>Statistics</h4>
-						<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
-						</p>
+						<div class="mapBox" id="Filtermenu">
+							<h2>Filters</h2>
+							<p id="Filters">
+							<h4>School Type</h4>
+							<input id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public <br>
+							<input id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent <br>
+							<input id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic <br>
+							</p>
+							<p id="DisplayBadges">
+							<h4>  Display Badges</h4>
+							<h5><b>Special Programs</b></h5>
+							<input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
+							</p>
+							<p id="Statistics">
+							<h4>Statistics</h4>
+							<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
+							</p>
 
+						</div>
+						<div style="text-align: center"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
+							<span id="error" class="error"></span></div>
 					</div>
-					<div style="text-align: center"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
-						<span id="error" class="error"></span></div>
 				</div>
 			</div>
 
-			<div id='mapwrapper' class="col-lg-7 col-md-6 col-sm-8 col-xs-12">
-				<div id='mapid'>
+			<div id='mapwrapper' class="col-lg-7 col-md-6 col-sm-8 col-xs-12" style="padding: 0 0 0 0;">
+					<div class="col-md-12 sidebar" >
+						<div id='mapid'>
 
-				</div>
+						</div>
+					</div>
 			</div>
 
 
-			<div id="sidebar" class="col-lg-2 col-md-4 col-sm-10 col-xs-12 sidebar">
-				<div id="showSchoolBlock">
-					<div id="selectedSchool" class="schoolListEntry">
-						<h4><b>Click a school to get more info<b></h4>
-					</div>
-					<div id="schoolDisplay">
-						<h2>Nearby Schools</h2>
+			<div id="sidebar" class="col-lg-3 col-md-4 col-sm-10 col-xs-12">
+				<div class="col-md-12 sidebar" >
+					<div id="showSchoolBlock">
+						<div id="selectedSchool" class="schoolListEntry">
+							<h4><b>Click a school to get more info<b></h4>
+						</div>
+						<div id="schoolDisplay">
+							<h2>Nearby Schools</h2>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row" id="row2">
-			<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12 sidebar">
-				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-					<h4>Legend</h4>
-					<img src='icons/cluster.png' height='30'> School Cluster<br>
-					<img src='icons/marker.png' height='30'> Search Location
-				</div>
+		<div class="row" id="row2" style="width:99VW!important;">
+			<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12">
+				<div class="col-md-12 sidebar" >
+					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+						<h4>Legend</h4>
+						<img src='icons/cluster.png' height='30'> School Cluster<br>
+						<img src='icons/marker.png' height='30'> Search Location
+					</div>
 
-				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-					<h4>Bullying Rate</h4>
-					<div class='Low'></div> Low <br>
-					<div class='Med'></div> Medium <br>
-					<div class='High'></div> High
-				</div>
-				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-					<h4>School Type</h4>
-					<img src='icons/icons8-Govt2.png' height='30'> Government School <br>
-					<img src='icons/icons8-Catholic.png' height='30'> Catholic School <br>
-					<img src='icons/icons8-Private.png' height='30'> Private/ Independent School <br>
-				</div>
-				<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-					<h4><b>Programs offered</b></h4>
+					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+						<h4>Bullying Rate</h4>
+						<div class='Low'></div> Low <br>
+						<div class='Med'></div> Medium <br>
+						<div class='High'></div> High
+					</div>
+					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+						<h4>School Type</h4>
+						<img src='icons/icons8-Govt2.png' height='30'> Government School <br>
+						<img src='icons/icons8-Catholic.png' height='30'> Catholic School <br>
+						<img src='icons/icons8-Private.png' height='30'> Private/ Independent School <br>
+					</div>
+					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
+						<h4><b>Programs offered</b></h4>
 
-					<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support)
+						<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support)
+					</div>
 				</div>
 			</div>
-			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 sidebar" style="margin-left: 5px; padding-top: 5px;">
+			<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" style="padding-top: 5px;">
+				<div class="col-md-12 sidebar" >
 
+					<div class="dropdown">
+						<button class="btn dropdown-toggle eduwellButton" type="button" data-toggle="dropdown"><h4>Selected schools (<span id="numToCompare">0</span>)
+							<span class="caret"></span><h4></button>
+						<ul id='selectedSchools' class="dropdown-menu">
 
-				<div class="dropdown">
-					<button class="btn dropdown-toggle eduwellButton" type="button" data-toggle="dropdown"><h4>Selected schools (<span id="numToCompare">0</span>)
-						<span class="caret"></span><h4></button>
-					<ul id='selectedSchools' class="dropdown-menu">
-
-					</ul>
+						</ul>
+					</div>
+					<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">
 				</div>
-				<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">
 			</div>
 		</div>
 
