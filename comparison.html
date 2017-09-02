@@ -26,7 +26,6 @@
 		.float-left .card {
 			float:left;
 			/*width:31.3%;  */
-			height:270px;
 		}
 
 		.card {
@@ -36,6 +35,7 @@
 			padding:10px;
 			margin:15px;
 			overflow:hidden;
+			height:40%;
 		}
 		.favDel{
 			height: 15px;
@@ -102,9 +102,16 @@
                                            "></button>"+
 										   "<h4>" + data.School_Name + "</h4>" +
 										   "<b>Sector:</b> " + data.Sector + "<br>" +
-										   "<b>Address: </b>" + data.Adress1 + "<br>" +
-										   "<b>Students Enrolled: </b>" + parseInt(data.Total) + "<br>" +
-										   "<h4>Special Programs: </h4>" + isLGBT(data) + "</div></div>";
+                                           '<b>Address: </b>' + data.Address1
+                                           + data.Address2 + ",<br> " +
+                                           data.Town + " " + data.PPostcode
+                                           + '<br><b>Ph. No: </b>' + data.Phone + "<br>" +
+                                           "<b>Website:</b> <a href='" + data.web + "'>" + data.web + "</a><br>"
+                                           + "<b>Students enrolled: </b>" + parseInt(data.Total) + "<br>" +
+                                           "<b>Buildings: </b>" + getBuildings(data) + "<br>" +
+                                           "<b>Total building area: </b>" + getFloorArea(data) + "<br>"
+                                           + "<b>Average Annual Investment: </b> " + getInvest(data) + "<br>"
+                                           + "<br><h4>Special Programs:</h4>" + isLGBT(data) + isASPE(data) + isNone(data)
 
                                        $(".favDel").on('click',function (del) {
                                            let id = del.target.id
@@ -129,6 +136,51 @@
                        }
                        else{
                            return "None Available"
+                       }
+                   }
+
+
+                   function getInvest(props){
+                       if(parseInt(props.Investment) > 1){
+                           return "$" + props.Investment
+                       }
+                       else{
+                           return "Not Available"
+                       }
+                   }
+
+                   function getBuildings(props){
+                       if(props.BuildingNumber > 1){
+                           return parseInt(props.BuildingNumber)
+                       }
+                       else{
+                           return "Not Available"
+                       }
+                   }
+
+                   function getFloorArea(props) {
+                       if(props.FloorArea > 1){
+                           return parseInt(props.FloorArea) + "m<sup>2</sup>"
+                       }
+                       else{
+                           return "Not Available"
+                       }
+                   }
+
+                   function isASPE(props) {
+                       if(props.AS_Phys == "Y"){
+                           return "<img src='icons/icons8-Exercise-48.png' height='30'> After-school Physical Activity <br>";
+                       }else{
+                           return ""
+                       }
+
+                   }
+
+                   function isNone(props){
+                       if(!props.LGBT && props.AS_Phys == "N"){
+                           return "None Available"
+                       }else{
+                           return ""
                        }
                    }
 
