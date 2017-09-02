@@ -110,8 +110,6 @@
             margin: 0 0 0 0;
         }
         #all{
-            background-color:greenyellow;
-            background-image: url(icons/250351505_b25cb20983_o.jpg);
             background-size: cover;
         }
         #about{
@@ -166,80 +164,42 @@
 
     </section>
 
+
     <section id="content" class="container">
         <div class="row" id="main-search-section">
-            <div id="title">
-                <h1>Find the Primary School to Shape Your Child's Future</h1>
-            </div>
-
-            <div class="jumbotron">
-                <h4>Enter a suburb or postcode to start exploring schools in the area</h4>
-                <span id="searcherror"></span>
-                <input type="text" class="" id="mainsearch">
-
-                <div class="container" id="optionsPanel">
-                    <div class="row" id="schoolTypes">
-                        <h4>School Type</h4>
-                        <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                            <input class="mainoption" id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public
-                        </div>
-                        <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                            <input class="mainoption" id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic
-                        </div>
-                        <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                            <input class="mainoption" id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent
-                        </div>
-                    </div>
-                    <div class="row" id="schoolTypes col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                        <button class="eduwellButton btn" id="mainsearchbutton">Search</button>
-                    </div>
-                    <div class="row" id="schoolTypes">
-
-                        <button id="advanced_options" data-toggle="collapse" data-target="#demo">Advanced Options</button>
-
-                        <div id="demo" class="collapse">
-                            <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                                <h5>Search Radius</h4>
-                                    <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
-                                    km
-                            </div>
-                            <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                                <h5>Program to highlight<h4>
-                                    <select id="programs" class="form-control" type="select" data-toggle="dropdown">
-                                        <option>None</option>
-                                        <option>Safe Schools (LGBT Support)</option>
-                                    </select>
-                            </div>
-                            <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                                <h5>Statistical data<h4>
-                                    <select id="stats" class="form-control" type="select" data-toggle="dropdown">
-                                        <option>None</option>
-                                        <option>Bullying Rate</option>
-                                    </select>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-
+            <h1>Data Sources</h1>
+            <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Dataset</th>
+                    <th>Source</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td><a href="https://www.data.vic.gov.au/data/dataset/school-locations-2016">School Locations</a></td>
+                    <td>Department of Education and Training</td>
+                    <td>05/04/2016</td>
+                </tr>
+                <tr>
+                    <td><a href='https://www.data.vic.gov.au/data/dataset/vcams-children-who-are-bullied'>VCAMS Children who are bullied</a></td>
+                    <td>Department of Education</td>
+                    <td>26/10/2016</td>
+                </tr>
+                <tr>
+                    <td><a href='http://www.education.vic.gov.au/Documents/about/programs/health/Safe%20Schools%20list%20-%2016%20March%202017.pdf'>Safe Schools Members</a></td>
+                    <td>Department of Education</td>
+                    <td>16/03/2017</td>
+                </tr>
+                <tr>
+                    <td><a href='https://www.data.vic.gov.au/data/dataset/all-schools-fte-enrolments-feb-2016'>All Schools FTE enrolments - Feb 2016</a></td>
+                    <td>Department of Education</td>
+                    <td>14/06/2016</td>
+                </tr>
+            </table>
             </div>
         </div>
-    </section>
-    <section id="about">
-        <div id="about_head">Eduwell trust parents to know what is best for their children...</div>
-
-        Children spend the large part of their developmental years going to school.
-        Parents, naturally want their kids to be in an environment that is nurturing and supportive of their wellbeing.
-        Why then is it so easy to find information on a schools academic performance but so hard to to learn about the other things that really matter?
-        <br><br>
-        EduWell understands that there are many factors important to a child's wellbeing,
-        and that these factors change depending on the child, their parents and their circumstances.
-        That is why we have developed a tool to allow parents to explore the schools areas in which to raise their child.
-        EduWell puts the power in the parents hands to make their own decisions and decide what is important to them.
-        EduWell doesn't rely on hidden ranking systems or biased information.
-        It pulls together high quality data from a variety of sources and uses them to paint a picture about what options are available for your child.
-
     </section>
 
     <script type="text/javascript" src="scripts/mainsearch.js"></script>

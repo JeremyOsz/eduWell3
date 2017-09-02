@@ -22,6 +22,7 @@ h2{
     font-size: 16pt !IMPORTANT;
     color: #969888;
 }
+
 #mapid {
     height: 100%;
     width: 100%;
@@ -273,7 +274,7 @@ input[type=button]
 a{
     font-family: "Roboto", "Helvetica", "Arial", sans-serif !IMPORTANT;
     font-size: 16px !IMPORTANT;
-    color: #f5f5f5!IMPORTANT;
+    color: #0c5460;
 }
 .footer{
     height: 60px;
@@ -328,6 +329,9 @@ input[type=checkbox].glyphicon{
 }
 #all{
 background-color: rgba(0, 0, 0, 0.03);
+}
+.menu_link{
+    color: #77ff6b !important;
 }
 
 
