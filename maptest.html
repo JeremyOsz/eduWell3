@@ -52,7 +52,7 @@
 </head>
 <body>
 
-<section>
+<section id="all">
 	<section class="header">
 		<div id="logo">
 
@@ -119,7 +119,7 @@
 			</div>
 
 			<div id='mapwrapper' class="col-lg-7 col-md-6 col-sm-8 col-xs-12" style="padding: 0 0 0 0;">
-					<div class="col-md-12 sidebar" >
+					<div class="col-md-12 sidebar" style="padding: 0 0 0 0;" >
 						<div id='mapid'>
 
 						</div>
@@ -169,7 +169,7 @@
 				</div>
 			</div>
 			<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" style="padding-top: 5px;">
-				<div class="col-md-12 sidebar" >
+				<div class="col-md-12 sidebar" style="padding-top: 5px">
 
 					<div class="dropdown">
 						<button class="btn dropdown-toggle eduwellButton" type="button" data-toggle="dropdown"><h4>Selected schools (<span id="numToCompare">0</span>)
@@ -178,6 +178,7 @@
 
 						</ul>
 					</div>
+					<span id="compare_error" class="error"></span>
 					<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">
 				</div>
 			</div>

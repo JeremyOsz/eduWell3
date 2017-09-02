@@ -11,6 +11,7 @@ $(document).ready(function() {
     });
 
 
+    $('div.easy-autocomplete').removeAttr('style');
 
 });
 
@@ -412,14 +413,25 @@ function localeSearch(){
 //Fetch IDs for schools in which compare is checked
 function compare(){
     let favList = []
+    $("#compare_error")[0].innerHTML = ""
     let favs = $(".favcheck")
+
     for(i = 0; i < favs.length; i++){
         if(favs[i].checked){
             favList.push(favs[i].id)
         }
     }
-    localStorage[1] = favList
-    return favList
+    if(favList.length < 2){
+        $("#compare_error")[0].innerHTML = "Select at least 2 schools to compare"
+    }
+    else{
+        localStorage[100] = favList.length
+        for(i in favList){
+            localStorage[i] = favList[i]
+        }
+        window.location.href = 'comparison.html';
+        return favList
+    }
 }
 
 function selectedFavList(){

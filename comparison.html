@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/styles.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+	<style>
+		.content1 {
+			position:fixed;
+			top:62px;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			overflow:scroll;
+			-webkit-overflow-scrolling:touch;
+			margin-bottom:30px;
+			padding-left: 10%;
+			padding-right: 10%;
+		}
+
+		.float-left .card {
+			float:left;
+			/*width:31.3%;  */
+			height:270px;
+		}
+
+		.card {
+			background:#FFF;
+			border:1px solid #AAA;
+			border-bottom:3px solid #BBB;
+			padding:10px;
+			margin:15px;
+			overflow:hidden;
+		}
+		.favDel{
+			height: 15px;
+			float: right;
+			border:none;
+			background: none;
+		}
+		input[type=checkbox].glyphicon{
+			visibility: hidden;
+		}
+</style>
+</head>
+
+<body onload="load()">
+
+<section>
+	<section class="header">
+		<div id="logo">
+
+		</div>
+		<div style="display: inline-block;float: right; font-family: Roboto, Helvetica, Arial, sans-serif;">
+			<div id="main-navigation" class="collapse navbar-collapse"><ul id="menu-homepage" class="nav navbar-nav navbar-right"><li id="menu-item-223" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-223"><a title="Home" href="http://35.189.23.222/">Home</a></li>
+				<li id="menu-item-40" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a title="Data Sources" href="http://35.189.23.222/index.php/data-sources/">Data Sources</a></li>
+				<li id="menu-item-221" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-221"><a title="Explore" href="http://35.189.23.222#about">Explore</a></li>
+				<li id="menu-item-224" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-224"><a title="About Us" href="http://35.189.23.222#team">About Us</a></li>
+				<li id="menu-item-225" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-225"><a title="Contact" href="http://35.189.23.222#contact">Contact</a></li>
+			</ul></div>
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="sr-only">Toggle Navigation</span>
+		</div>
+
+	</button>
+</section>
+
+
+<section id="content" class="container">
+	<div class="row">
+		<div class="content1 float-left" id="data"></div>
+	</div>
+
+
+<!--<script type="text/javascript" src="data/schoolList.json" async></script>-->
+
+	<script type="text/javascript" >
+               function load() {
+
+					let element = document.getElementById('data');
+                   $.getJSON("data/schoolList.json", function(json) {
+                       var mydata = json
+					   let datalength = localStorage[100]
+                       console.log(datalength)
+                       var passdata = {};
+					   for(i = 0; i < datalength; i++){
+                           passdata[i] = localStorage[i]
+					   }
+                       mydata.map((data) => {
+                               for(i in passdata){
+                                   if(passdata[i] == data.School_Id){
+                                       element.innerHTML += "<div class='col-lg-4 col-md-6 col-sm-12 col-xs-12'>" +
+										   "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 card' id="+i+"> " +
+										   "<button class='favDel glyphicon glyphicon-remove' type='checkbox' id="+i+
+                                           "></button>"+
+										   "<h4>" + data.School_Name + "</h4>" +
+										   "<b>Sector:</b> " + data.Sector + "<br>" +
+										   "<b>Address: </b>" + data.Adress1 + "<br>" +
+										   "<b>Students Enrolled: </b>" + parseInt(data.Total) + "<br>" +
+										   "<h4>Special Programs: </h4>" + isLGBT(data) + "</div></div>";
+
+                                       $(".favDel").on('click',function (del) {
+                                           let id = del.target.id
+										   let cards = $(".card")
+										   console.log(cards)
+                                           console.log(id)
+										   for(i = 0; i < cards.length; i++){
+                                               if (cards[i].id == id){
+                                                   cards[i].style.display
+											   }
+										   }
+
+                                       })
+								   }
+							   }
+					   })
+				   })
+
+                   let isLGBT = (props) => {
+                       if(props.LGBT){
+                           return "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
+                       }
+                       else{
+                           return "None Available"
+                       }
+                   }
+
+
+//					for(var i = 0;i < mydata.length; i++)
+//					{
+//					for(j in passdata)
+//					{
+//					if(passdata[j] == mydata[i].School_Id)
+//					{
+//
+//					element.innerHTML = element.innerHTML + "<div class='card' id="+i+">"+ mydata[i].School_Name + " - " + mydata[i].Sector +"</div>";
+//					}
+//					}
+//					}
+                }
+        </script>
+</section>
+
+
+</body>
+</html>

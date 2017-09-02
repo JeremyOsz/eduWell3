@@ -3,7 +3,8 @@ body {
   margin-top: 0px;
   margin-right: 0px;
   margin-bottom: 0px;
-  margin-left: 0px
+  margin-left: 0px;
+    background-color: rgba(0, 0, 0, 0.03);
 }
 h4 {
     margin: 0 0 5px;
@@ -40,10 +41,13 @@ h2{
     color: #777;
 }
 .sidebar{
+    background:#FFF;
+    border:1px solid #AAA;
+    border-bottom:3px solid #BBB;
     background-color: #e6efdc;
     border-radius:2px;
     font: 12px/14px Arial, Helvetica, sans-serif;
-    box-shadow: 5px 5px 2.5px #888888;
+    /*box-shadow: 5px 5px 2.5px #888888;*/
     vertical-align: top;
     height: 100%;
     margin-bottom: 10px;
@@ -322,6 +326,8 @@ a{
 input[type=checkbox].glyphicon{
     visibility: hidden;
 }
-
+#all{
+background-color: rgba(0, 0, 0, 0.03);
+}
 
 
