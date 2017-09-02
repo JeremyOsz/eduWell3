@@ -153,7 +153,7 @@ function addSchoolMarkers(data, map){
 //Define marker
 let getIcon = (data) => {
 
-    if(data.LGBT && localStorage[6]) {
+    if(data.LGBT && (localStorage[6] == 1)) {
         switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
@@ -177,7 +177,7 @@ let getIcon = (data) => {
         }
     }
 
-    if(!data.LGBT || !localStorage[6]){
+    if(!data.LGBT || !(localStorage[6] == 1)){
         switch(data.Sector){
             case "Government":
                 var icon = L.icon({
@@ -304,19 +304,25 @@ function filterMap(map) {
     }
     else{
         if(govt){
-            localStorage[2] == true
+            localStorage[2] = true
         }
         if(private){
-            localStorage[3] == true
+            localStorage[3] = true
         }
         if(catholic){
-            localStorage[4] == true
+            localStorage[4] = true
         }
         if(LGBT){
-            localStorage[6] == true
+            localStorage[6] = 1
+        }
+        else{
+            localStorage[6] = 0
         }
         if(Bullying){
-            localStorage[7] == true
+            localStorage[7] = 1
+        }
+        else{
+            localStorage[8] = 0
         }
         mymap.eachLayer(function (layer) {
             mymap.removeLayer(layer);
