@@ -16,6 +16,8 @@ $(document).ready(function() {
         }
     });
 
+
+
 })
 
 function defineSearch(){
@@ -46,7 +48,7 @@ function localeSearch(){
                 x = 1
                 let searchLat = item.Lat
                 let searchLon = item.Lon
-                sendSearchQuery(searchLat, searchLon)
+                sendSearchQuery(searchLat, searchLon, query)
             }
             return x
         })
@@ -88,9 +90,10 @@ function chkAdvanced() {
     }
 }
 
-function sendSearchQuery(lat, lon){
+function sendSearchQuery(lat, lon, query){
     localStorage[98] = lat
     localStorage[97] = lon
+    localStorage[96] = query
     if($("#GovernmentCheck")[0].checked){
         localStorage[2] = true
     }
@@ -104,6 +107,8 @@ function sendSearchQuery(lat, lon){
         localStorage[5] = $('#searchRadius')[0].value
         if($('#programs')[0].value == "Safe Schools (LGBT Support)"){
             localStorage[6] = 1
+        }else if($('#programs')[0].value == "After School Physical Education"){
+            localStorage[6] = 2
         }
         else{
             localStorage[6] = 0

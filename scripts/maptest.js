@@ -1,17 +1,34 @@
+//Initalise events
 $(document).ready(function() {
     console.log('ready')
+    //Apply Filter
     $("#filterApply").click(filterMap(mymap))
+
+    //Enter to search
     $("#searchbox").keyup(function (e) {
         if (e.which == 13) {
             localeSearch()
         }
     });
+
+    //Check favbox
     $(document).on('change', 'input[type="checkbox"]', function(e){
         $(".favcheck").click(selectedFavList())
     });
 
-
+    //Fix easyautocomplete style issue
     $('div.easy-autocomplete').removeAttr('style');
+
+    if(localStorage[6] == 0){
+        document.getElementById("LGBTchecked").checked = false
+        document.getElementById("ASPEchecked").checked = false
+    }else if(localStorage[6] == 1){
+        document.getElementById("LGBTchecked").checked = true
+        document.getElementById("ASPEchecked").checked = false
+    }else if(localStorage[6] == 2){
+        document.getElementById("LGBTchecked").checked = false
+        document.getElementById("ASPEchecked").checked = true
+    }
 
 });
 
@@ -33,11 +50,16 @@ let mymap = L.map('mapid',{
 })
 mymap.zoomControl.setPosition('bottomright');
 
+//Build leaflet map
 function buildMap(){
 
 
     let latlon = L.latLng(localStorage[98],localStorage[97])
 
+    //Generate nearby schools based on initial map value
+    let searchMarker = new  L.marker()
+    searchMarker = L.marker(latlon).addTo(mymap);
+    searchMarker.bindPopup(localStorage[96])
     nearbySchools(latlon)
 
     mymap.setView(latlon,13);
@@ -153,7 +175,7 @@ function addSchoolMarkers(data, map){
 //Define marker
 let getIcon = (data) => {
 
-    if(data.LGBT && (localStorage[6] == 1)) {
+    if(localStorage[6] == 1) {
         switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
@@ -176,22 +198,21 @@ let getIcon = (data) => {
                 })
         }
     }
-
-    if(!data.LGBT || !(localStorage[6] == 1)){
+    else if(localStorage[6] == 2){
         switch(data.Sector){
             case "Government":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Govt2.png"
+                    iconUrl: "icons/icons8-Govt-ASPE.png"
                 })
                 break
             case "Independent":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Private.png"
+                    iconUrl: "icons/icons8-Private-ASPE.png"
                 })
                 break
             case "Catholic":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Catholic.png"
+                    iconUrl: "icons/icons8-Catholic-ASPE.png"
                 })
                 break
             default:
@@ -199,7 +220,57 @@ let getIcon = (data) => {
                     iconUrl: "icons/icons8-Govt.png"
                 })
         }
-    }
+    }else{
+            switch(data.Sector){
+                case "Government":
+                    var icon = L.icon({
+                        iconUrl: "icons/icons8-Govt2.png"
+                    })
+                    break
+                case "Independent":
+                    var icon = L.icon({
+                        iconUrl: "icons/icons8-Private.png"
+                    })
+                    break
+                case "Catholic":
+                    var icon = L.icon({
+                        iconUrl: "icons/icons8-Catholic.png"
+                    })
+                    break
+                default:
+                    var icon = L.icon({
+                        iconUrl: "icons/icons8-Govt.png"
+                    })
+            }
+        }
+
+
+
+
+
+    // if(data.AS_Phys == "N" && !(localStorage[6] == 2)){
+    //     switch(data.Sector){
+    //         case "Government":
+    //             var icon = L.icon({
+    //                 iconUrl: "icons/icons8-Govt2.png"
+    //             })
+    //             break
+    //         case "Independent":
+    //             var icon = L.icon({
+    //                 iconUrl: "icons/icons8-Private.png"
+    //             })
+    //             break
+    //         case "Catholic":
+    //             var icon = L.icon({
+    //                 iconUrl: "icons/icons8-Catholic.png"
+    //             })
+    //             break
+    //         default:
+    //             var icon = L.icon({
+    //                 iconUrl: "icons/icons8-Govt.png"
+    //             })
+    //     }
+    // }
 
     icon.options.iconSize = [data.totalScaled,data.totalScaled];
     icon.options.className = "leafletIcon";
@@ -244,7 +315,7 @@ defineSearch()
             return "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
         }
         else{
-            return "None Available"
+            return ""
         }
     }
     //
@@ -272,15 +343,19 @@ function clickSchool(e) {
     document.getElementById("selectedSchool").style.height = "40%";
     document.getElementById("schoolDisplay").style.height = "60%";
     document.getElementById("selectedSchool").innerHTML = (props ?
-        "<div class='favbox'><input class='favcheck' type='checkbox' id='" +
+        "<div class='favbox'><input class='favcheck glyphicon glyphicon-star-empty' type='checkbox' id='" +
         props.School_Id + "'></div>" +
         '<h3>' + props.School_Name + '</h3><br>'
         + '<b>Address: </b>' + props.Address1
         + props.Address2 + ",<br> " +
         props.Town + " " + props.PPostcode
-        + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
-        + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
-        + "<h4>Special Programs:</h4>" + isLGBT(props)
+        + '<br><b>Ph. No: </b>' + props.Phone + "<br>" +
+        "<b>Website:</b> <a href='" + props.web + "'>" + props.web + "</a><br>"
+        + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br>" +
+        "<b>Buildings: </b>" + getBuildings(props) + "<br>" +
+        "<b>Total building area: </b>" + getFloorArea(props) + "<br>"
+        + "<b>Average Annual Investment: </b> " + getInvest(props) + "<br>"
+        + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props)
         : '<h4>Click a school to see info</h4>')
 
     nearbySchools(L.latLng(props.Latitude, props.Longitude))
@@ -294,6 +369,7 @@ function filterMap(map) {
     let private = document.getElementById("PrivateCheck").checked
     let catholic = document.getElementById("CatholicCheck").checked
     let LGBT = document.getElementById("LGBTchecked").checked
+    let ASPE = document.getElementById("ASPEchecked").checked
     let Bullying = document.getElementById("bullyingChecked").checked
 
     error.innerHTML = ""
@@ -314,6 +390,9 @@ function filterMap(map) {
         }
         if(LGBT){
             localStorage[6] = 1
+        }
+        else if(ASPE){
+            localStorage[6] = 2
         }
         else{
             localStorage[6] = 0
@@ -366,16 +445,17 @@ function nearbySchools(latlon){
                 school.School_Id + "'></div><h4>" + school.School_Name + "</h4>"
                 + '<b>Distance:</b> ' + (school.distance/1000).toFixed(2) + "km"
                 + "<br><b>School Type: </b>" + school.Sector +
-                "<br><b>Students: </b>" + parseInt(school.Total) + "</div>";
+                "<br><b>Students: </b>" + parseInt(school.Total) +
+                '<b>Address: </b>' + school.Address1
+                + school.Address2 + ",<br> " +
+                school.Town + " " + school.PPostcode
+                + '<br><b>Ph. No: </b>' + school.Phone + "<br>" +
+                "<b>Website:</b> <a href='" + school.web + "'>" + school.web + "</a><br>" + "</div>";
         })
     })
 }
 
-// //Generate nearby school list
-// function nearbySchoolList(school, distance){
-//     document.getElementById('sidebar').innerHTML += "<div class='schoolListEntry'><h4>" + school.School_Name + "</h4>"
-//         + '<b>Distance:</b> ' + (distance/1000).toFixed(2) + "km" + "</div>";
-// }
+
 
 //Activate Search
 let searchMarker = new  L.marker()
@@ -496,6 +576,50 @@ function test(){
     $.getJSON("data/schoolList.json", function(json) {
         console.log(json);
     })
+}
+
+function getInvest(props){
+    if(parseInt(props.Investment) > 1){
+        return "$" + props.Investment
+    }
+    else{
+        return "Not Available"
+    }
+}
+
+function getBuildings(props){
+    if(props.BuildingNumber > 1){
+        return parseInt(props.BuildingNumber)
+    }
+    else{
+        return "Not Available"
+    }
+}
+
+function getFloorArea(props) {
+    if(props.FloorArea > 1){
+        return parseInt(props.FloorArea) + "m<sup>2</sup>"
+    }
+    else{
+        return "Not Available"
+    }
+}
+
+function isASPE(props) {
+    if(props.AS_Phys == "Y"){
+        return "<img src='icons/icons8-Exercise-48.png' height='30'> After-school Physical Activity <br>";
+    }else{
+        return ""
+    }
+
+}
+
+function isNone(props){
+    if(!props.LGBT && props.AS_Phys == "N"){
+        return "None Available"
+    }else{
+        return ""
+    }
 }
 
 

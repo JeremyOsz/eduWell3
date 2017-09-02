@@ -284,7 +284,7 @@ a{
 #logo{
     display: inline-block;
     width: 200px;
-    background-image: url('http://35.189.23.222/wp-content/uploads/2017/08/cropped-1.png');
+    background-image: url('../icons/eduwelllogo.png') ;
     height: 100%;
     background-size: contain;
 
