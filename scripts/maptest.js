@@ -426,7 +426,6 @@ function nearbySchools(latlon){
     }
     let nearbySchools = []
     $.getJSON("data/schoolList.json", function(json) {
-        nearbySchools = []
         json.map((item) =>{
             let schoolLoc = L.latLng(item.Latitude,item.Longitude)
             let distance = area.distanceTo(schoolLoc)
