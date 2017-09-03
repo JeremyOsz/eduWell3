@@ -95,21 +95,21 @@ function sendSearchQuery(lat, lon, query){
     localStorage[97] = lon
     localStorage[96] = query
     if($("#GovernmentCheck")[0].checked){
-        localStorage[2] = true
+        localStorage[2] = 1
     }
     else{
-        localStorage[2] = false
+        localStorage[2] = 0
     }
     if($("#PrivateCheck")[0].checked){
-        localStorage[3] = true
+        localStorage[3] = 1
     }
     else{
-        localStorage[3] = false
+        localStorage[3] = 0
     }
     if($("#CatholicCheck")[0].checked){
-        localStorage[4] = true
+        localStorage[4] = 1
     }else{
-        localStorage[4] = false
+        localStorage[4] = 0
     }
 
     if($("#advanced_options").attr("aria-expanded")){
@@ -136,7 +136,10 @@ function sendSearchQuery(lat, lon, query){
     }
     else{
         localStorage[5] = 3
+        localStorage[6] = 1
+        localStorage[8] = 1
+        localStorage[7] = 1
     }
-    localStorage[99] = true
+    localStorage[99] = 1
     window.location.href = 'maptest.html';
 }
