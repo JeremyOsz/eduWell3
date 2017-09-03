@@ -3,7 +3,11 @@ $(document).ready(function() {
     console.log(localStorage)
     console.log('ready')
     //Apply Filter
-
+    $("#searchbox").keyup(function (e) {
+        if (e.which == 13) {
+            localeSearch()
+        }
+    });
 
     //Set Radius to search value
     $("#searchRadius")[0].value = localStorage[5]
@@ -50,42 +54,17 @@ $(document).ready(function() {
     //Fix easyautocomplete style issue
     $('div.easy-autocomplete').removeAttr('style');
 
-    // if(localStorage[6] == 0){
-    //     document.getElementById("LGBTchecked").checked = false
-    //     document.getElementById("ASPEchecked").checked = false
-    // }else if(localStorage[6] == 1){
-    //     document.getElementById("LGBTchecked").checked = true
-    //     document.getElementById("ASPEchecked").checked = false
-    // }else if(localStorage[6] == 2){
-    //     document.getElementById("LGBTchecked").checked = false
-    //     document.getElementById("ASPEchecked").checked = true
-    // }
+
     $(document).on( "load", function() {
         $("#filterApply").click(filterMap(mymap))
 
         //Enter to search
-        $("#searchbox").keyup(function (e) {
-            if (e.which == 13) {
-                localeSearch()
-            }
-        });
+
     })
 
 });
 
 
-// //Create default filter options
-// if(localStorage[99] !== "1"){
-//     localStorage[2] = true //Govt
-//     localStorage[3] = true //Private
-//     localStorage[4] = true //Catholic
-//     localStorage[5] = 3 //Radius
-//     localStorage[6] = 1 //LGBT
-//     localStorage[7] = 1 //LGA (1 = Bulying)
-//     localStorage[8] = 1 //After School Phys Ed
-//     localStorage[98] = -37.814
-//     localStorage[97] = 144.96332
-// }
 
 //Establish leaflet map
 let mymap = L.map('mapid',{

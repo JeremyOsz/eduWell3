@@ -358,3 +358,6 @@ background-color: rgba(0, 0, 0, 0.03);
 .smalllink{
     font-size: 12px !important;
 }
+#Legend{
+    height: 300px
+}
