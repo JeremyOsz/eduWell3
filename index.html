@@ -138,6 +138,13 @@
             font-family: "Roboto", "Helvetica", "Arial", sans-serif;
             font-size: 24pt;
         }
+        #splash{
+            max-width: -webkit-fill-available;
+        }
+        #splashbox{
+            height:auto;
+            position: relative;
+        }
 
     </style>
 
@@ -170,7 +177,9 @@
     <section id="content" class="container">
         <div class="row" id="main-search-section">
             <div id="title">
-                <img src='http://www.eduwell.ga/EduWell/icons/eduwelllogo.png'>
+                <div class="splashbox">
+                <img src='http://www.eduwell.ga/EduWell/icons/eduwelllogo.png' id="splash">
+                </div>
                 <h1>Find a Primary School, Find Your Child's Future</h1>
             </div>
 
