@@ -1,5 +1,6 @@
 //Initalise events
 $(document).ready(function() {
+    console.log(localStorage)
     console.log('ready')
     //Apply Filter
     $("#filterApply").click(filterMap(mymap))
@@ -10,7 +11,20 @@ $(document).ready(function() {
             localeSearch()
         }
     });
+
+    //Set Radius to search value
     $("#searchRadius")[0].value = localStorage[5]
+
+    //Set checkboxes to search value
+    if(localStorage[6] == 1){
+        $("#LGBTchecked")[0].checked = true
+    }
+    else(){
+        $("#LGBTchecked")[0].checked = true
+    }
+    if(localStorage[8] == 1){
+        $("#ASPEchecked")[0].checked = true
+    }
 
     //Check favbox
     $(document).on('change', 'input[type="checkbox"]', function(e){
@@ -20,16 +34,16 @@ $(document).ready(function() {
     //Fix easyautocomplete style issue
     $('div.easy-autocomplete').removeAttr('style');
 
-    if(localStorage[6] == 0){
-        document.getElementById("LGBTchecked").checked = false
-        document.getElementById("ASPEchecked").checked = false
-    }else if(localStorage[6] == 1){
-        document.getElementById("LGBTchecked").checked = true
-        document.getElementById("ASPEchecked").checked = false
-    }else if(localStorage[6] == 2){
-        document.getElementById("LGBTchecked").checked = false
-        document.getElementById("ASPEchecked").checked = true
-    }
+    // if(localStorage[6] == 0){
+    //     document.getElementById("LGBTchecked").checked = false
+    //     document.getElementById("ASPEchecked").checked = false
+    // }else if(localStorage[6] == 1){
+    //     document.getElementById("LGBTchecked").checked = true
+    //     document.getElementById("ASPEchecked").checked = false
+    // }else if(localStorage[6] == 2){
+    //     document.getElementById("LGBTchecked").checked = false
+    //     document.getElementById("ASPEchecked").checked = true
+    // }
 
 
 });
@@ -40,8 +54,9 @@ if(!localStorage[99]){
     localStorage[3] = true //Private
     localStorage[4] = true //Catholic
     localStorage[5] = 3 //Radius
-    localStorage[6] = 1 //Programs (1 = LGBT)
-    localStorage[7] = 1 //State (1 = Bulying)
+    localStorage[6] = 1 //LGBT
+    localStorage[7] = 1 //LGA (1 = Bulying)
+    localStorage[8] = 1 //After School Phys Ed
     localStorage[98] = -37.814
     localStorage[97] = 144.96332
 }
@@ -93,7 +108,6 @@ function loadGeoJSON(map){
     let LGA = new L.geoJson();
     LGA.setStyle({fillColor: 'red'})
 
-    console.log(LGA)
     //Get GeoJSON data on LGAs
     $.getJSON("data/LGA_geojson.GeoJSON", function (data) {
             //Bind LGA to map
@@ -106,7 +120,6 @@ function loadGeoJSON(map){
                 bullyingColor(LGA)
             }
 
-            console.log(LGA)
             LGA.addTo(map)
             }).then(mymap.spin(false))
 }
@@ -177,7 +190,7 @@ function addSchoolMarkers(data, map){
 //Define marker
 let getIcon = (data) => {
 
-    if(localStorage[6] == 1) {
+    if (localStorage[6] == 1 && data.LGBT) {
         switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
@@ -200,8 +213,8 @@ let getIcon = (data) => {
                 })
         }
     }
-    else if(localStorage[6] == 2){
-        switch(data.Sector){
+    else if (localStorage[8] == 1 && (data.AS_Phys == 'Y')) {
+        switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
                     iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt-ASPE.png"
@@ -222,58 +235,30 @@ let getIcon = (data) => {
                     iconUrl: "icons/icons8-Govt.png"
                 })
         }
-    }else{
-            switch(data.Sector){
-                case "Government":
-                    var icon = L.icon({
-                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png"
-                    })
-                    break
-                case "Independent":
-                    var icon = L.icon({
-                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Private.png"
-                    })
-                    break
-                case "Catholic":
-                    var icon = L.icon({
-                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png"
-                    })
-                    break
-                default:
-                    var icon = L.icon({
-                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt.png"
-                    })
-            }
+    }
+    else {
+        switch (data.Sector) {
+            case "Government":
+                var icon = L.icon({
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png"
+                })
+                break
+            case "Independent":
+                var icon = L.icon({
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Private.png"
+                })
+                break
+            case "Catholic":
+                var icon = L.icon({
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png"
+                })
+                break
+            default:
+                var icon = L.icon({
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt.png"
+                })
         }
-
-
-
-
-
-    // if(data.AS_Phys == "N" && !(localStorage[6] == 2)){
-    //     switch(data.Sector){
-    //         case "Government":
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Govt2.png"
-    //             })
-    //             break
-    //         case "Independent":
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Private.png"
-    //             })
-    //             break
-    //         case "Catholic":
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Catholic.png"
-    //             })
-    //             break
-    //         default:
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Govt.png"
-    //             })
-    //     }
-    // }
-
+    }
     icon.options.iconSize = [data.totalScaled,data.totalScaled];
     icon.options.className = "leafletIcon";
     return icon
@@ -352,7 +337,7 @@ function clickSchool(e) {
         + props.Address2 + ",<br> " +
         props.Town + " " + props.PPostcode
         + '<br><b>Ph. No: </b>' + props.Phone + "<br>" +
-        "<b>Website:</b> <a href='" + props.web + "'>" + props.web + "</a><br>"
+        "<b>Website:</b> <a class='smalllink' href='" + props.web + "'>" + props.web + "</a><br>"
         + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br>" +
         "<b>Buildings: </b>" + getBuildings(props) + "<br>" +
         "<b>Total building area: </b>" + getFloorArea(props) + "<br>"
@@ -377,7 +362,6 @@ function filterMap(map) {
     error.innerHTML = ""
 
     if(!govt && !private && !catholic){
-        console.log("Click a school")
         error.innerHTML = "Please select at least one school type"
     }
     else{
@@ -393,11 +377,8 @@ function filterMap(map) {
         if(LGBT){
             localStorage[6] = 1
         }
-        else if(ASPE){
-            localStorage[6] = 2
-        }
-        else{
-            localStorage[6] = 0
+        if(ASPE){
+            localStorage[8] = 1
         }
         if(Bullying){
             localStorage[7] = 1
@@ -415,12 +396,9 @@ function filterMap(map) {
 
 //Find nearby schools to specified area
 function nearbySchools(latlon){
-    document.getElementById('schoolDisplay').innerHTML = "<h2>Nearby Schools</h2>"
     let area = latlon //Area from which nearby schools is measured
-
     let threshold = localStorage[5]*1000 //Threshold for distance to travel
     //default to 3000 if invalid
-    console.log(threshold)
     if(threshold == undefined || threshold < 1000 || threshold > 10000){
         threshold = 3000
     }
@@ -430,7 +408,7 @@ function nearbySchools(latlon){
             let schoolLoc = L.latLng(item.Latitude,item.Longitude)
             let distance = area.distanceTo(schoolLoc)
             if(distance < threshold && distance > 0){
-                console.log(item)
+
                 item.distance = distance
                 if(sectorEnabled(item)){
                     nearbySchools.push(item)
@@ -441,8 +419,10 @@ function nearbySchools(latlon){
         nearbySchools.sort(function(a, b) {
             return parseFloat(a.distance) - parseFloat(b.distance);
         });
-
+        console.log(nearbySchools)
+        document.getElementById('schoolDisplay').innerHTML = "<h2>Nearby Schools</h2>"
         nearbySchools.map((school) => {
+            console.log(school)
             document.getElementById('schoolDisplay').innerHTML += "<div class='schoolListEntry'>" +
                 "<div class='favbox'><input class='favcheck glyphicon glyphicon-star-empty' type='checkbox' id='" +
                 school.School_Id + "'></div><h4>" + school.School_Name + "</h4>"
@@ -453,7 +433,7 @@ function nearbySchools(latlon){
                 + school.Address2 + ",<br> " +
                 school.Town + " " + school.PPostcode
                 + '<br><b>Ph. No: </b>' + school.Phone + "<br>" +
-                "<b>Website:</b> <a href='" + school.web + "'>" + school.web + "</a><br>" + "</span></div>";
+                "<b>Website:</b> <a class='smalllink' href='" + school.web + "'>" + school.web + "</a><br>" + "</span></div>";
         })
     })
 }
@@ -463,7 +443,6 @@ function nearbySchools(latlon){
 //Activate Search
 let searchMarker = new  L.marker()
 function localeSearch(){
-    console.log(document.getElementById('searchRadius').value)
     mymap.removeLayer(searchMarker)
     document.getElementById('searcherror').innerHTML = ""
     let query = document.getElementById('searchbox').value;
@@ -474,7 +453,6 @@ function localeSearch(){
                 x = 1
                 let searchLocale2 = L.latLng(item.Lat, item.Lon)
                 localStorage[5] = $("#searchRadius")[0].value
-                console.log(searchLocale2)
                 if(searchLocale2.Lat !== "undefined"){
                     searchMarker = L.marker(searchLocale2).addTo(mymap);
                     searchMarker.bindPopup(item.SearchName)
@@ -552,7 +530,6 @@ function selectedFavList(){
             }).then(() =>{
                 document.getElementById('selectedSchools').innerHTML = "";
                 for(i = 0; i < favNames.length; i++){
-                    console.log(favNames[i])
                     document.getElementById('selectedSchools').innerHTML += "<li>" + favNames[i] + "</li>";
                 }
             })
@@ -576,11 +553,7 @@ function sectorEnabled(item){
     }
 }
 
-function test(){
-    $.getJSON("data/schoolList.json", function(json) {
-        console.log(json);
-    })
-}
+
 
 function getInvest(props){
     if(parseInt(props.Investment) > 1){

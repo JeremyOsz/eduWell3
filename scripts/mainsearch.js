@@ -97,21 +97,34 @@ function sendSearchQuery(lat, lon, query){
     if($("#GovernmentCheck")[0].checked){
         localStorage[2] = true
     }
+    else{
+        localStorage[2] = false
+    }
     if($("#PrivateCheck")[0].checked){
         localStorage[3] = true
     }
+    else{
+        localStorage[3] = false
+    }
     if($("#CatholicCheck")[0].checked){
         localStorage[4] = true
+    }else{
+        localStorage[4] = false
     }
+
     if($("#advanced_options").attr("aria-expanded")){
         localStorage[5] = $('#searchRadius')[0].value
-        if($('#programs')[0].value == "Safe Schools (LGBT Support)"){
+        if($('#LGBTCheck')[0].checked){
             localStorage[6] = 1
-        }else if($('#programs')[0].value == "After School Physical Education"){
-            localStorage[6] = 2
         }
         else{
             localStorage[6] = 0
+        }
+        if($('#ASPECheck')[0].checked){
+            localStorage[8] = 1
+        }
+        else{
+            localStorage[8] = 0
         }
 
         if($('#stats')[0].value == "Bullying Rate"){
