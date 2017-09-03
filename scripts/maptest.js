@@ -10,6 +10,7 @@ $(document).ready(function() {
             localeSearch()
         }
     });
+    $("#searchRadius")[0].value = localStorage[5]
 
     //Check favbox
     $(document).on('change', 'input[type="checkbox"]', function(e){
@@ -29,6 +30,7 @@ $(document).ready(function() {
         document.getElementById("LGBTchecked").checked = false
         document.getElementById("ASPEchecked").checked = true
     }
+
 
 });
 
@@ -179,22 +181,22 @@ let getIcon = (data) => {
         switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Govt2-LGBT.png"
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt2-LGBT.png"
                 })
                 break
             case "Independent":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Private-LGBT.png"
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Private-LGBT.png"
                 })
                 break
             case "Catholic":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Catholic-LGBT.png"
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Catholic-LGBT.png"
                 })
                 break
             default:
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Govt-LGBT.png"
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt-LGBT.png"
                 })
         }
     }
@@ -202,17 +204,17 @@ let getIcon = (data) => {
         switch(data.Sector){
             case "Government":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Govt-ASPE.png"
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt-ASPE.png"
                 })
                 break
             case "Independent":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Private-ASPE.png"
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Private-ASPE.png"
                 })
                 break
             case "Catholic":
                 var icon = L.icon({
-                    iconUrl: "icons/icons8-Catholic-ASPE.png"
+                    iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Catholic-ASPE.png"
                 })
                 break
             default:
@@ -224,22 +226,22 @@ let getIcon = (data) => {
             switch(data.Sector){
                 case "Government":
                     var icon = L.icon({
-                        iconUrl: "icons/icons8-Govt2.png"
+                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png"
                     })
                     break
                 case "Independent":
                     var icon = L.icon({
-                        iconUrl: "icons/icons8-Private.png"
+                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Private.png"
                     })
                     break
                 case "Catholic":
                     var icon = L.icon({
-                        iconUrl: "icons/icons8-Catholic.png"
+                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png"
                     })
                     break
                 default:
                     var icon = L.icon({
-                        iconUrl: "icons/icons8-Govt.png"
+                        iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt.png"
                     })
             }
         }
@@ -312,7 +314,7 @@ defineSearch()
     //
     let isLGBT = (props) => {
         if(props.LGBT){
-            return "<img src='icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
+            return "<img src='http://www.eduwell.ga/EduWell/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
         }
         else{
             return ""
@@ -416,7 +418,7 @@ function nearbySchools(latlon){
     document.getElementById('schoolDisplay').innerHTML = "<h2>Nearby Schools</h2>"
     let area = latlon //Area from which nearby schools is measured
 
-    let threshold = document.getElementById('searchRadius').value*1000 //Threshold for distance to travel
+    let threshold = localStorage[5]*1000 //Threshold for distance to travel
     //default to 3000 if invalid
     console.log(threshold)
     if(threshold == undefined || threshold < 1000 || threshold > 10000){
@@ -424,10 +426,12 @@ function nearbySchools(latlon){
     }
     let nearbySchools = []
     $.getJSON("data/schoolList.json", function(json) {
+        nearbySchools = []
         json.map((item) =>{
             let schoolLoc = L.latLng(item.Latitude,item.Longitude)
             let distance = area.distanceTo(schoolLoc)
             if(distance < threshold && distance > 0){
+                console.log(item)
                 item.distance = distance
                 if(sectorEnabled(item)){
                     nearbySchools.push(item)
@@ -443,14 +447,14 @@ function nearbySchools(latlon){
             document.getElementById('schoolDisplay').innerHTML += "<div class='schoolListEntry'>" +
                 "<div class='favbox'><input class='favcheck glyphicon glyphicon-star-empty' type='checkbox' id='" +
                 school.School_Id + "'></div><h4>" + school.School_Name + "</h4>"
-                + '<b>Distance:</b> ' + (school.distance/1000).toFixed(2) + "km"
+                + "<span id='info'><b>Distance:</b>" + (school.distance/1000).toFixed(2) + "km"
                 + "<br><b>School Type: </b>" + school.Sector +
-                "<br><b>Students: </b>" + parseInt(school.Total) +
+                "<br><b>Students: </b>" + parseInt(school.Total) + '<br>' +
                 '<b>Address: </b>' + school.Address1
                 + school.Address2 + ",<br> " +
                 school.Town + " " + school.PPostcode
                 + '<br><b>Ph. No: </b>' + school.Phone + "<br>" +
-                "<b>Website:</b> <a href='" + school.web + "'>" + school.web + "</a><br>" + "</div>";
+                "<b>Website:</b> <a href='" + school.web + "'>" + school.web + "</a><br>" + "</span></div>";
         })
     })
 }
@@ -470,6 +474,7 @@ function localeSearch(){
             if(item.SearchName == query){
                 x = 1
                 let searchLocale2 = L.latLng(item.Lat, item.Lon)
+                localStorage[5] = $("#searchRadius")[0].value
                 console.log(searchLocale2)
                 if(searchLocale2.Lat !== "undefined"){
                     searchMarker = L.marker(searchLocale2).addTo(mymap);
@@ -607,7 +612,7 @@ function getFloorArea(props) {
 
 function isASPE(props) {
     if(props.AS_Phys == "Y"){
-        return "<img src='icons/icons8-Exercise-48.png' height='30'> After-school Physical Activity <br>";
+        return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png' height='30'> After-school Physical Activity <br>";
     }else{
         return ""
     }

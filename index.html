@@ -62,7 +62,7 @@
             padding-left: 20%;
             padding-right: 20%;
             padding-top: 10%;
-            height: 80VH;
+            /*height: 80VH;*/
             width: 99VW!important;
 
         }
@@ -111,12 +111,13 @@
         }
         #all{
             background-color:greenyellow;
-            background-image: url(icons/250351505_b25cb20983_o.jpg);
+            background-image: url(http://www.eduwell.ga/EduWell/icons/250351505_b25cb20983_o.jpg);
             background-size: cover;
         }
         #about{
-            height: 40VH;
+            height: 100%;
             background-color: #e8e8d7;
+            font-size: 12pt;
         }
         #title{
             color: #f1f4eb;
@@ -169,7 +170,8 @@
     <section id="content" class="container">
         <div class="row" id="main-search-section">
             <div id="title">
-                <h1>Find your Primary School, Find Your Child's Future</h1>
+                <img src='http://www.eduwell.ga/EduWell/icons/eduwelllogo.png'>
+                <h1>Find a Primary School, Find Your Child's Future</h1>
             </div>
 
             <div class="jumbotron">
@@ -181,13 +183,13 @@
                     <div class="row" id="schoolTypes">
                         <h4>School Type</h4>
                         <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                            <input class="mainoption" id="GovernmentCheck" type="checkbox" checked> <img src="icons/icons8-Govt2.png" height="30">Public
+                            <input class="mainoption" id="GovernmentCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png" height="30">Public
                         </div>
                         <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                            <input class="mainoption" id="CatholicCheck" type="checkbox" checked> <img src="icons/icons8-Catholic.png" height="30">Catholic
+                            <input class="mainoption" id="CatholicCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png" height="30">Catholic
                         </div>
                         <div class="col-lg-4 col-m-4 col-sm-4 col-xs-4">
-                            <input class="mainoption" id="PrivateCheck" type="checkbox" checked> <img src="icons/icons8-Private.png" height="30">Private/ Independent
+                            <input class="mainoption" id="PrivateCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Private.png" height="30">Private/ Independent
                         </div>
                     </div>
                     <div class="row" id="schoolTypes col-lg-4 col-m-4 col-sm-4 col-xs-4">
@@ -228,19 +230,23 @@
         </div>
     </section>
     <section id="about">
-        <div id="about_head">Eduwell trust parents to know what is best for their children...</div>
+
+        <div id="about_head" class="col-lg-4 col-m-6 col-sm-12 col-xs-12"><img src="https://static.pexels.com/photos/159823/kids-girl-pencil-drawing-159823.jpeg" style="width:100%"> </div>
+        <div id="about_head" class="col-lg-6 col-m-6 col-sm-12 col-xs-12">Eduwell trust parents to know what is best for their children...</div>
+        <div id="about_content" class="col-lg-6 col-m-6 col-sm-12 col-xs-12">
 
         Children spend the large part of their developmental years going to school.
         Parents, naturally want their kids to be in an environment that is nurturing and supportive of their wellbeing.
         Why then is it so easy to find information on a schools academic performance but so hard to to learn about the other things that really matter?
-        <br><br>
+        </div>
+        <div id="about_content" class="col-lg-12 col-m-12 col-sm-12 col-xs-12">
         EduWell understands that there are many factors important to a child's wellbeing,
         and that these factors change depending on the child, their parents and their circumstances.
         That is why we have developed a tool to allow parents to explore the schools areas in which to raise their child.
         EduWell puts the power in the parents hands to make their own decisions and decide what is important to them.
         EduWell doesn't rely on hidden ranking systems or biased information.
         It pulls together high quality data from a variety of sources and uses them to paint a picture about what options are available for your child.
-
+        </div>
     </section>
 
     <script type="text/javascript" src="scripts/mainsearch.js"></script>

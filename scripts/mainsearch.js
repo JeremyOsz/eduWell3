@@ -121,6 +121,9 @@ function sendSearchQuery(lat, lon, query){
             localStorage[7] = 0
         }
     }
+    else{
+        localStorage[5] = 3
+    }
     localStorage[99] = true
     window.location.href = 'maptest.html';
 }
