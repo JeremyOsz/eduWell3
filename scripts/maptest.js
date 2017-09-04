@@ -60,11 +60,9 @@ $(document).ready(function() {
     $('div.easy-autocomplete').removeAttr('style');
 
 
+    //Apply initial filters
     $(document).on( "load", function() {
         $("#filterApply").click(filterMap(mymap))
-
-        //Enter to search
-
     })
 
 });
@@ -80,6 +78,7 @@ mymap.zoomControl.setPosition('bottomright');
 //Build leaflet map
 function buildMap(){
 
+    //Get initial latlon
     let latlon = L.latLng()
     if(localStorage[98] == "undefined" || localStorage[98] == "undefined" ){
         latlon = L.latLng([-37.814, 144.96332])
@@ -87,15 +86,13 @@ function buildMap(){
         latlon = L.latLng(localStorage[98],localStorage[97])
     }
 
-
-
     //Generate nearby schools based on initial map value
     let searchMarker = new  L.marker()
     searchMarker = L.marker(latlon).addTo(mymap);
     searchMarker.bindPopup(localStorage[96])
     nearbySchools(latlon)
 
-    mymap.setView(latlon,13);
+    mymap.setView(latlon,14);
     // Load tiles
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -105,7 +102,7 @@ function buildMap(){
     }).addTo(mymap);
 
 
-
+    //If stats enabled get LGA
     mymap.spin(true)
     if (localStorage[7] !== 0){
         loadGeoJSON(mymap)
@@ -113,6 +110,8 @@ function buildMap(){
     else{
         console.log('GeoJSON disabled')
     }
+
+    //Get school data and generate markers
     getSchoolList(mymap)
     return mymap
 }
@@ -190,6 +189,7 @@ function addSchoolMarkers(data, map){
         markers.bind
     }
 
+    //Only add primary schools
     for(i = 0; i < data.length; i++){
         if(data[i].Type.includes("Pri")){
             if(sectorEnabled(data[i])){
@@ -205,7 +205,7 @@ function addSchoolMarkers(data, map){
 //Define marker
 let getIcon = (data) => {
 
-    if(localStorage[6] == 1 && data.LGBT) {
+    if(localStorage[6] == 1 && data.LGBT) { //LGBT badge
         switch (data.Sector) {
             case "Government":
                 var icon = L.icon({
@@ -228,7 +228,7 @@ let getIcon = (data) => {
                 })
         }
     }
-    else if(localStorage[8] == 1 && (data.AS_Phys == "Y")){
+    else if(localStorage[8] == 1 && (data.AS_Phys == "Y")){ //After School Phys Ed
         switch(data.Sector){
             case "Government":
                 var icon = L.icon({
@@ -251,7 +251,7 @@ let getIcon = (data) => {
                 })
         }
     }else{
-        switch(data.Sector){
+        switch(data.Sector){ //Default Badge
             case "Government":
                 var icon = L.icon({
                     iconUrl: "http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png"
@@ -274,31 +274,7 @@ let getIcon = (data) => {
         }
     }
 
-    // if(data.AS_Phys == "N" && !(localStorage[6] == 2)){
-    //     switch(data.Sector){
-    //         case "Government":
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Govt2.png"
-    //             })
-    //             break
-    //         case "Independent":
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Private.png"
-    //             })
-    //             break
-    //         case "Catholic":
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Catholic.png"
-    //             })
-    //             break
-    //         default:
-    //             var icon = L.icon({
-    //                 iconUrl: "icons/icons8-Govt.png"
-    //             })
-    //     }
-    // }
-
-    icon.options.iconSize = [data.totalScaled,data.totalScaled];
+    icon.options.iconSize = [data.totalScaled,data.totalScaled]; //Size by students enrolled
     icon.options.className = "leafletIcon";
     return icon
 }
@@ -320,52 +296,17 @@ function defineSearch(){
     $("#searchbox").easyAutocomplete(options);
 }
 
-
+//Initialise map and search
 mymap = buildMap()
 defineSearch()
 
-// //build Info control
 
 
-    // let info = L.control()
-    //
-    // info.onAdd = function (map) {
-    //     this._div = L.DomUtil.create('div', 'info')
-    //     this.update()
-    //     return this._div
-    // }
-    //
-    //
-    let isLGBT = (props) => {
-        if(props.LGBT){
-            return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-LGBT%20Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
-        }
-        else{
-            return ""
-        }
-    }
-    //
-    // info.update = function (props) {
-    //     this._div.innerHTML = (props ?
-    //         '<h3>' + props.School_Name + '</h3><br>'
-    //         + '<b>Address: </b>' + props.Address1
-    //         + props.Address2 + ",<br> " +
-    //         props.Town + " " + props.PPostcode
-    //         + '<br><b>Ph. No: </b>' + props.Phone + "<br>"
-    //         + "<b>Students enrolled: </b>" + parseInt(props.Total) + "<br><br>"
-    //         + "<h4>Special Progrmas Offered</h4>" + isLGBT(props)
-    //         : '<h4>Click a school to see info</h4>');
-    //
-    //
-    // }
-    //
-    // info.addTo(mymap)
 
 
-//Click school event
+//Click school event get school info
 function clickSchool(e) {
     let props = e.target.properties;
-    // info.update(e.target.properties);
     document.getElementById("selectedSchool").style.height = "auto";
     document.getElementById("schoolDisplay").style.height = "40%";
     document.getElementById("selectedSchool").innerHTML = (props ?
@@ -384,56 +325,8 @@ function clickSchool(e) {
         + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props)
         : '<h4>Click a school to see info</h4>')
 
+    //Find nearby schools to clicked school
     nearbySchools(L.latLng(props.Latitude, props.Longitude))
-}
-
-
-
-function filterMap(map) {
-    let error = document.getElementById("error")
-    let govt = document.getElementById("GovernmentCheck").checked
-    let private = document.getElementById("PrivateCheck").checked
-    let catholic = document.getElementById("CatholicCheck").checked
-    let LGBT = document.getElementById("LGBTchecked").checked
-    let ASPE = document.getElementById("ASPEchecked").checked
-    let Bullying = document.getElementById("bullyingChecked").checked
-
-    error.innerHTML = ""
-
-    if(!govt && !private && !catholic){
-        console.log("Click a school")
-        error.innerHTML = "Please select at least one school type"
-    }
-    else{
-        if(govt){
-            localStorage[2] = true
-        }
-        if(private){
-            localStorage[3] = true
-        }
-        if(catholic){
-            localStorage[4] = true
-        }
-        if(LGBT){
-            localStorage[6] = 1
-        }
-        else if(ASPE){
-            localStorage[6] = 2
-        }
-        else{
-            localStorage[6] = 0
-        }
-        if(Bullying){
-            localStorage[7] = 1
-        }
-        else{
-            localStorage[8] = 0
-        }
-        mymap.eachLayer(function (layer) {
-            mymap.removeLayer(layer);
-        });
-        buildMap()
-    }
 }
 
 
@@ -502,6 +395,8 @@ function localeSearch(){
                     document.getElementById("selectedSchool").innerHTML = '<h3>' + item.SearchName + '</h3>'
                     mymap.setView(searchLocale2,13);
                     nearbySchools(searchLocale2)
+                    localStorage[98] = item.Lat
+                    localStorage[97] = item.Lon
                     return x
                 }
             }
@@ -578,6 +473,55 @@ function selectedFavList(){
     }
 }
 
+//Run filters
+function filterMap(map) {
+    let error = document.getElementById("error")
+    let govt = document.getElementById("GovernmentCheck").checked
+    let private = document.getElementById("PrivateCheck").checked
+    let catholic = document.getElementById("CatholicCheck").checked
+    let LGBT = document.getElementById("LGBTchecked").checked
+    let ASPE = document.getElementById("ASPEchecked").checked
+    let Bullying = document.getElementById("bullyingChecked").checked
+
+    error.innerHTML = ""
+
+    if(!govt && !private && !catholic){
+        console.log("Click a school")
+        error.innerHTML = "Please select at least one school type"
+    }
+    else{
+        if(govt){
+            localStorage[2] = true
+        }
+        if(private){
+            localStorage[3] = true
+        }
+        if(catholic){
+            localStorage[4] = true
+        }
+        if(LGBT){
+            localStorage[6] = 1
+        }
+        else if(ASPE){
+            localStorage[6] = 2
+        }
+        else{
+            localStorage[6] = 0
+        }
+        if(Bullying){
+            localStorage[7] = 1
+        }
+        else{
+            localStorage[8] = 0
+        }
+        mymap.eachLayer(function (layer) {
+            mymap.removeLayer(layer);
+        });
+        buildMap()
+    }
+}
+
+//Filter Checks
 
 function sectorEnabled(item){
     if(item.Sector == "Government" && document.getElementById("GovernmentCheck").checked){
@@ -593,8 +537,6 @@ function sectorEnabled(item){
         false
     }
 }
-
-
 
 function getInvest(props){
     if(parseInt(props.Investment) > 1){
@@ -620,6 +562,15 @@ function getFloorArea(props) {
     }
     else{
         return "Not Available"
+    }
+}
+
+let isLGBT = (props) => {
+    if(props.LGBT){
+        return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-LGBT%20Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
+    }
+    else{
+        return ""
     }
 }
 

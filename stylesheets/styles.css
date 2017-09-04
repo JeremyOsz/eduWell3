@@ -361,3 +361,9 @@ background-color: rgba(0, 0, 0, 0.03);
 #Legend{
     height: 300px
 }
+#homelogo{
+    height: 100%;
+    width: 200px;
+    border: none;
+    background: none;
+}
