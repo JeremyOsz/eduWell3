@@ -120,7 +120,7 @@
                                            console.log(id)
 										   for(i = 0; i < cards.length; i++){
                                                if (cards[i].id == id){
-                                                   cards[i].style.display
+                                                   cards[i].parentElement.parentElement.removeChild(cards[i].parentElement)
 											   }
 										   }
 

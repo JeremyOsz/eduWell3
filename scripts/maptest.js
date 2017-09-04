@@ -45,6 +45,11 @@ $(document).ready(function() {
     else{
         $("#ASPEchecked")[0].checked = false
     }
+    if(!$("#GovernmentCheck")[0].checked && !$("#PrivateCheck")[0].checked  && !$("#CatholicCheck")[0].checked  ){
+        $("#GovernmentCheck")[0].checked = true
+        $("#PrivateCheck")[0].checked = true
+        $("#CatholicCheck")[0].checked = true
+    }
 
     //Check favbox
     $(document).on('change', 'input[type="checkbox"]', function(e){
@@ -75,8 +80,14 @@ mymap.zoomControl.setPosition('bottomright');
 //Build leaflet map
 function buildMap(){
 
+    let latlon = L.latLng()
+    if(localStorage[98] == "undefined" || localStorage[98] == "undefined" ){
+        latlon = L.latLng([-37.814, 144.96332])
+    }else{
+        latlon = L.latLng(localStorage[98],localStorage[97])
+    }
 
-    let latlon = L.latLng(localStorage[98],localStorage[97])
+
 
     //Generate nearby schools based on initial map value
     let searchMarker = new  L.marker()
@@ -103,7 +114,6 @@ function buildMap(){
         console.log('GeoJSON disabled')
     }
     getSchoolList(mymap)
-
     return mymap
 }
 
@@ -218,7 +228,7 @@ let getIcon = (data) => {
                 })
         }
     }
-    else if(localStorage[6] == 2 && (data.AS_Phys == "Y")){
+    else if(localStorage[8] == 1 && (data.AS_Phys == "Y")){
         switch(data.Sector){
             case "Government":
                 var icon = L.icon({
@@ -328,7 +338,7 @@ defineSearch()
     //
     let isLGBT = (props) => {
         if(props.LGBT){
-            return "<img src='http://www.eduwell.ga/EduWell/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
+            return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-LGBT%20Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>";
         }
         else{
             return ""
@@ -356,8 +366,8 @@ defineSearch()
 function clickSchool(e) {
     let props = e.target.properties;
     // info.update(e.target.properties);
-    document.getElementById("selectedSchool").style.height = "40%";
-    document.getElementById("schoolDisplay").style.height = "60%";
+    document.getElementById("selectedSchool").style.height = "auto";
+    document.getElementById("schoolDisplay").style.height = "40%";
     document.getElementById("selectedSchool").innerHTML = (props ?
         "<div class='favbox'><input class='favcheck glyphicon glyphicon-star-empty' type='checkbox' id='" +
         props.School_Id + "'></div>" +
