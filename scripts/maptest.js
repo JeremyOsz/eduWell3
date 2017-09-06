@@ -306,12 +306,45 @@ defineSearch()
 
 //Click school event get school info
 function clickSchool(e) {
+    console.log(e)
+
+    //Get properties
     let props = e.target.properties;
+
+    //Mark as selected
+    let selected = new L.icon({iconUrl: 'icons/icons8-Checkmark-48.png'})
+
+
+    if(!inShortList(props.School_Id)){
+        shortlist(props.School_Id)
+        e.target.setIcon(selected)
+    }
+    else{
+        removeShortList(props.School_Id)
+        e.target.setIcon(getIcon(props))
+    }
+
+
+    //Shortlist school
+    // if(inShortList(props.School_Id)){
+    //     removeShortist(props.School_Id)
+    // }
+    // else{
+
+    // }
+
+
     document.getElementById("selectedSchool").style.height = "auto";
     document.getElementById("schoolDisplay").style.height = "40%";
+    let streetView_imgURL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
+        props.Latitude + "," + props.Longitude + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII";
+
     document.getElementById("selectedSchool").innerHTML = (props ?
         "<div class='favbox'><input class='favcheck glyphicon glyphicon-star-empty' type='checkbox' id='" +
         props.School_Id + "'></div>" +
+        "<div style='width: 100%; padding-right: 5px;display: block; position: relative;'>" +
+        "<img style='width:100%;' data-featherlight=" + streetView_imgURL +"' src='"
+        + streetView_imgURL + "'>" +
         '<h3>' + props.School_Name + '</h3><br>'
         + '<b>Address: </b>' + props.Address1
         + props.Address2 + ",<br> " +
@@ -324,6 +357,7 @@ function clickSchool(e) {
         + "<b>Average Annual Investment: </b> " + getInvest(props) + "<br>"
         + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props)
         : '<h4>Click a school to see info</h4>')
+
 
     //Find nearby schools to clicked school
     nearbySchools(L.latLng(props.Latitude, props.Longitude))
@@ -591,6 +625,57 @@ function isNone(props){
     }
 }
 
+//Shortlist WILL REPLACE FAV LIST
+
+let Shortlist = []
+console.log(Shortlist)
+function shortlist(schoolID) {
+    if(Shortlist.length > 0){
+        let x = 0
+        for(let i = 0; i < Shortlist.length; i++){
+            if(Shortlist[i] == schoolID){
+                console.log('Already in list')
+                x += 1
+            }
+        }
+        if(x == 0){
+            console.log(schoolID)
+            Shortlist.push(schoolID)
+            console.log(Shortlist)
+        }
+    }
+    else{
+        console.log(schoolID)
+        Shortlist.push(schoolID)
+        console.log(Shortlist)
+    }
+}
+
+function inShortList(schoolID){
+    let x = 0
+    if(Shortlist.length > 0){
+        for(let i = 0; i < Shortlist.length; i++){
+            if(Shortlist[i] == schoolID){
+                x += 1
+            }
+        }
+    }
+    else{
+        return false
+    }
+    if(x > 0){
+        return true
+    }
+    else{
+        return false
+    }
+}
+
+function removeShortList(SchoolID){
+    Shortlist = Shortlist.filter(function(item) {
+        return item !== SchoolID
+    })
+}
 
 
 mymap.spin(false)
