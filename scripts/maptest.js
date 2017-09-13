@@ -1,5 +1,7 @@
 //Initalise events
 $(document).ready(function() {
+
+
     console.log(localStorage)
     console.log('ready')
 
@@ -77,7 +79,9 @@ $(document).ready(function() {
     //Apply initial filters
     $(document).on( "load", function() {
         $("#filterApply").click(filterMap(mymap))
-
+        window.onerror(function (error) {
+            console.log(error)
+        })
     })
 
 });
@@ -361,14 +365,20 @@ function clickSchool(e) {
         + props.Address2 + ", " +
         props.Town + " " + props.PPostcode
     console.log(Address)
-    let streetView_imgURL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
-        props.School_Name + "," + Address + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII";
+    let streetView_imgURL = ""
+    try{
+        streetView_imgURL = encodeURI(("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
+            props.School_Name.replace("'","") + "," + Address + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII"));
+    }catch (err){
+        streetView_imgURL = encodeURI(("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
+            props.Latitude, "," + props.Longitude + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII"));
+    }
 
     //set school type icon
     let schoolType_icon = ""
-    if(props.Sector == "Government"){schoolType_icon = "<img src='icons/icons8-Govt2.png' style='height: 20px'>"}
-    if(props.Sector == "Catholic"){schoolType_icon = "<img src='icons/icons8-Catholic.png' style='height: 20px'>"}
-    if(props.Sector == "Independent"){schoolType_icon = "<img src='icons/icons8-Private.png' style='height: 20px'>"}
+    if(props.Sector == "Government"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' style='height: 20px'>"}
+    if(props.Sector == "Catholic"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' style='height: 20px'>"}
+    if(props.Sector == "Independent"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' style='height: 20px'>"}
 
     document.getElementById("selectedSchool").innerHTML = (props ?
         "<div style='width: 100%; padding-right: 5px;display: block; position: relative;'>" +
@@ -405,17 +415,42 @@ function clickSchool(e) {
     })
 
     // Geocode the address
-    let geocoder = new google.maps.Geocoder();
-    geocoder.geocode({
+    let geocoder = ""
+    try{
+        geocoder = new google.maps.Geocoder();
+    }
+    catch (err){
+        try {
+            initializeStreetView(props.Latitude, props.Longitude)
+        } catch (err) {
+            $('#streetviewImg')[0].src = streetView_imgURL
+        }
+    }
+
+    try{
+        geocoder.geocode({
         'address': (props.School_Name + "," + Address),
         region: 'VIC, Aus',
         componentRestrictions: {country:'AU'}
-    }, (results) =>{
-        initializeStreetView(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+    }, (results, status) =>{
+        if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+            try {
+                initializeStreetView(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+            } catch (err) {
+                $('#streetviewImg')[0].src = streetView_imgURL
+            }
+        }
+        else{
+            try {
+                initializeStreetView(props.Latitude, props.Longitude)
+            } catch (err) {
+                $('#streetviewImg')[0].src = streetView_imgURL
+            }
+        }
     })
-
-
-
+    } catch (err) {
+        $('#streetviewImg')[0].src = streetView_imgURL;
+    }
 
 }
 
