@@ -60,7 +60,7 @@ h2{
     border-radius: 5px;
     padding: 10 10 10 10;
     margin-bottom: 5px;
-    height:130px;
+    height:fit-content;
     overflow: hidden;
 }
 .schoolListEntry:hover{
@@ -97,17 +97,22 @@ h2{
 #searchbox {
     height: 40px;
     font-size: 12pt;
-    width:100%;
+    width: 83%;
     z-index: 9999;
 }
 #submitSearch{
     width: 15%;
-    height: 31px;
+    height: 16pt;
     background: url(http://www.eduwell.ga/EduWell/icons/icons8-Search-48.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    padding-top: 0px;
+    padding-top: 20px;
+    border-radius: 2px;
+    background-color: antiquewhite;
+}
+#submitSearch:hover{
+    background-color: floralwhite;
 }
 #Filter {
     padding-top: 2px;
@@ -132,20 +137,22 @@ h2{
     font: 16pt Helvetica, Arial, sans-serif;
 }
 #Filtermenu{
-    margin-top: 2px;
-    padding-top: 2px;
     height: 75%;
     padding-left: 0;
     margin-left: 0;
     background-color: transparent ;
+    border-top: solid 3px rgba(92, 184, 92, 0.36);
+    border-radius: 0;
+    margin-top: 15px;
+    padding-top: 10;
 }
 #Filtermenu2{
     margin-top: 2px;
     padding-top: 2px;
-    height: 75%;
+    height: 85%;
     padding-left: 5px;
     margin-left: 0;
-    background-color: transparent ;
+    background-color: transparent;
     overflow-y: auto;
 }
 div.Low {
@@ -346,7 +353,7 @@ background-color: rgba(0, 0, 0, 0.03);
 .applyDIV{
     position: absolute;
     width: 100%;
-    bottom: 40;
+    bottom: 10px;
 }
 #info{
     font-weight: 100;
@@ -408,7 +415,7 @@ background-color: rgba(0, 0, 0, 0.03);
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 99999!important; /* Sit on top */
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
@@ -449,17 +456,17 @@ background-color: rgba(0, 0, 0, 0.03);
 /* close button */
 .close {
     position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 32px;
+    top: 20px;
+    right: 55px;
+    color: #ebf2ef !important;
+    font-size: 60px !important;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .close:hover,
 .close:focus {
-    color: #bbb;
+    color: #bbb!important;
     text-decoration: none;
     cursor: pointer;
 }
@@ -469,4 +476,22 @@ background-color: rgba(0, 0, 0, 0.03);
     .modal-content {
         width: 100%;
     }
+}
+
+#modalback{
+    position: absolute;
+    height: 150VH;
+    width: 150VW;
+    margin-top: -300px;
+    background-color: transparent;
+ }
+#streetviewImg:hover{
+    cursor: pointer;
+    border: solid 4px green;
+    border-radius: 5px;
+}
+#streetviewInfo:hover{
+    color: #1a3a95;
+    text-decoration: underline;
+    cursor: pointer;
 }

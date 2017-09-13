@@ -357,8 +357,12 @@ function clickSchool(e) {
 
     document.getElementById("selectedSchool").style.height = "auto";
 
+    let Address = props.Address1
+        + props.Address2 + ", " +
+        props.Town + " " + props.PPostcode
+    console.log(Address)
     let streetView_imgURL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
-        props.Latitude + "," + props.Longitude + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII";
+        props.School_Name + "," + Address + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII";
 
     //set school type icon
     let schoolType_icon = ""
@@ -368,13 +372,11 @@ function clickSchool(e) {
 
     document.getElementById("selectedSchool").innerHTML = (props ?
         "<div style='width: 100%; padding-right: 5px;display: block; position: relative;'>" +
-        "<img style='width:100%;' data-featherlight=" + streetView_imgURL +"' src='"
+        "<img style='width:100%;' id='streetviewImg' src='"
         + streetView_imgURL + "'>" +
-        "<div class='favbox'><span class='addShortList'>Add to short list</span>" + checkbox + "</div>" +
+        "<span id='streetviewInfo'>click image for streetview</span><div class='favbox'><span class='addShortList'>Add to short list</span>" + checkbox + "</div>" +
         '<h3>' + props.School_Name + '</h3>' +
-        '<i>' + props.Address1
-        + props.Address2 + ",<br> " +
-        props.Town + " " + props.PPostcode + "</i><br>"
+        '<i>' + Address + "</i><br>"
         + '<br>' + props.Phone + "<br>"
         + "<a class='smalllink' href='" + props.web + "'>" + props.web + "</a><br>"
         + "<br><br><b>School Type: </b>" + schoolType_icon + " " + props.Sector
@@ -388,6 +390,33 @@ function clickSchool(e) {
 
     //Find nearby schools to clicked school
     nearbySchools(L.latLng(props.Latitude, props.Longitude))
+    $("#showSchoolBlock").animate({ scrollTop: 0 }, 100);
+
+    $('#streetviewImg').click(function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    })
+
+    $('#streetviewInfo').click(function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    })
+
+    // Geocode the address
+    let geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'address': (props.School_Name + "," + Address),
+        region: 'VIC, Aus',
+        componentRestrictions: {country:'AU'}
+    }, (results) =>{
+        initializeStreetView(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+    })
+
+
+
+
 }
 
 //Click school event get school info
@@ -784,7 +813,7 @@ function doGeocode() {
                 document.getElementById("selectedSchool").style.height = "15%";
                 document.getElementById("schoolDisplay").style.height = "85%";
                 document.getElementById("selectedSchool").innerHTML = '<h3>' + addr.value + '</h3>'
-                mymap.setView(searchLocale2,13);
+                mymap.setView(searchLocale2,15);
                 nearbySchools(searchLocale2)
                 localStorage[98] = lat
                 localStorage[97] = lon
@@ -810,22 +839,38 @@ function clickNearbySchool(e){
         let latlon = L.latLng(school[0].Latitude, school[0].Longitude)
         mymap.setView(latlon,15)
 
+        mymap.eachLayer((layer) => {
+            if(!(layer.properties == undefined || layer.properties == null)){
 
+                // console.log(layer.properties.School_Id)
+                if(layer.properties.School_Id == id){
+                    let latlon = L.latLng(layer.properties.Latitude, layer.properties.Longitude)
+                    mymap.setView(latlon,15)
+                    layer._icon.focus()
+                    clickSchool(layer.properties)
+                    $("#showSchoolBlock").animate({ scrollTop: 0 }, 100);
+                    return
+                }
+            }
+
+        } )
     })
 }
 
 function hoverNearbySchool(e) {
-    console.log(e)
     let id = e.currentTarget.id
-    mymap.eachLayer((layer) => {
-        if(!(layer.properties == undefined || layer.properties == null)){
-            // console.log(layer.properties.School_Id)
-            if(layer.properties.School_Id == id){
-                layer._icon.focus()
-                return
+
+        mymap.eachLayer((layer) => {
+            if(!(layer.properties == undefined || layer.properties == null)){
+
+                // console.log(layer.properties.School_Id)
+                if(layer.properties.School_Id == id){
+                    layer._icon.focus()
+                    return
+                }
             }
-        }
-    } )
+
+        })
 }
 
 
@@ -833,18 +878,19 @@ mymap.spin(false)
 
 
 
-//Ziyan's STREETVIEW MODAL
+/// Ziyans Streetview Modal
 
 var modal = document.getElementById('myModal');
 
-var img = document.getElementById('myImg');
+var img = document.getElementById('streetviewImg');
 var modalImg = document.getElementById("pano");
 var captionText = document.getElementById("caption");
-img.onclick = function(){
-    modal.style.display = "block";
-    modalImg.src = this.src;
-    captionText.innerHTML = this.alt;
-}
+
+// img.onclick = function(){
+//     modal.style.display = "block";
+//     modalImg.src = this.src;
+//     captionText.innerHTML = this.alt;
+// }
 
 // get <span> ,set close button
 var span = document.getElementsByClassName("close")[0];
@@ -854,15 +900,22 @@ span.onclick = function() {
     modal.style.display = "none";
 }
 
-function initialize() {
-    var fenway = {lat: -37.8770, lng: 145.0443};
+//Exit modal on outside click
+$('#modalback').click(()=>{
+    modal.style.display = "none";
+
+})
+
+function initializeStreetView(lat, lon) {
+    document.getElementById('pano').innerHTML = " "
+    var latlon = {lat: lat, lng: lon};
     var map = new google.maps.Map(document.getElementById('map'), {
-        center: fenway,
+        center: latlon,
         zoom: 14
     });
     var panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
-            position: fenway,
+            position: latlon,
             pov: {
                 heading: 34,
                 pitch: 10
@@ -870,6 +923,7 @@ function initialize() {
         });
     map.setStreetView(panorama);
 }
+
 
 
 

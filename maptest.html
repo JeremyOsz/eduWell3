@@ -87,7 +87,7 @@
 	<section id="content" class="container" style="padding-left: 0px">
 		<div class = "row" style="height:80%; width: 99VW!important;">
 			<div class=" col-lg-2 col-m-2 col-sm-3 col-xs-12 " id="searchbar">
-				<div class="col-md-12 sidebar" style="padding-top: 10px">
+				<div class="col-md-12 sidebar" id="filters" style="padding-top: 10px">
 					<div id="searchsection">
 						<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
 						<p id="searcherror" class="error"></p>
@@ -119,9 +119,10 @@
 							</p>
 
 						</div>
-						<div class="applyDIV"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
-							<span id="error" class="error"></span></div>
+
 					</div>
+					<div class="applyDIV"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
+						<span id="error" class="error"></span></div>
 				</div>
 			</div>
 
@@ -201,10 +202,10 @@
 
 	</section>
 	<section class="footer">
-		<img id="myImg" src="3.jpg" alt="Description" width="300" height="200">
 		<div id="map"></div>
 
 		<div id="myModal" class="modal">
+			<div id="modalback"></div>
 			<div></div>
 
 			<span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
