@@ -60,16 +60,13 @@ h2{
     border-radius: 5px;
     padding: 10 10 10 10;
     margin-bottom: 5px;
-    height:100px;
+    height:130px;
     overflow: hidden;
 }
 .schoolListEntry:hover{
     background-color: white;
-    fill-opacity: .7;
-    border-radius: 5px;
-    padding: 10 10 10 10;
-    margin-bottom: 5px;
-    height:200px;
+    border: solid 2px green;
+    cursor: pointer;
 }
 /*#mapwrapper {*/
     /*position: relative;*/
@@ -245,13 +242,12 @@ input[type=button]
 #schoolDisplay{
     z-index: 1;
     max-height: 90%;
-    overflow: scroll;
-    padding: 10 10 10 10;
+    padding: 10 0 10 0;
 }
 .favbox{
     background-color: transparent;
     height: 30px;
-    width: 30px;
+    width: 120px;
     display: inline-block;
     float: right;
     text-align: right;
@@ -266,8 +262,7 @@ input[type=button]
 #selectedSchool{
     display: inline-block;
     padding: 10px 10px 10px 10px;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
     height:auto;
     width:100%;
 
@@ -304,7 +299,8 @@ a{
 }
 #showSchoolBlock{
     max-height: 100%;
-    overflow: hidden;
+    padding: 0 0 0 0;
+    overflow: overlay;
 }
 .row{
     width:100% !important;
@@ -366,4 +362,111 @@ background-color: rgba(0, 0, 0, 0.03);
     width: 200px;
     border: none;
     background: none;
+}
+
+.addShortList{
+    color: grey;
+    margin-right: 10px;
+}
+#selectedList{
+    height: 40px;
+    border-radius: 2px;
+    padding-top: 3px;
+    margin-top: 5px;
+}
+#selectedSchools{
+    width: 100%;
+    padding: 10 10 10 10;
+}
+.pac-container {
+    z-index: 999999999 !important;
+    width: 300px !important;
+}
+#selectedSchool{
+    background-color: white;
+    fill-opacity: .7;
+    border-radius: 1px;
+    padding: 10 10 10 10;
+    margin-bottom: 5px;
+    height:130px;
+    overflow: hidden;
+
+}
+#removepad{
+    padding: 0 5 0 5; !important;
+}
+/*.selectedIcon:focus{*/
+    /*border: solid 3px green;*/
+/*}*/
+
+
+
+
+/** Ziyan's Streetview modal */
+
+/* 弹窗背景 */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Street view div */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 120%;
+    height: 600px;
+    max-width: 900px;
+}
+
+/* animation */
+.modal-content, #caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)}
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* close button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 32px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* small screen width 100% */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
 }

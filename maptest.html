@@ -56,6 +56,8 @@
 	<!-- Bootstrap Lightbox -->
 	<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.8/release/featherlight.min.css" type="text/css" rel="stylesheet" />
 
+
+
 </head>
 <body>
 
@@ -89,11 +91,10 @@
 					<div id="searchsection">
 						<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
 						<p id="searcherror" class="error"></p>
-						<input id="searchbox">
-						<input id="submitSearch" type="button" value="" onclick="localeSearch()">
+						<input id="searchbox"></input>
+						<input id="submitSearch" type="button" value="" onclick="doGeocode()">
 						<div style="margin-top:5px;">
-							<input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
-							km Search Radius
+
 						</div>
 					</div>
 
@@ -114,7 +115,7 @@
 							</p>
 							<p id="Statistics">
 							<h4>Statistics</h4>
-							<input type="checkbox" id="bullyingChecked" checked> Bullying by Local Government Area <br>
+							<input type="checkbox" id="bullyingChecked"> Bullying by Local Government Area <br>
 							</p>
 
 						</div>
@@ -133,14 +134,18 @@
 			</div>
 
 
-			<div id="sidebar" class="col-lg-3 col-md-4 col-sm-10 col-xs-12">
-				<div class="col-md-12 sidebar" >
+			<div id="sidebar" class="col-lg-3 col-md-3 col-sm-10 col-xs-12">
+				<div class="col-md-12 sidebar" id="removepad" >
 					<div id="showSchoolBlock">
-						<div id="selectedSchool" class="schoolListEntry">
+						<div id="selectedSchool" >
 							<h4><b>Click a school to get more info</b></h4>
 						</div>
+						<div id="nearby">
+							<h2>Nearby Schools</h2> <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
+							km Search Radius
+						</div>
 						<div id="schoolDisplay">
-							<h2>Nearby Schools</h2>
+
 						</div>
 					</div>
 				</div>
@@ -176,30 +181,47 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" style="padding-top: 5px;">
+			<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" style="padding-top: 5px;overflow: visible; height: 300px">
 				<div class="col-md-12 sidebar" style="padding-top: 5px">
 
-					<div class="dropdown">
-						<button class="btn dropdown-toggle eduwellButton" type="button" data-toggle="dropdown"><h4>Selected schools (<span id="numToCompare">0</span>)
+
+					<span id="compare_error" class="error"></span>
+					<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">
+					<div class="dropdown" style="text-align: center">
+						<button class="btn dropdown-toggle" id="selectedList" type="button" data-toggle="dropdown"><h4>View Shortlist (<span id="numToCompare">0</span>)
 							<span class="caret"></span><h4></button>
 						<ul id='selectedSchools' class="dropdown-menu">
 
 						</ul>
 					</div>
-					<span id="compare_error" class="error"></span>
-					<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">
 				</div>
 			</div>
 		</div>
 
-		<script type="text/javascript" src="scripts/maptest.js"></script>
+
 	</section>
 	<section class="footer">
+		<img id="myImg" src="3.jpg" alt="Description" width="300" height="200">
+		<div id="map"></div>
 
+		<div id="myModal" class="modal">
+			<div></div>
+
+			<span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+			<div class="modal-content" id="pano">
+				<div id="caption"></div>
 	</section>
 
 	<!-- FEATHERLIGHT for lightboxing images -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8_Lkt5jSWuogp6GB4IKivTDBzVhVmf8Y&libraries=places&callback=initAutocomplete"
+			async defer type="text/javascript"></script>
+	<!--<script async defer-->
+			<!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJFCdTyCdRyeBmCQQOOUDBjMjsNluWe28&callback=initialize">-->
+	<!--</script>-->
+	<script type="text/javascript" src="scripts/maptest.js"></script>
 	<script src="scripts/featherlight.js" type="text/javascript" charset="utf-8"></script>
+
+
 
 </body>
 
