@@ -484,7 +484,9 @@ function nearbySchools(latlon){
 
 
             document.getElementById('schoolDisplay').innerHTML += "<div class='schoolListEntry' id='"+ school.School_Id + "'> " +
-                "<div class='favbox'><span class='addShortList'>Add to shortlist</span>" + checkbox + "</div><h4 id=" + school.School_Id + ">"
+                "<div class='favbox'><span class='addShortList'>Add to shortlist</span>" + checkbox + "</div>" +
+                "<div class='schoolListEntry1' id='"+ school.School_Id + "'> " +
+                " <h4 id=" + school.School_Id + ">"
                 + school.School_Name + "</h4>" +
                 '<span id=\'info\'><i>' + school.Address1
                 + school.Address2 + ", " +
@@ -503,7 +505,7 @@ function nearbySchools(latlon){
                 hoverNearbySchool(e)
             })
 
-            $(".schoolListEntry").click( function(e) {
+            $(".schoolListEntry1").click( function(e) {
                 clickNearbySchool(e)
             })
         })
