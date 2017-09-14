@@ -85,43 +85,45 @@
 
 
 	<section id="content" class="container" style="padding-left: 0px">
-		<div class = "row" style="height:80%; width: 99VW!important;">
+		<div class = "row" style=" margin-top: 0px;">
+			<div id="searchsection" class=" col-lg-4 col-m-4 col-sm-4 col-xs-12 ">
+				<!--<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>-->
+				<p id="searcherror" class="error"></p>
+				<input id="searchbox"></input>
+				<input id="submitSearch"  type="button" value="" onclick="doGeocode()">
+			</div>
+			<div class="col-md-3 rightbutton" style="padding-top: 5px">
+				<span id="compare_error" class="error"></span>
+				<input type="button" class="eduwellButton" id="compare" value="Compare Schools >" onclick="compare()">
+			</div>
+		</div>
+		<div class = "row" style="height:80%; margin-top: 0;">
 			<div class=" col-lg-2 col-m-2 col-sm-3 col-xs-12 " id="searchbar">
 				<div class="col-md-12 sidebar" id="filters" style="padding-top: 10px">
-					<div id="searchsection">
-						<p id="searchinst">Enter a suburb or postcode to find nearby schools</p>
-						<p id="searcherror" class="error"></p>
-						<input id="searchbox"></input>
-						<input id="submitSearch" type="button" value="" onclick="doGeocode()">
-						<div style="margin-top:5px;">
-
-						</div>
-					</div>
-
-
 					<div class="mapBox" id="Filtermenu">
 						<div class="mapBox" id="Filtermenu2">
 							<h2>Filters</h2>
-							<p id="Filters">
+							<div id="Filters">
 							<h4>School Type</h4>
-							<input id="GovernmentCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png" height="30">Public <br>
-							<input id="PrivateCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Private.png" height="30">Private/ Independent <br>
-							<input id="CatholicCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png" height="30">Catholic <br>
-							</p>
+								<div class="filterinput"><input id="GovernmentCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png" height="30">Public <br> </div>
+								<div class="filterinput"><input id="PrivateCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Private.png" height="30">Private/ Independent <br> </div>
+								<div class="filterinput"><input id="CatholicCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png" height="30">Catholic <br></div>
+							</div>
 							<p id="DisplayBadges">
-							<h4>Highlight Special Programs</h4>
-							<input class="filtercheckbox" type="checkbox" id="LGBTchecked" unchecked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br>
-							<input class="filtercheckbox" type="checkbox" id="ASPEchecked" unchecked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png" height="30">After School Physical Education<br>
+							<h4>Special program availability</h4>
+							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br></div>
+							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="ASPEchecked" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png" height="30">After School Physical Education <br></div>
+							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> None of the above <br></div>
 							</p>
 							<p id="Statistics">
-							<h4>Statistics</h4>
+							<h2>Statistics</h2>
 							<input type="checkbox" id="bullyingChecked"> Bullying by Local Government Area <br>
 							</p>
 
 						</div>
 
 					</div>
-					<div class="applyDIV"><input type="button" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
+					<div class="applyDIV"><input type="button" class="eduwellButton" id="filterApply" value="Apply Filter" onclick="filterMap(mymap)"><br>
 						<span id="error" class="error"></span></div>
 				</div>
 			</div>
@@ -152,8 +154,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="row" id="row2" style="width:99VW!important;">
-			<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12">
+		<div class="row" id="row2">
+			<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12" style="padding-right: 0;" >
 				<div class="col-md-12 sidebar" id="Legend" >
 					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
 						<h4>Legend</h4>

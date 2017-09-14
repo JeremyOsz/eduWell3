@@ -154,6 +154,7 @@
 
             function getStudentsIcon(props) {
                 if (props.Total > 1) {
+                    let img = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Students-48.png' height='20'>"
                     if (parseInt(props.Total) > 0 & parseInt(props.Total) < 615) {
                         return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Students-48.png' height='20'>    (" + parseInt(props.Total) + ")" +
                             "<br>";

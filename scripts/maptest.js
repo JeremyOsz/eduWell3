@@ -119,18 +119,20 @@ function buildMap(){
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 18,
-        id: 'mapbox.streets-basic',
+        id: 'mapbox.streets',
         accessToken: 'pk.eyJ1Ijoiam9zenRyZWljaGVyIiwiYSI6ImNqNmJicmxtczE3ZnUydnFybWl4am94bnAifQ.AqK2Zt30_RpbcPHLatRS2A'
     }).addTo(mymap);
 
 
     //If stats enabled get LGA
-    mymap.spin(true)
+
     if (localStorage[7] !== 0){
+        mymap.spin(true)
         loadGeoJSON(mymap)
     }
     else{
         console.log('GeoJSON disabled')
+        mymap.spin(false)
     }
 
     //Get school data and generate markers
@@ -148,6 +150,8 @@ function loadGeoJSON(map){
     if (document.getElementById("bullyingChecked").checked) {
         $.getJSON("data/LGA_geojson.GeoJSON", function (data) {
             //Bind LGA to map
+            return data
+        }).done((data) =>{
             $(data.features).each(function (key, data) {
                 LGA.addData(data);
             })
@@ -156,11 +160,17 @@ function loadGeoJSON(map){
             if (document.getElementById("bullyingChecked").checked) {
                 bullyingColor(LGA)
             }
-
-            LGA.addTo(map)
-        }).then(mymap.spin(false))
+            console.log(LGA)
+            map.removeLayer(LGA);
+            // LGA.addTo(map)
+            map.addLayer(LGA)
+            mymap.spin(false)
+            mymap.invalidateSize()
+        })
+    }else{
+        mymap.spin(false)
     }
-    mymap.spin(false)
+
 }
 
 //Colour LGA by bullying rate
@@ -192,6 +202,8 @@ function getColor(d) {
 //Get school and add marker
 function getSchoolList(map) {
     $.getJSON("data/schoolList.json", function(json) {
+        return json
+    }).done((json) => {
         addSchoolMarkers(json, map)
     })
 }
@@ -366,13 +378,9 @@ function clickSchool(e) {
         props.Town + " " + props.PPostcode
     console.log(Address)
     let streetView_imgURL = ""
-    try{
-        streetView_imgURL = encodeURI(("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
-            props.School_Name.replace("'","") + "," + Address + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII"));
-    }catch (err){
-        streetView_imgURL = encodeURI(("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
-            props.Latitude, "," + props.Longitude + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII"));
-    }
+    streetView_imgURL = encodeURI(("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
+        props.School_Name.replace("'","") + "," + Address + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII"));
+
 
     //set school type icon
     let schoolType_icon = ""
@@ -482,6 +490,8 @@ function nearbySchools(latlon){
     }
     let nearbySchools = []
     $.getJSON("data/schoolList.json", function(json) {
+            return json
+        }).then((json) =>{
         json.map((item) =>{
             let schoolLoc = L.latLng(item.Latitude,item.Longitude)
             let distance = area.distanceTo(schoolLoc)
@@ -492,7 +502,7 @@ function nearbySchools(latlon){
                     nearbySchools.push(item)
                 }
             }
-        })
+    })
 
         nearbySchools.sort(function(a, b) {
             return parseFloat(a.distance) - parseFloat(b.distance);
@@ -630,6 +640,9 @@ function filterMap(map) {
             localStorage[6] = 0
         }
         if(Bullying){
+            localStorage[7] = 1
+        }
+        else{
             localStorage[7] = 1
         }
         mymap.eachLayer(function (layer) {
@@ -953,10 +966,11 @@ function initializeStreetView(lat, lon) {
     var panorama = new google.maps.StreetViewPanorama(
         document.getElementById('pano'), {
             position: latlon,
-            pov: {
-                heading: 34,
-                pitch: 10
-            }
+            // pov: {
+            //     heading: 34,
+            //     pitch: 10
+            // },
+            source: google.maps.StreetViewSource.OUTDOOR
         });
     map.setStreetView(panorama);
 }

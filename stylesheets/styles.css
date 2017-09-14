@@ -42,13 +42,13 @@ h2{
     color: #777;
 }
 .sidebar{
-    background:#FFF;
-    border:1px solid #AAA;
-    border-bottom:3px solid #BBB;
-    background-color: #e6efdc;
-    border-radius:2px;
-    font: 12px/14px Arial, Helvetica, sans-serif;
-    /*box-shadow: 5px 5px 2.5px #888888;*/
+    background: #fbfbfb;
+    /* border: 1px solid #AAA; */
+    /* border-bottom: 3px solid #BBB; */
+    background-color: #f2f5f0;
+    border-radius: 4px;
+    /* box-shadow: 3px 3px 2.5px #888888; */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     vertical-align: top;
     height: 100%;
     margin-bottom: 10px;
@@ -80,7 +80,7 @@ h2{
     position: relative;
     z-index: 9998;
     margin-left: 10px;
-    padding: 10 10 10 10;
+    padding: 10 0 10 10;
 
 }
 
@@ -101,19 +101,22 @@ h2{
     z-index: 9999;
 }
 #submitSearch{
-    width: 15%;
-    height: 16pt;
+    width: 40px !important;
     background: url(http://www.eduwell.ga/EduWell/icons/icons8-Search-48.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     padding-top: 20px;
-    border-radius: 2px;
-    background-color: antiquewhite;
+    border-radius: 4px;
+    background-color: #FFFFFF !important;
+    border-top: solid rgb(167, 167, 167) 1px;
+    border-right: solid rgb(167, 167, 167) 1px;
+    border-bottom: solid rgb(167, 167, 167) 1px;
+    margin-left: -5px;
+    vertical-align: bottom;
+    height: 40px;
 }
-#submitSearch:hover{
-    background-color: floralwhite;
-}
+
 #Filter {
     padding-top: 2px;
     width:60px;
@@ -137,7 +140,7 @@ h2{
     font: 16pt Helvetica, Arial, sans-serif;
 }
 #Filtermenu{
-    height: 75%;
+    height: 85%;
     padding-left: 0;
     margin-left: 0;
     background-color: transparent ;
@@ -149,11 +152,12 @@ h2{
 #Filtermenu2{
     margin-top: 2px;
     padding-top: 2px;
-    height: 85%;
+    height: 100%;
     padding-left: 5px;
     margin-left: 0;
     background-color: transparent;
     overflow-y: auto;
+    font-size: 10pt;
 }
 div.Low {
     width: 15px;
@@ -201,18 +205,18 @@ padding: 10px;
 margin-bottom: 10px;
 }
 
-input[type=button]
-{
-    /* Double-sized Checkboxes */
-    margin-top: 10px;
-    height: 40px;
-    width: 80%;
-    background-color: darkseagreen;
-    border-radius: 10px;
-    font-size: 14pt;
-    font-weight: 600;
-    color: white;
-}
+/*input[type=button]*/
+/*{*/
+    /*!* Double-sized Checkboxes *!*/
+    /*margin-top: 10px;*/
+    /*height: 40px;*/
+    /*width: 80%;*/
+    /*background-color: darkseagreen;*/
+    /*border-radius: 10px;*/
+    /*font-size: 14pt;*/
+    /*font-weight: 600;*/
+    /*color: white;*/
+/*}*/
 .leaflet-marker-icon:focus{
     border: solid 4px;
     border-radius:50px;
@@ -260,11 +264,11 @@ input[type=button]
     text-align: right;
 }
 #searchsection{
-    margin: 5px 5px 5px 5px;
     z-index: 9999999;
     display: inline-block;
     position: relative;
     display: block;
+    height:fit-content;
 }
 #selectedSchool{
     display: inline-block;
@@ -276,16 +280,17 @@ input[type=button]
 }
 .header{
     height: 60px;
-    background-color: black;
+    background-color: #aee089;
     margin-bottom: 5px;
     width: 100%;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif !IMPORTANT;
-    font-size: 14px !IMPORTANT;
+    font-size: 16px !IMPORTANT;
     color: #f5f5f5!IMPORTANT;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 a{
     font-family: "Roboto", "Helvetica", "Arial", sans-serif !IMPORTANT;
-    font-size: 16px !IMPORTANT;
+    /*font-size: 16px !IMPORTANT;*/
     color: #0c5460;
 }
 .footer{
@@ -303,6 +308,9 @@ a{
 }
 #content{
     margin: 10px 10px 10px 10px;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+    width: -webkit-fill-available;
 }
 #showSchoolBlock{
     max-height: 100%;
@@ -312,6 +320,7 @@ a{
 .row{
     width:100% !important;
     margin-bottom: 5px;
+    margin-top: 10px;
 }
 .mapsection{
     height:60%;
@@ -324,8 +333,13 @@ a{
     width: 100% !important;
     border: none !important;
     border-radius: 3px !important;
-    background-color: #1e7e34 !important;
     color: white !important;
+    background-color: darkseagreen;
+    transition: background-color 300ms ease-in 0s;
+    height: 40px;
+}
+.eduwellButton:hover{
+    background-color: #1e7e34;
 }
 #searchRadius{
     display:inline-block;
@@ -344,7 +358,7 @@ input[type=checkbox].glyphicon{
 background-color: rgba(0, 0, 0, 0.03);
 }
 .menu_link{
-    color: #77ff6b !important;
+    color: #385027 !important;
 }
 .nav>li>a:focus, .nav>li>a:hover {
     text-decoration: none;
@@ -352,8 +366,9 @@ background-color: rgba(0, 0, 0, 0.03);
 }
 .applyDIV{
     position: absolute;
-    width: 100%;
+    width: 80%;
     bottom: 10px;
+    left:10%;
 }
 #info{
     font-weight: 100;
@@ -395,7 +410,6 @@ background-color: rgba(0, 0, 0, 0.03);
     border-radius: 1px;
     padding: 10 10 10 10;
     margin-bottom: 5px;
-    height:130px;
     overflow: hidden;
 
 }
@@ -494,4 +508,16 @@ background-color: rgba(0, 0, 0, 0.03);
     color: #1a3a95;
     text-decoration: underline;
     cursor: pointer;
+}
+.rightbutton{
+    align: right;
+    position: absolute;
+    float: right !important;
+
+}
+#Statistics{
+    border-top: solid 3px rgba(92, 184, 92, 0.36)
+}
+.filterinput{
+    margin-bottom: 12px;
 }
