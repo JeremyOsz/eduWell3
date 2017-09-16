@@ -116,7 +116,6 @@ function buildMap(oldloc, zoom, repeat){
 
     nearbySchools(latlon)
 
-    console.log(repeat)
     if(repeat){
         mymap.setView(oldloc,zoom);
     }
@@ -415,6 +414,7 @@ function clickSchool(e) {
         },(details) => {
             website = details.website
             addDetails()
+            nearbySchools(L.latLng(props.Latitude, props.Longitude))
         })
     })
 
@@ -422,11 +422,17 @@ function clickSchool(e) {
 
 
     //set school type icon
-    function addDetails(){
+    function addDetails() {
         let schoolType_icon = ""
-        if(props.Sector == "Government"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' style='height: 20px'>"}
-        if(props.Sector == "Catholic"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' style='height: 20px'>"}
-        if(props.Sector == "Independent"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' style='height: 20px'>"}
+        if (props.Sector == "Government") {
+            schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' style='height: 20px'>"
+        }
+        if (props.Sector == "Catholic") {
+            schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' style='height: 20px'>"
+        }
+        if (props.Sector == "Independent") {
+            schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' style='height: 20px'>"
+        }
 
         document.getElementById("selectedSchool").innerHTML = (props ?
             "<div style='width: 100%; padding-right: 5px;display: block; position: relative;'>" +
@@ -444,27 +450,30 @@ function clickSchool(e) {
             + "<b>Average Annual Investment: </b> " + getInvest(props) + "<br>"
             + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props)
             : '<h4>Click a school to see info</h4>')
+
+
+        //Find nearby schools to clicked school
+        $("#showSchoolBlock").animate({scrollTop: 0}, 100);
+
+        //Streetview event
+        $('#streetviewImg').click(function () {
+
+            console.log("click")
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+            console.log("click")
+        })
+
+        $('#streetviewInfo').click(function () {
+
+            console.log("click")
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+            console.log("click")
+        })
     }
-
-
-
-    //Find nearby schools to clicked school
-    nearbySchools(L.latLng(props.Latitude, props.Longitude))
-
-    //Streetview
-    $("#showSchoolBlock").animate({ scrollTop: 0 }, 100);
-
-    $('#streetviewImg').click(function(){
-        modal.style.display = "block";
-        modalImg.src = this.src;
-        captionText.innerHTML = this.alt;
-    })
-
-    $('#streetviewInfo').click(function(){
-        modal.style.display = "block";
-        modalImg.src = this.src;
-        captionText.innerHTML = this.alt;
-    })
 
     // Geocode the address
     let geocoder = new google.maps.Geocoder();
@@ -1003,10 +1012,11 @@ function nearbyServices(school){
     customRemoveLayer("nearby_service")
     fetchServices(school, "after school care")
     fetchServices(school, "child community services")
+    fetchServices(school, "community sports club")
     // fetchServices(school, "doctors")
 }
 
-function fetchServices(school, query){
+function fetchServices(school, query, icon){
 
     var markers = L.layerGroup({
         animateAddingMarkers : true,
@@ -1028,7 +1038,12 @@ function fetchServices(school, query){
         })
     })
 
+
     let addmarker = (data) => {
+        console.log(data)
+        if(query == "community sports club"){
+            data.icon = "icons/icons8-Dumbbell-48.png"
+        }
         let icon = L.icon({
             iconUrl: data.icon,
             iconSize: [30,30]
