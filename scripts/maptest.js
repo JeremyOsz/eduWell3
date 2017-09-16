@@ -75,6 +75,7 @@ $(document).ready(function() {
     $('div.easy-autocomplete').removeAttr('style');
 
     initAutocomplete()
+    service = new google.maps.places.PlacesService(document.getElementById('map'))
 
     //Apply initial filters
     $(document).on( "load", function() {
@@ -95,10 +96,11 @@ let mymap = L.map('mapid',{
 mymap.zoomControl.setPosition('bottomright');
 
 //Build leaflet map
-function buildMap(){
+function buildMap(oldloc, zoom, repeat){
 
     //Get initial latlon
     let latlon = L.latLng()
+
     if(localStorage[98] == "undefined" || localStorage[98] == "undefined" ){
         latlon = L.latLng([-37.814, 144.96332])
     }else{
@@ -114,7 +116,12 @@ function buildMap(){
 
     nearbySchools(latlon)
 
-    mymap.setView(latlon,15);
+    if(repeat){
+        mymap.setView(oldloc,15);
+    }
+    else{
+        mymap.setView(latlon,15)
+    }
     // Load tiles
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -126,13 +133,15 @@ function buildMap(){
 
     //If stats enabled get LGA
 
-    if (localStorage[7] !== 0){
+    if (localStorage[7] == 1){
         mymap.spin(true)
         loadGeoJSON(mymap)
+        $('#BullyRate')[0].style.display = "block"
     }
     else{
         console.log('GeoJSON disabled')
         mymap.spin(false)
+        $('#BullyRate')[0].style.display = "none"
     }
 
     //Get school data and generate markers
@@ -150,8 +159,6 @@ function loadGeoJSON(map){
     if (document.getElementById("bullyingChecked").checked) {
         $.getJSON("data/LGA_geojson.GeoJSON", function (data) {
             //Bind LGA to map
-            return data
-        }).done((data) =>{
             $(data.features).each(function (key, data) {
                 LGA.addData(data);
             })
@@ -161,11 +168,11 @@ function loadGeoJSON(map){
                 bullyingColor(LGA)
             }
             console.log(LGA)
-            map.removeLayer(LGA);
-            // LGA.addTo(map)
-            map.addLayer(LGA)
+        }).done(() =>{
+            LGA.addTo(map)
             mymap.spin(false)
-            mymap.invalidateSize()
+            console.log('print after LGA')
+
         })
     }else{
         mymap.spin(false)
@@ -227,14 +234,21 @@ function addSchoolMarkers(data, map){
         marker.on('click',clickSchool)
         markersList.push(marker)
         markers.addLayer(marker)
-        markers.bind
     }
 
     //Only add primary schools
     for(i = 0; i < data.length; i++){
         if(data[i].Type.includes("Pri")){
             if(sectorEnabled(data[i])){
-                addmarker(data[i])
+                if(data[i].LGBT == "Y" && localStorage[6] == 1){
+                    addmarker(data[i])
+                }
+                if(data[i].AS_Phys && localStorage[8] == 1){
+                    addmarker(data[i])
+                }
+                if(!data[i].AS_Phys && data[i].LGBT == "N" && localStorage[20] == 1){
+                    addmarker(data[i])
+                }
             }
         }
      }
@@ -348,6 +362,7 @@ mymap = buildMap()
 //Click school event get school info
 function clickSchool(e) {
 
+
     //Get properties
     let props = e;
     if (!(props.target == undefined || props.target == null )){
@@ -370,44 +385,72 @@ function clickSchool(e) {
             props.School_Id + "'>"
     }
 
-
     document.getElementById("selectedSchool").style.height = "auto";
 
     let Address = props.Address1
         + props.Address2 + ", " +
         props.Town + " " + props.PPostcode
     console.log(Address)
+
     let streetView_imgURL = ""
     streetView_imgURL = encodeURI(("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
         props.School_Name.replace("'","") + "," + Address + "&key=AIzaSyDL8mL_M5dy0iux97ExLt8gRrj_NNtbmII"));
 
 
-    //set school type icon
-    let schoolType_icon = ""
-    if(props.Sector == "Government"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' style='height: 20px'>"}
-    if(props.Sector == "Catholic"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' style='height: 20px'>"}
-    if(props.Sector == "Independent"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' style='height: 20px'>"}
+    //Get Website
+    let request = {
+        location: {lat: props.Latitude, lng:props.Longitude},
+        radius: '500',
+        keyword: [(props.School_Name + "," + Address)]
+    }
 
-    document.getElementById("selectedSchool").innerHTML = (props ?
-        "<div style='width: 100%; padding-right: 5px;display: block; position: relative;'>" +
-        "<img style='width:100%;' id='streetviewImg' src='"
-        + streetView_imgURL + "'>" +
-        "<span id='streetviewInfo'>click image for streetview</span><div class='favbox'><span class='addShortList'>Add to short list</span>" + checkbox + "</div>" +
-        '<h3>' + props.School_Name + '</h3>' +
-        '<i>' + Address + "</i><br>"
-        + '<br>' + props.Phone + "<br>"
-        + "<a class='smalllink' href='" + props.web + "'>" + props.web + "</a><br>"
-        + "<br><br><b>School Type: </b>" + schoolType_icon + " " + props.Sector
-        + "<br><b>Students enrolled: </b>" + parseInt(props.Total) + "<br>" +
-        "<b>Buildings: </b>" + getBuildings(props) + "<br>" +
-        "<b>Total building area: </b>" + getFloorArea(props) + "<br>"
-        + "<b>Average Annual Investment: </b> " + getInvest(props) + "<br>"
-        + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props)
-        : '<h4>Click a school to see info</h4>')
+    let website = ""
+
+    service.nearbySearch(request, (results)=>{
+        placeId = results[0].place_id
+
+        service.getDetails({
+            placeId: placeId
+        },(details) => {
+            website = details.website
+            addDetails()
+        })
+    })
+
+
+
+
+    //set school type icon
+    function addDetails(){
+        let schoolType_icon = ""
+        if(props.Sector == "Government"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' style='height: 20px'>"}
+        if(props.Sector == "Catholic"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' style='height: 20px'>"}
+        if(props.Sector == "Independent"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' style='height: 20px'>"}
+
+        document.getElementById("selectedSchool").innerHTML = (props ?
+            "<div style='width: 100%; padding-right: 5px;display: block; position: relative;'>" +
+            "<img style='width:100%;' id='streetviewImg' src='"
+            + streetView_imgURL + "'>" +
+            "<span id='streetviewInfo'>click image for streetview</span><div class='favbox'><span class='addShortList'>Add to short list</span>" + checkbox + "</div>" +
+            '<h3>' + props.School_Name + '</h3>' +
+            '<i>' + Address + "</i><br>"
+            + '<br>' + props.Phone + "<br>"
+            + "<a class='smalllink' href='" + props.web + "'>" + website + "</a><br>"
+            + "<br><br><b>School Type: </b>" + schoolType_icon + " " + props.Sector
+            + "<br><b>Students enrolled: </b>" + parseInt(props.Total) + "<br>" +
+            "<b>Buildings: </b>" + getBuildings(props) + "<br>" +
+            "<b>Total building area: </b>" + getFloorArea(props) + "<br>"
+            + "<b>Average Annual Investment: </b> " + getInvest(props) + "<br>"
+            + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props)
+            : '<h4>Click a school to see info</h4>')
+    }
+
 
 
     //Find nearby schools to clicked school
     nearbySchools(L.latLng(props.Latitude, props.Longitude))
+
+    //Streetview
     $("#showSchoolBlock").animate({ scrollTop: 0 }, 100);
 
     $('#streetviewImg').click(function(){
@@ -423,18 +466,7 @@ function clickSchool(e) {
     })
 
     // Geocode the address
-    let geocoder = ""
-    try{
-        geocoder = new google.maps.Geocoder();
-    }
-    catch (err){
-        try {
-            initializeStreetView(props.Latitude, props.Longitude)
-        } catch (err) {
-            $('#streetviewImg')[0].src = streetView_imgURL
-        }
-    }
-
+    let geocoder = new google.maps.Geocoder();
     try{
         geocoder.geocode({
         'address': (props.School_Name + "," + Address),
@@ -458,6 +490,11 @@ function clickSchool(e) {
     })
     } catch (err) {
         $('#streetviewImg')[0].src = streetView_imgURL;
+    }
+
+    //Nearby Services
+    if(localStorage[21] == 1){
+        nearbyServices(props)
     }
 
 }
@@ -561,45 +598,7 @@ function nearbySchools(latlon){
 
 //Activate Search
 let searchMarker = new  L.marker()
-// function localeSearch(){
-//     mymap.removeLayer(searchMarker)
-//     document.getElementById('searcherror').innerHTML = ""
-//     let query = document.getElementById('searchbox').value;
-//     $.getJSON("data/localities.json", function(json) {
-//         let x = 0
-//         json.map((item) =>{
-//             if(item.SearchName == query){
-//                 x = 1
-//                 let searchLocale2 = L.latLng(item.Lat, item.Lon)
-//                 localStorage[5] = $("#searchRadius")[0].value
-//                 if(searchLocale2.Lat !== "undefined"){
-//                     searchMarker = L.marker(searchLocale2).addTo(mymap);
-//                     searchMarker.bindPopup(item.SearchName)
-//                     searchMarker.id = query
-//                     searchMarker.on('click', clickMarker)
-//                     document.getElementById("selectedSchool").style.height = "15%";
-//                     document.getElementById("schoolDisplay").style.height = "85%";
-//                     document.getElementById("selectedSchool").innerHTML = '<h3>' + item.SearchName + '</h3>'
-//                     mymap.setView(searchLocale2,13);
-//                     nearbySchools(searchLocale2)
-//                     localStorage[98] = item.Lat
-//                     localStorage[97] = item.Lon
-//                     return x
-//                 }
-//             }
-//         return x
-//         })
-//         if(x == 0){
-//             document.getElementById('searcherror').innerHTML = "Please enter a valid locality"
-//             console.log("Invalid Query")
-//         }else if(document.getElementById('searchRadius').value < 1 || document.getElementById('searchRadius').value > 10){
-//             document.getElementById('searcherror').innerHTML = "Please enter a distance between 1-10km"
-//         }else{
-//             console.log("Valid Query")
-//
-//         }
-//     })
-// }
+
 
 
 
@@ -612,7 +611,10 @@ function filterMap(map) {
     let catholic = document.getElementById("CatholicCheck").checked
     let LGBT = document.getElementById("LGBTchecked").checked
     let ASPE = document.getElementById("ASPEchecked").checked
+    let noSpecial = document.getElementById("NAchecked").checked
     let Bullying = document.getElementById("bullyingChecked").checked
+    let comm_services = document.getElementById("servicesChecked").checked
+
 
     error.innerHTML = ""
 
@@ -633,22 +635,42 @@ function filterMap(map) {
         if(LGBT){
             localStorage[6] = 1
         }
+        else{
+            localStorage[6] = 0
+        }
         if(ASPE){
             localStorage[8] = 1
         }
         else{
-            localStorage[6] = 0
+            localStorage[8] = 0
+        }
+        if(noSpecial){
+            localStorage[20] =1
+        }
+        else{
+            localStorage[20] =0
         }
         if(Bullying){
             localStorage[7] = 1
         }
         else{
-            localStorage[7] = 1
+            localStorage[7] = 0
         }
+        if(comm_services){
+            $('#community_services_legend')[0].style.display = "block"
+            localStorage[21] = 1
+        }else{
+            localStorage[21] = 0
+            $('#community_services_legend')[0].style.display = "none"
+        }
+        let latlng = mymap.getCenter()
+        let zoom = mymap.getZoom()
         mymap.eachLayer(function (layer) {
             mymap.removeLayer(layer);
         });
-        buildMap()
+
+        buildMap(latlng, zoom, true)
+
     }
 }
 
@@ -739,7 +761,7 @@ function shortlist(schoolID) {
     //Define selected schools list
     let favNum = Shortlist.length
     document.getElementById('numToCompare').innerHTML = favNum;
-    document.getElementById('selectedSchools').innerHTML = "";
+    // document.getElementById('selectedSchools').innerHTML = "";
 
     let favNames = []
     Shortlist.map((e)=>{
@@ -975,9 +997,61 @@ function initializeStreetView(lat, lon) {
     map.setStreetView(panorama);
 }
 
+function nearbyServices(school){
+
+    customRemoveLayer("nearby_service")
+    fetchServices(school, "after school care")
+    fetchServices(school, "child community services")
+    // fetchServices(school, "doctors")
+}
+
+function fetchServices(school, query){
+
+    var markers = L.layerGroup({
+        animateAddingMarkers : true,
+        removeOutsideVisibleBounds: true,
+        disableClusteringAtZoom: 15
+    });
+
+    let request = {
+        location: {lat: school.Latitude, lng:school.Longitude},
+        radius: '500',
+        keyword: [query]
+
+    }
+    service.nearbySearch(request, (results)=>{
+        results.map((d) => {
+            if(!(d.types.includes('school'))){
+                addmarker(d)
+            }
+        })
+    })
+
+    let addmarker = (data) => {
+        let icon = L.icon({
+            iconUrl: data.icon,
+            iconSize: [30,30]
+        })
+        let latlon = L.latLng(data.geometry.location.lat(), data.geometry.location.lng())
+        let marker = L.marker(latlon, {icon: icon})
+        marker.id = "nearby_service"
+        marker.bindTooltip(data.name)
+        markers.addLayer(marker)
+    }
+    markers.addTo(mymap)
+    return markers
+}
 
 
+// GetLayer function Leaflet
 
+function customRemoveLayer (id) {
+    mymap.eachLayer((layer) =>{
+        if(layer.id == id){
+            mymap.removeLayer(layer)
+        }
+    })
+}
 
 
 

@@ -189,5 +189,6 @@ function sendSearchQuery(lat, lon, query){
         localStorage[7] = 0
     }
     localStorage[99] = 1
+    localStorage[55] = 0
     window.location.href = 'maptest.html';
 }

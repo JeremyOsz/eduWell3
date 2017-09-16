@@ -92,9 +92,29 @@
 				<input id="searchbox"></input>
 				<input id="submitSearch"  type="button" value="" onclick="doGeocode()">
 			</div>
-			<div class="col-md-3 rightbutton" style="padding-top: 5px">
+		<div id = "Legend" class="col-lg-5 col-m-5 col-sm-5 col-xs-12 sidebar">
+			<div style="padding-left:0; text-align: center" class="col-lg-7" id="BullyRate">
+				<div class="col-lg-3 col-m-3 col-sm-3 col-xs-3">
+					<b>Bullying Rate:</b>
+				</div>
+				<div class="col-lg-3 col-m-3 col-sm-3 col-xs-3">
+					<div class='Low' style="display:"></div> <br>Low
+				</div>
+				<div class="col-lg-3 col-m-3 col-sm-3 col-xs-3">
+					<div class='Med'></div> <br>Medium
+				</div>
+				<div class="col-lg-3 col-m-3 col-sm-3 col-xs-3">
+					<div class='High'></div> <br>High
+				</div>
+			</div>
+
+			<div id="community_services_legend" style="width:-webkit-fill-available">
+				<img src="https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png" style="height: 30px;"> <i>Click a school to see nearby Community Services</i>
+			</div>
+		</div>
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rightbutton" style="padding-top: 5px">
 				<span id="compare_error" class="error"></span>
-				<input type="button" class="eduwellButton" id="compare" value="Compare Schools >" onclick="compare()">
+				<button class="eduwellButton" id="compare" onclick="compare()">Compare Schools (<span id="numToCompare">0</span>) ></button>
 			</div>
 		</div>
 		<div class = "row" style="height:80%; margin-top: 0;">
@@ -112,8 +132,12 @@
 							<p id="DisplayBadges">
 							<h4>Special program availability</h4>
 							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br></div>
-							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="ASPEchecked" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png" height="30">After School Physical Education <br></div>
-							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> None of the above <br></div>
+							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="ASPEchecked" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png" height="30">After School Physical Education (regional only)<br></div>
+							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="NAchecked" checked> None of the above <br></div>
+							</p>
+							<p id="Statistics">
+							<h2>Other Information</h2>
+							<input type="checkbox" id="servicesChecked"> Nearby Community Services <br>
 							</p>
 							<p id="Statistics">
 							<h2>Statistics</h2>
@@ -143,7 +167,7 @@
 						<div id="selectedSchool" >
 							<h4><b>Click a school to get more info</b></h4>
 						</div>
-						<div id="nearby">
+						<div id="nearby_services">
 							<h2>Nearby Schools</h2> <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
 							km Search Radius
 						</div>
@@ -154,52 +178,52 @@
 				</div>
 			</div>
 		</div>
-		<div class="row" id="row2">
-			<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12" style="padding-right: 0;" >
-				<div class="col-md-12 sidebar" id="Legend" >
-					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-						<h4>Legend</h4>
-						<img src='http://www.eduwell.ga/EduWell/icons/cluster.png' height='30'> School Cluster<br>
-						<img src='http://www.eduwell.ga/EduWell/icons/marker.png' height='30'> Search Location
-					</div>
+		<!--<div class="row" id="row2">-->
+			<!--<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12" style="padding-right: 0;" >-->
+				<!--<div class="col-md-12 sidebar" id="Legend" >-->
+					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
+						<!--<h4>Legend</h4>-->
+						<!--<img src='http://www.eduwell.ga/EduWell/icons/cluster.png' height='30'> School Cluster<br>-->
+						<!--<img src='http://www.eduwell.ga/EduWell/icons/marker.png' height='30'> Search Location-->
+					<!--</div>-->
 
-					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-						<h4>Bullying Rate</h4>
-						<div class='Low'></div> Low <br>
-						<div class='Med'></div> Medium <br>
-						<div class='High'></div> High
-					</div>
-					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-						<h4>School Type</h4>
-						<h5>(All schools sized by students enrolled)</h5>
-						<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' height='30'> Government School <br>
-						<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' height='30'> Catholic School <br>
-						<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' height='30'> Private/ Independent School <br>
-					</div>
-					<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">
-						<h4>Programs offered</h4>
+					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
+						<!--<h4>Bullying Rate</h4>-->
+						<!--<div class='Low'></div> Low <br>-->
+						<!--<div class='Med'></div> Medium <br>-->
+						<!--<div class='High'></div> High-->
+					<!--</div>-->
+					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
+						<!--<h4>School Type</h4>-->
+						<!--<h5>(All schools sized by students enrolled)</h5>-->
+						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' height='30'> Government School <br>-->
+						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' height='30'> Catholic School <br>-->
+						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' height='30'> Private/ Independent School <br>-->
+					<!--</div>-->
+					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
+						<!--<h4>Programs offered</h4>-->
 
-						<img src='http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>
-						<img src='http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png' height='30'> After School Physical Education
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" style="padding-top: 5px;overflow: visible; height: 300px">
-				<div class="col-md-12 sidebar" style="padding-top: 5px">
+						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>-->
+						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png' height='30'> After School Physical Education-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" style="padding-top: 5px;overflow: visible; height: 300px">-->
+				<!--<div class="col-md-12 sidebar" style="padding-top: 5px">-->
 
 
-					<span id="compare_error" class="error"></span>
-					<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">
-					<div class="dropdown" style="text-align: center">
-						<button class="btn dropdown-toggle" id="selectedList" type="button" data-toggle="dropdown"><h4>View Shortlist (<span id="numToCompare">0</span>)
-							<span class="caret"></span><h4></button>
-						<ul id='selectedSchools' class="dropdown-menu">
+					<!--<span id="compare_error" class="error"></span>-->
+					<!--<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">-->
+					<!--<div class="dropdown" style="text-align: center">-->
+						<!--<button class="btn dropdown-toggle" id="selectedList" type="button" data-toggle="dropdown"><h4>View Shortlist (<span id="numToCompare">0</span>)-->
+							<!--<span class="caret"></span><h4></button>-->
+						<!--<ul id='selectedSchools' class="dropdown-menu">-->
 
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
+						<!--</ul>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
 
 
 	</section>

@@ -249,6 +249,7 @@ margin-bottom: 10px;
     color: white;
     height:40px;
     vertical-align: bottom;
+    margin-top: 5px;
 }
 #schoolDisplay{
     z-index: 1;
@@ -376,8 +377,14 @@ background-color: rgba(0, 0, 0, 0.03);
 .smalllink{
     font-size: 12px !important;
 }
-#Legend{
-    height: 300px
+#Legend {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    height: fit-content;
+    vertical-align: bottom;
+    position: relative;
+    display: block;
 }
 #homelogo{
     height: 100%;
@@ -513,6 +520,7 @@ background-color: rgba(0, 0, 0, 0.03);
     align: right;
     position: absolute;
     float: right !important;
+    margin-top: 5px !importantf;
 
 }
 #Statistics{
@@ -520,4 +528,7 @@ background-color: rgba(0, 0, 0, 0.03);
 }
 .filterinput{
     margin-bottom: 12px;
+}
+#BullyRate{
+    height:fit-content;
 }
