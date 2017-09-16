@@ -116,8 +116,9 @@ function buildMap(oldloc, zoom, repeat){
 
     nearbySchools(latlon)
 
+    console.log(repeat)
     if(repeat){
-        mymap.setView(oldloc,15);
+        mymap.setView(oldloc,zoom);
     }
     else{
         mymap.setView(latlon,15)
