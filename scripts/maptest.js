@@ -60,6 +60,12 @@ $(document).ready(function() {
     else{
         $("#ASPEchecked")[0].checked = false
     }
+    if(localStorage[7] == 1){
+        $("#bullyingChecked")[0].checked = true
+    }
+    else{
+        $("#bullyingChecked")[0].checked = false
+    }
     if(!$("#GovernmentCheck")[0].checked && !$("#PrivateCheck")[0].checked  && !$("#CatholicCheck")[0].checked  ){
         $("#GovernmentCheck")[0].checked = true
         $("#PrivateCheck")[0].checked = true
@@ -114,6 +120,9 @@ function buildMap(oldloc, zoom, repeat){
     searchMarker.id = localStorage[96]
     searchMarker.on('click', clickMarker)
 
+
+    // $('#nearby_schools')[0].style.top = "5px"
+    $("#nearby_schools_to")[0].innerHTML = "Schools nearby <i>" + localStorage[96] + "</i>"
     nearbySchools(latlon)
 
     if(repeat){
@@ -185,7 +194,9 @@ function bullyingColor(GeoJSON){
     GeoJSON.setStyle({fillColor: 'red'})
     GeoJSON.eachLayer(function(layer) {
         layer.setStyle({fillColor: getColor(layer.feature.properties.Indicator)})
-            .bindPopup('Bullying rate: ' + layer.feature.properties.Indicator )
+            .bindPopup("<b>" + layer.feature.properties.LGA + "<br>Bullying rate: </b><span style='color: "+ getColor(layer.feature.properties.Indicator) +
+                "'>" + layer.feature.properties.Indicator + "% </span>" )
+        console.log(layer.feature.properties)
     })
 }
 
@@ -414,6 +425,9 @@ function clickSchool(e) {
         },(details) => {
             website = details.website
             addDetails()
+            $('#nearby_schools')[0].style.top = "100%"
+            $("#nearby_schools_to")[0].innerHTML = "<button class='panebutton' id='back' onclick='nearbycollapse()'>&#9652; Back to school details &#9652;  </button>" +
+                "Schools nearby <i>" + props.School_Name + "</i>"
             nearbySchools(L.latLng(props.Latitude, props.Longitude))
         })
     })
@@ -435,25 +449,28 @@ function clickSchool(e) {
         }
 
         document.getElementById("selectedSchool").innerHTML = (props ?
-            "<div style='width: 100%; padding-right: 5px;display: block; position: relative;'>" +
+            "<div class='detailsPane1'>" +
             "<img style='width:100%;' id='streetviewImg' src='"
             + streetView_imgURL + "'>" +
             "<span id='streetviewInfo'>click image for streetview</span><div class='favbox'><span class='addShortList'>Add to short list</span>" + checkbox + "</div>" +
             '<h3>' + props.School_Name + '</h3>' +
-            '<i>' + Address + "</i><br>"
+            "<div style='text-align:center'><i>" + Address + "</i>"
             + '<br>' + props.Phone + "<br>"
-            + "<a class='smalllink' href='" + props.web + "'>" + website + "</a><br>"
-            + "<br><br><b>School Type: </b>" + schoolType_icon + " " + props.Sector
+            + "<a class='smalllink' href='" + props.web + "'>" + website + "</a></div>"
+            + "<br><b>School Type: </b>" + schoolType_icon + " " + props.Sector
             + "<br><b>Students enrolled: </b>" + parseInt(props.Total) + "<br>" +
             "<b>Buildings: </b>" + getBuildings(props) + "<br>" +
             "<b>Total building area: </b>" + getFloorArea(props) + "<br>"
             + "<b>Average Annual Investment: </b> " + getInvest(props) + "<br>"
-            + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props)
+            + "<br><h4>Special Programs:</h4>" + isLGBT(props) + isASPE(props) + isNone(props) +
+            "<div class='floatingbottombutton'>" +
+                "<button class='panebutton' id='show_nearby_schools' onclick='showNearbySchools()'>&#9662; nearby schools &#9662;</button>" +
+            "</div>"
             : '<h4>Click a school to see info</h4>')
 
 
         //Find nearby schools to clicked school
-        $("#showSchoolBlock").animate({scrollTop: 0}, 100);
+        // $("#showSchoolBlock").animate({scrollTop: 0}, 100);
 
         //Streetview event
         $('#streetviewImg').click(function () {
@@ -896,7 +913,9 @@ function doGeocode() {
                 document.getElementById("schoolDisplay").style.height = "85%";
                 document.getElementById("selectedSchool").innerHTML = '<h3>' + addr.value + '</h3>'
                 mymap.setView(searchLocale2,15);
+                $("#nearby_schools_to")[0].innerHTML = "Schools nearby <i>" + addr.value + "</i>"
                 nearbySchools(searchLocale2)
+                $('#nearby_schools')[0].style.top = "5px"
                 localStorage[98] = lat
                 localStorage[97] = lon
             }
@@ -1064,11 +1083,19 @@ function fetchServices(school, query, icon){
 function customRemoveLayer (id) {
     mymap.eachLayer((layer) =>{
         if(layer.id == id){
+            console.log(layer)
             mymap.removeLayer(layer)
         }
     })
 }
 
+function showNearbySchools(){
+    $('#nearby_schools')[0].style.top = "5px"
+}
+
+function nearbycollapse(){
+    $('#nearby_schools')[0].style.top = "100%"
+}
 
 
 

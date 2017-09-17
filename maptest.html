@@ -162,16 +162,18 @@
 
 
 			<div id="sidebar" class="col-lg-3 col-md-3 col-sm-10 col-xs-12">
-				<div class="col-md-12 sidebar" id="removepad" >
+				<div class="col-md-12 sidebar noscroll" id="removepad" >
 					<div id="showSchoolBlock">
-						<div id="selectedSchool" >
+						<div id="selectedSchool" class="detailsPane" >
 							<h4><b>Click a school to get more info</b></h4>
 						</div>
-						<div id="nearby_services">
-							<h2>Nearby Schools</h2> <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
+						<div id="nearby_schools" class="detailsPane">
+							<div id="nearby_schools_to">Nearby Schools to </div> <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
 							km Search Radius
-						</div>
-						<div id="schoolDisplay">
+
+							<div id="schoolDisplay">
+
+							</div>
 
 						</div>
 					</div>

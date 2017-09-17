@@ -12,7 +12,7 @@ h4 {
     font-size: 12pt !IMPORTANT;
 }
 h3{
-    font-size: 14pt;
+    font-size: 16pt !important;
     padding-top: 3px;
     padding-bottom: 3px;
     margin-top: 5px;
@@ -396,6 +396,7 @@ background-color: rgba(0, 0, 0, 0.03);
 
 .addShortList{
     color: grey;
+    font-size: 12px;
     margin-right: 10px;
 }
 #selectedList{
@@ -412,7 +413,7 @@ background-color: rgba(0, 0, 0, 0.03);
     z-index: 999999999 !important;
     width: 300px !important;
 }
-#selectedSchool{
+.detailsPane{
     background-color: white;
     fill-opacity: .7;
     border-radius: 1px;
@@ -532,4 +533,59 @@ background-color: rgba(0, 0, 0, 0.03);
 }
 #BullyRate{
     height:fit-content;
+}
+.detailsPane1{
+    width: 100%;
+    padding-right: 5px;
+    display: block;
+    position: relative;
+    height: -webkit-fill-available !important;
+    overflow-y: auto;
+}
+.floatingbottombutton{
+    margin-top: 10px;
+    vertical-align: text-bottom;
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+}
+.panebutton{
+    width: 100%;
+    height: 30px;
+    color: white;
+    background-color: rgba(0, 68, 255, 0.56);
+    border: none;
+    border-radius: 4px;
+    vertical-align: bottom;
+    font-size: 11pt;
+}
+#nearby_schools{
+    position: absolute;
+    /*top: 100%;*/
+    left: 5px;
+    right: 5px;
+    overflow: scroll;
+    height: -webkit-fill-available;
+    transition: top 300ms ease-in 0s;
+
+}
+.noscroll{
+    overflow: hidden;
+}
+#nearby_schools_to{
+    font-size: 18px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+/*#back{*/
+    /*font-size: 12pt;*/
+    /*background-color: #1a3a95;*/
+    /*padding-bottom: 5px;*/
+    /*width: 100%;*/
+    /*color: #FFFFFF;*/
+/*}*/
+.leaflet-popup-content-wrapper, .leaflet-popup-tip{
+    background-color: #787c90
+
 }
