@@ -2,6 +2,7 @@
 $(document).ready(function() {
 
 
+
     console.log(localStorage)
     console.log('ready')
 
@@ -62,9 +63,19 @@ $(document).ready(function() {
     }
     if(localStorage[7] == 1){
         $("#bullyingChecked")[0].checked = true
+        $('#BullyRate')[0].style.display = "block"
     }
     else{
         $("#bullyingChecked")[0].checked = false
+        $('#BullyRate')[0].style.display = "none"
+    }
+    if(localStorage[21] == 1){
+        $("#servicesChecked")[0].checked = true
+        $('#community_services_legend')[0].style.display = "block"
+    }
+    else{
+        $("#servicesChecked")[0].checked = false
+        $('#community_services_legend')[0].style.display = "none"
     }
     if(!$("#GovernmentCheck")[0].checked && !$("#PrivateCheck")[0].checked  && !$("#CatholicCheck")[0].checked  ){
         $("#GovernmentCheck")[0].checked = true
@@ -89,6 +100,7 @@ $(document).ready(function() {
         window.onerror(function (error) {
             console.log(error)
         })
+
     })
 
 });
@@ -105,6 +117,8 @@ mymap.zoomControl.setPosition('bottomright');
 function buildMap(oldloc, zoom, repeat){
 
     //Get initial latlon
+
+    Storage = localStorage[60].split(',')
     let latlon = L.latLng()
 
     if(localStorage[98] == "undefined" || localStorage[98] == "undefined" ){
@@ -143,8 +157,10 @@ function buildMap(oldloc, zoom, repeat){
     //If stats enabled get LGA
 
     if (localStorage[7] == 1){
+        console.log('agklsb')
         mymap.spin(true)
         loadGeoJSON(mymap)
+        // $("#mapwrapper").load();
         $('#BullyRate')[0].style.display = "block"
     }
     else{
@@ -165,7 +181,7 @@ function loadGeoJSON(map){
     LGA.setStyle({fillColor: 'red'})
 
     //Get GeoJSON data on LGAs
-    if (document.getElementById("bullyingChecked").checked) {
+    // if (document.getElementById("bullyingChecked").checked) {
         $.getJSON("data/LGA_geojson.GeoJSON", function (data) {
             //Bind LGA to map
             $(data.features).each(function (key, data) {
@@ -176,16 +192,15 @@ function loadGeoJSON(map){
             if (document.getElementById("bullyingChecked").checked) {
                 bullyingColor(LGA)
             }
-            console.log(LGA)
         }).done(() =>{
             LGA.addTo(map)
             mymap.spin(false)
             console.log('print after LGA')
 
         })
-    }else{
+    // }else{
         mymap.spin(false)
-    }
+    // }
 
 }
 
@@ -196,7 +211,6 @@ function bullyingColor(GeoJSON){
         layer.setStyle({fillColor: getColor(layer.feature.properties.Indicator)})
             .bindPopup("<b>" + layer.feature.properties.LGA + "<br>Bullying rate: </b><span style='color: "+ getColor(layer.feature.properties.Indicator) +
                 "'>" + layer.feature.properties.Indicator + "% </span>" )
-        console.log(layer.feature.properties)
     })
 }
 
@@ -401,7 +415,6 @@ function clickSchool(e) {
     let Address = props.Address1
         + props.Address2 + ", " +
         props.Town + " " + props.PPostcode
-    console.log(Address)
 
     let streetView_imgURL = ""
     streetView_imgURL = encodeURI(("https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" +
@@ -473,6 +486,8 @@ function clickSchool(e) {
         // $("#showSchoolBlock").animate({scrollTop: 0}, 100);
 
         //Streetview event
+
+
         $('#streetviewImg').click(function () {
 
             console.log("click")
@@ -634,7 +649,7 @@ let searchMarker = new  L.marker()
 function filterMap(map) {
     let error = document.getElementById("error")
     let govt = document.getElementById("GovernmentCheck").checked
-    let private = document.getElementById("PrivateCheck").checked
+    let independent = document.getElementById("PrivateCheck").checked
     let catholic = document.getElementById("CatholicCheck").checked
     let LGBT = document.getElementById("LGBTchecked").checked
     let ASPE = document.getElementById("ASPEchecked").checked
@@ -645,7 +660,7 @@ function filterMap(map) {
 
     error.innerHTML = ""
 
-    if(!govt && !private && !catholic){
+    if(!govt && !independent && !catholic){
         console.log("Click a school")
         error.innerHTML = "Please select at least one school type"
     }
@@ -653,7 +668,7 @@ function filterMap(map) {
         if(govt){
             localStorage[2] = true
         }
-        if(private){
+        if(independent){
             localStorage[3] = true
         }
         if(catholic){
@@ -696,7 +711,10 @@ function filterMap(map) {
             mymap.removeLayer(layer);
         });
 
+        localStorage[60] = Shortlist
+
         buildMap(latlng, zoom, true)
+        window.location.reload()
 
     }
 }
@@ -773,40 +791,46 @@ function isNone(props){
 
 //Shortlist WILL REPLACE FAV LIST
 
-let Shortlist = []
+let Shortlist = localStorage[60].split(',')
+let favNum = Shortlist.length
+document.getElementById('numToCompare').innerHTML = favNum;
 
 function shortlist(schoolID) {
 
+    n = schoolID.toLowerCase().indexOf("check")
     //Add or remove shortlist
-    if(!inShortList(schoolID)){
-        Shortlist.push(schoolID)
-    }
-    else{
-        removeShortList(schoolID)
-    }
 
-    //Define selected schools list
-    let favNum = Shortlist.length
-    document.getElementById('numToCompare').innerHTML = favNum;
-    // document.getElementById('selectedSchools').innerHTML = "";
+    if(n < 0){
+        if(!inShortList(schoolID)){
+            Shortlist.push(schoolID)
+        }
+        else{
+            removeShortList(schoolID)
+        }
 
-    let favNames = []
-    Shortlist.map((e)=>{
-        $.getJSON("data/schoolList.json", function(json) {
-            json.map((school) => {
-                if(school.School_Id == e){
-                    favNames.push(school.School_Name)
-                }
+        //Define selected schools list
+        let favNum = Shortlist.length
+        document.getElementById('numToCompare').innerHTML = favNum;
+        // document.getElementById('selectedSchools').innerHTML = "";
+
+        let favNames = []
+        Shortlist.map((e)=>{
+            $.getJSON("data/schoolList.json", function(json) {
+                json.map((school) => {
+                    if(school.School_Id == e){
+                        favNames.push(school.School_Name)
+                    }
+                    return(favNames)
+                })
                 return(favNames)
+            }).then(() =>{
+                document.getElementById('selectedSchools').innerHTML = "";
+                for(i = 0; i < favNames.length; i++){
+                    document.getElementById('selectedSchools').innerHTML += "<li>" + favNames[i] + "</li>";
+                }
             })
-            return(favNames)
-        }).then(() =>{
-            document.getElementById('selectedSchools').innerHTML = "";
-            for(i = 0; i < favNames.length; i++){
-                document.getElementById('selectedSchools').innerHTML += "<li>" + favNames[i] + "</li>";
-            }
         })
-    })
+    }
 }
 
 //Fetch IDs for schools in which compare is checked
@@ -890,8 +914,6 @@ function doGeocode() {
 
             lat = results[0].geometry.location.lat()
             lon = results[0].geometry.location.lng()
-            console.log(lat)
-            console.log(lon)
 
             //Set bounds to victoria
             if(lon > 150.718821 || lon < 140.6568968 || lat > -33.8030981 || lat < -39.0317517){
@@ -901,9 +923,6 @@ function doGeocode() {
             }else{
                 document.getElementById('searcherror').innerHTML = ""
                 console.log("Valid Query")
-                console.log(addr)
-                console.log(status)
-                console.log(results[0])
                 console.log('search success')
                 let searchLocale2 = L.latLng(lat, lon)
                 localStorage[5] = $("#searchRadius")[0].value
@@ -1059,9 +1078,8 @@ function fetchServices(school, query, icon){
 
 
     let addmarker = (data) => {
-        console.log(data)
         if(query == "community sports club"){
-            data.icon = "icons/icons8-Dumbbell-48.png"
+            data.icon = "http://www.eduwell.ga/EduWell/icons/icons8-Dumbbell-48.png"
         }
         let icon = L.icon({
             iconUrl: data.icon,
@@ -1083,7 +1101,6 @@ function fetchServices(school, query, icon){
 function customRemoveLayer (id) {
     mymap.eachLayer((layer) =>{
         if(layer.id == id){
-            console.log(layer)
             mymap.removeLayer(layer)
         }
     })
