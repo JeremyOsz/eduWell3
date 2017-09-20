@@ -461,6 +461,11 @@ function clickSchool(e) {
             schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' style='height: 20px'>"
         }
 
+        let classSize = "Not Available"
+        if(props.AverageClassSize !== undefined && props.AverageClassSize !== null){
+            classSize = parseInt(props.AverageClassSize) + " students"
+        }
+
         document.getElementById("selectedSchool").innerHTML = (props ?
             "<div class='detailsPane1'>" +
             "<img style='width:100%;' id='streetviewImg' src='"
@@ -472,6 +477,7 @@ function clickSchool(e) {
             + "<a class='smalllink' href='" + props.web + "'>" + website + "</a></div>"
             + "<br><b>School Type: </b>" + schoolType_icon + " " + props.Sector
             + "<br><b>Students enrolled: </b>" + parseInt(props.Total) + "<br>" +
+            "<b>Average Class Size: </b>" + classSize + "<br>" +
             "<b>Buildings: </b>" + getBuildings(props) + "<br>" +
             "<b>Total building area: </b>" + getFloorArea(props) + "<br>"
             + "<b>Average Annual Investment: </b> " + getInvest(props) + "<br>"
