@@ -235,6 +235,7 @@ margin-bottom: 10px;
     display: inline-block;
     width: 20%;
     height:200px;
+    overflow: hidden !important;
 }
 #compare{
     cursor: pointer;
@@ -303,9 +304,10 @@ a{
 #logo{
     display: inline-block;
     width: 200px;
-    background-image: url('http://www.eduwell.ga/EduWell/icons/eduwelllogo.png') ;
+    background-image: url('http://www.eduwell.ga/EduWell/icons/eduwelllogovic_2_S.png') ;
     height: 100%;
     background-size: contain;
+    background-repeat: no-repeat;
 
 }
 #content{

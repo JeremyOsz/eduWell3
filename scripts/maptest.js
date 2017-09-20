@@ -666,13 +666,21 @@ function filterMap(map) {
     }
     else{
         if(govt){
-            localStorage[2] = true
+            localStorage[2] = 1
+        }
+        else{
+            localStorage[2] = 0
         }
         if(independent){
-            localStorage[3] = true
+            localStorage[3] = 1
+        } else {
+            localStorage[3] = 0
         }
         if(catholic){
-            localStorage[4] = true
+            localStorage[4] = 1
+        }
+        else{
+            localStorage[4] = 0
         }
         if(LGBT){
             localStorage[6] = 1
