@@ -29,15 +29,16 @@ $(document).ready(function() {
 
 var autocomplete;
 function initAutocomplete() {
-    var southWest = new google.maps.LatLng( -39.0777905,148.8913944);
-    var northEast = new google.maps.LatLng( -34.0061134,140.9758421);
-    var vicBounds = new google.maps.LatLngBounds( southWest, northEast )
+    // var southWest = new google.maps.LatLng( -39.0777905,148.8913944);
+    // var northEast = new google.maps.LatLng( -34.0061134,140.9758421);
+    // var vicBounds = new google.maps.LatLngBounds( southWest, northEast )
     autocomplete = new google.maps.places.Autocomplete(
         /** @type {HTMLInputElement} */(document.getElementById('mainsearch')),
         { types: ['geocode'],
             componentRestrictions: {country:'AU'}
         });
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    });
     });
 }
 
@@ -194,8 +195,11 @@ function sendSearchQuery(lat, lon, query){
         localStorage[8] = 1
         localStorage[7] = 0
         localStorage[21] = 1
+        localStorage[20] = 1
     }
     localStorage[99] = 1
     localStorage[55] = 0
+    localStorage[20] = 1
+    localStorage[60] = ""
     window.location.href = 'maptest.html';
 }

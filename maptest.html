@@ -53,8 +53,11 @@
 	<!-- Additional CSS Themes file - not required-->
 	<link rel="stylesheet" href="stylesheets/easy-autocomplete.themes.css">
 
-	<!-- Bootstrap Lightbox -->
-	<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.8/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+	<!-- Leaflet Locate -->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
+
+	<script src="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 
 
 
@@ -112,9 +115,11 @@
 				<img src="https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png" style="height: 30px;"> <i>Click a school to see nearby Community Services</i>
 			</div>
 		</div>
-			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rightbutton" style="padding-top: 5px">
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rightbutton" style="padding-top: 5px; text-align:center;">
 				<span id="compare_error" class="error"></span>
 				<button class="eduwellButton" id="compare" onclick="compare()">Compare Schools (<span id="numToCompare">0</span>) ></button>
+
+				<button class="smallbutton" onclick="shortlistDelete()">clear comparison list</button>
 			</div>
 		</div>
 		<div class = "row" style="height:80%; margin-top: 0;">
@@ -181,52 +186,7 @@
 				</div>
 			</div>
 		</div>
-		<!--<div class="row" id="row2">-->
-			<!--<div class="col-lg-9 col-md-9 col-sm-10 col-xs-12" style="padding-right: 0;" >-->
-				<!--<div class="col-md-12 sidebar" id="Legend" >-->
-					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
-						<!--<h4>Legend</h4>-->
-						<!--<img src='http://www.eduwell.ga/EduWell/icons/cluster.png' height='30'> School Cluster<br>-->
-						<!--<img src='http://www.eduwell.ga/EduWell/icons/marker.png' height='30'> Search Location-->
-					<!--</div>-->
 
-					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
-						<!--<h4>Bullying Rate</h4>-->
-						<!--<div class='Low'></div> Low <br>-->
-						<!--<div class='Med'></div> Medium <br>-->
-						<!--<div class='High'></div> High-->
-					<!--</div>-->
-					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
-						<!--<h4>School Type</h4>-->
-						<!--<h5>(All schools sized by students enrolled)</h5>-->
-						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' height='30'> Government School <br>-->
-						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' height='30'> Catholic School <br>-->
-						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' height='30'> Private/ Independent School <br>-->
-					<!--</div>-->
-					<!--<div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4">-->
-						<!--<h4>Programs offered</h4>-->
-
-						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png' height='30'> Safe Schools (LGBTA support) <br>-->
-						<!--<img src='http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png' height='30'> After School Physical Education-->
-					<!--</div>-->
-				<!--</div>-->
-			<!--</div>-->
-			<!--<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" style="padding-top: 5px;overflow: visible; height: 300px">-->
-				<!--<div class="col-md-12 sidebar" style="padding-top: 5px">-->
-
-
-					<!--<span id="compare_error" class="error"></span>-->
-					<!--<input type="button" class="eduwellButton" id="compare" value="Compare" onclick="compare()">-->
-					<!--<div class="dropdown" style="text-align: center">-->
-						<!--<button class="btn dropdown-toggle" id="selectedList" type="button" data-toggle="dropdown"><h4>View Shortlist (<span id="numToCompare">0</span>)-->
-							<!--<span class="caret"></span><h4></button>-->
-						<!--<ul id='selectedSchools' class="dropdown-menu">-->
-
-						<!--</ul>-->
-					<!--</div>-->
-				<!--</div>-->
-			<!--</div>-->
-		<!--</div>-->
 
 
 	</section>
@@ -243,7 +203,7 @@
 	</section>
 
 	<!-- FEATHERLIGHT for lightboxing images -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8_Lkt5jSWuogp6GB4IKivTDBzVhVmf8Y&libraries=places&callback=initAutocomplete"
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqwXeBF0eH49temHUaJR49atlSoTgBPzo&libraries=places&callback=initAutocomplete"
 			async defer type="text/javascript"></script>
 	<!--<script async defer-->
 			<!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJFCdTyCdRyeBmCQQOOUDBjMjsNluWe28&callback=initialize">-->

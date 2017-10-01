@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+            integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+            crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+          integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+          crossorigin=""/>
+
 
     <style>
         .content1 {
@@ -19,8 +27,8 @@
             overflow: scroll;
             -webkit-overflow-scrolling: touch;
             margin-bottom: 30px;
-            padding-left: 10%;
-            padding-right: 10%;
+            /*padding-left: 10%;*/
+            /*padding-right: 10%;*/
         }
 
         .float-left .card {
@@ -36,7 +44,7 @@
             margin: 15px;
             padding-top: 40px;
             overflow: auto;
-            height: 975px;
+            height: 1200px;
         }
 
         .favDel {
@@ -81,6 +89,10 @@
         h4{
 
         }
+        .extrapad{
+            padding-left: 5%;
+            padding-right: 5%;
+        }
     </style>
 </head>
 
@@ -112,10 +124,10 @@
     </div>
 
     </button>
-
+    <div id="map" hidden></div>
 
 </section>
-<div id="map" style="display: none"></div>
+
 
 
 <section id="content" class="container">
@@ -130,26 +142,27 @@
 
 
     <!--<script type="text/javascript" src="data/schoolList.json" async></script>-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8_Lkt5jSWuogp6GB4IKivTDBzVhVmf8Y&libraries=places"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqwXeBF0eH49temHUaJR49atlSoTgBPzo&libraries=places"
             async defer type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-    google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+
         function load() {
+
+//            require()
 
             let element = document.getElementById('data');
             $.getJSON("data/schoolList.json", function (json) {
                 var mydata = json
                 let datalength = localStorage[100]
                 console.log(datalength)
-                var passdata = {};
+                var passdata = [];
                 for (i = 0; i < datalength; i++) {
                     passdata[i] = localStorage[i]
                 }
                 let colsizes = "";
                 if(datalength < 3){
-                    colsizes = "col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                    colsizes = "col-lg-6 col-md-6 col-sm-12 col-xs-12 extrapad"
                 }
                 else{
                     colsizes = "col-lg-4 col-md-6 col-sm-12 col-xs-12"
@@ -158,25 +171,18 @@
                 //Get Website
 
 
-                service = new google.maps.places.PlacesService(document.getElementById('map'))
-                let website = ""
+                //service = new google.maps.places.PlacesService(document.getElementById('map'))
+                //let website = ""
 
 
 
                 mydata.map((data) => {
-                    x = 1
+                    x = 1;
                     for (i in passdata) {
                         if (passdata[i] == data.School_Id) {
 
 
-                            ///
-                            ///
-                            ///
-                            ///
-                            ///
-                            ///
-                            ///
-                            //Get Website and other ma data FLANNERY USE THIS
+//                            Get Website and other ma data FLANNERY USE THIS
                             let Address = data.Address1
                                 + data.Address2 + ", " +
                                 data.Town + " " + data.PPostcode
@@ -187,23 +193,36 @@
                                 keyword: [(data.School_Name + "," + Address)]
                             }
 
-                            service.nearbySearch(request, (results)=>{
-                                placeId = results[0].place_id
+                            try {
+                                service = new google.maps.places.PlacesService(document.getElementById('map'))
+                                service.nearbySearch(request, (results) => {
+                                    placeId = results[0].place_id
 
-                                service.getDetails({
-                                    placeId: placeId
-                                },(details) => {
-                                    website = details.website
-                                    addDetails()
+                                    service.getDetails({
+                                        placeId: placeId
+                                    }, (details) => {
+                                        website = details.website
+                                        console.log(website)
+                                        if (website == undefined || website == null) {
+                                            website = "N/A"
+                                        }
+                                        addDetails()
+                                    })
                                 })
-                            })
-                            //addDetails()
+                            }
+                            catch (err){
+                                console.log('error')
+                                console.log(err)
+                                website = data.NewWeb
+                                if(website == undefined || website == null)
+                                {
+                                website = "N/A"
+                                }
+                                addDetails()
+                            }
 
-                            ////////////////////////////////////
-                            ///
-                            ///
-                            ///
-                            ///
+
+
 
                             function addDetails (){
                                 let Address = data.Address1 + data.Address2 + ", " + data.Town + " " + data.PPostcode;
@@ -211,10 +230,20 @@
                                 var widthBoy = parseFloat(Math.round(data.Male/(data.Male+data.Female) * 100) ).toFixed(2) + "%";
                                 var widthGirl = parseFloat(Math.round(data.Female/(data.Male+data.Female) * 100) ).toFixed(2) + "%";
 
+                                //Class size
                                 let classSize = "Not Available"
                                 if(data.AverageClassSize !== undefined && data.AverageClassSize !== null){
                                     classSize = parseInt(data.AverageClassSize) + " students"
                                 }
+
+                                //Calculate distance
+                                area = L.latLng(localStorage[98],localStorage[97])
+                                areaName = localStorage[96]
+                                schoolLoc = L.latLng(data.Latitude, data.Longitude)
+                                distance = area.distanceTo(schoolLoc)
+                                console.log(distance)
+
+
 
                                 element.innerHTML += "<div class='" + colsizes + "'>" +
                                     "<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 card sidebar' id=" + x + "> " +
@@ -238,9 +267,10 @@
                                     "<b>Safe Schools (LGBT Support):</b> " + isLGBT(data) + "<br>" +
                                     "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png' height='30'>" +
                                     "<b>ASPE Support:</b> " + isASPE(data) + "<br>" +
-                                    "<p style='text-align:center; font-style:italic'>" + Address + '<br>' + data.Phone + "<br><br>" +
+                                    "<p style='text-align:center; font-style:italic'>" + Address + '<br>' + data.Phone + "<br>" +
+                                    (distance/1000).toFixed(2) + "km from " + areaName + "<br><br>" +
 
-                                    "<b><a href='" + data['New.web'] + "'><button class='infobutton eduwellButton'>More Information</button></a>"
+                                    "<b><a href='" + website + "' target='_blank'><button class='infobutton eduwellButton'>More Information</button></a>"
                                 $(".favDel").on('click', function (del) {
                                     let id = del.target.id
                                     let cards = $(".card")
@@ -248,8 +278,16 @@
                                     console.log(id)
                                     for (i = 0; i < cards.length; i++) {
                                         if (cards[i].id == id) {
-                                            console.log()
+                                            console.log(id)
                                             cards[i].parentElement.parentElement.removeChild(cards[i].parentElement)
+                                            console.log(passdata)
+                                            passdata = passdata.filter((x) => {
+                                                console.log(x)
+                                                console.log(data.School_Id)
+                                                return x != data.School_Id
+                                            })
+                                            console.log(passdata)
+                                            localStorage[60] = passdata
                                         }
                                     }
                                 })
@@ -397,28 +435,9 @@
 
             }
 
-//                function isNone(props) {
-//                 if (!props.LGBT && props.AS_Phys == "N") {
-//                        return "None Available"
-//                    } else {
-//                        return ""
-//                    }
-//                }
 //
-//
-//					for(var i = 0;i < mydata.length; i++)
-//					{
-//					for(j in passdata)
-//					{
-//					if(passdata[j] == mydata[i].School_Id)
-//					{
-//
-//					element.innerHTML = element.innerHTML + "<div class='card' id="+i+">"+ mydata[i].School_Name + " - " + mydata[i].Sector +"</div>";
-//					}
-//					}
-//					}
 
-}	
+}
 
 	
     </script>

@@ -384,7 +384,7 @@ background-color: rgba(0, 0, 0, 0.03);
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 0px;
-    height: fit-content;
+    height: 45px;
     vertical-align: bottom;
     position: relative;
     display: block;
@@ -590,4 +590,22 @@ background-color: rgba(0, 0, 0, 0.03);
 .leaflet-popup-content-wrapper, .leaflet-popup-tip{
     background-color: #787c90
 
+}
+.smallbutton{
+    margin: 2px;
+    height: 25px;
+    border: none;
+    background-color: lightgray;
+    font-size: 12;
+    border-radius: 5%;
+    transition: background-color 300ms ease-in 0s;
+    /*float:right;*/
+}
+.smallbutton:hover{
+    background-color: #969888;
+}
+
+/* Compatible with Leaflet 0.7 */
+.leaflet-bar-part {
+    padding-top: 5px;
 }

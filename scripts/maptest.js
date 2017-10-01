@@ -82,6 +82,9 @@ $(document).ready(function() {
         $("#PrivateCheck")[0].checked = true
         $("#CatholicCheck")[0].checked = true
     }
+    if(localStorage[60] == undefined || localStorage[60] == null){
+        localStorage[60] = ""
+    }
 
     //Check favbox
     $(document).on('change', 'input[type="checkbox"]', function(e){
@@ -152,6 +155,29 @@ function buildMap(oldloc, zoom, repeat){
         id: 'mapbox.streets',
         accessToken: 'pk.eyJ1Ijoiam9zenRyZWljaGVyIiwiYSI6ImNqNmJicmxtczE3ZnUydnFybWl4am94bnAifQ.AqK2Zt30_RpbcPHLatRS2A'
     }).addTo(mymap);
+
+    //Add locate user function
+    var lc = L.control.locate({
+        position: 'bottomright',
+        drawCircle: false,
+        markerClass: L.marker,
+        strings: {
+            title: "Use current location",
+            popup: "Your current location"
+        }
+    }).addTo(mymap);
+
+    //Locate user event
+    mymap.on('locationfound', (e) => {
+        console.log(e)
+        nearbySchools(e.latlng)
+        $("#nearby_schools_to")[0].innerHTML = "Schools near you";
+        $('#nearby_schools')[0].style.top = "5px"
+        document.getElementById('searchbox').placeholder = "Enter a location"
+        localStorage[96] = "You"
+        localStorage[97] = e.longitude
+        localStorage[98] = e.latitude
+    })
 
 
     //If stats enabled get LGA
@@ -556,9 +582,11 @@ function clickMarker (e) {
     //Mark as selected
     let checkbox = ""
 
-    document.getElementById("selectedSchool").style.height = "150px";
+    // document.getElementById("selectedSchool").style.height = "150px";
 
-    document.getElementById("selectedSchool").innerHTML = "<h3>" + Id + "</h3>"
+    // document.getElementById("selectedSchool").innerHTML = "<h3>" + Id + "</h3>"
+    $("#nearby_schools_to")[0].innerHTML = "Schools nearby " + "<i>" + e.target.id + "</i>"
+    $('#nearby_schools')[0].style.top = "5px"
 
     //Find nearby schools to clicked school
     // nearbySchools(L.latLng(props.Latitude, props.Longitude))
@@ -567,6 +595,7 @@ function clickMarker (e) {
 
 //Find nearby schools to specified area
 function nearbySchools(latlon){
+    console.log(latlon)
     let area = latlon //Area from which nearby schools is measured
     let threshold = localStorage[5]*1000 //Threshold for distance to travel
     //default to 3000 if invalid
@@ -608,9 +637,9 @@ function nearbySchools(latlon){
 
             //Define icon
             let schoolType_icon = ""
-            if(school.Sector == "Government"){schoolType_icon = "<img src='icons/icons8-Govt2.png' style='height: 20px'>"}
-            if(school.Sector == "Catholic"){schoolType_icon = "<img src='icons/icons8-Catholic.png' style='height: 20px'>"}
-            if(school.Sector == "Independent"){schoolType_icon = "<img src='icons/icons8-Private.png' style='height: 20px'>"}
+            if(school.Sector == "Government"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png' style='height: 20px'>"}
+            if(school.Sector == "Catholic"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png' style='height: 20px'>"}
+            if(school.Sector == "Independent"){schoolType_icon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Private.png' style='height: 20px'>"}
 
 
             document.getElementById('schoolDisplay').innerHTML += "<div class='schoolListEntry' id='"+ school.School_Id + "'> " +
@@ -725,6 +754,7 @@ function filterMap(map) {
             mymap.removeLayer(layer);
         });
 
+
         localStorage[60] = Shortlist
 
         buildMap(latlng, zoom, true)
@@ -805,7 +835,10 @@ function isNone(props){
 
 //Shortlist WILL REPLACE FAV LIST
 
-let Shortlist = localStorage[60].split(',')
+let Shortlist = []
+if(localStorage[60] !== ""){
+    Shortlist = localStorage[60].split(',')
+}
 let favNum = Shortlist.length
 document.getElementById('numToCompare').innerHTML = favNum;
 
@@ -843,8 +876,22 @@ function shortlist(schoolID) {
                     document.getElementById('selectedSchools').innerHTML += "<li>" + favNames[i] + "</li>";
                 }
             })
+        }).then(() => {
+            localStorage[60] = Shortlist
         })
     }
+}
+
+function shortlistDelete(){
+    Shortlist = []
+    document.getElementById('numToCompare').innerHTML = 0;
+    let favs = $(".favcheck")
+    for(let i = 0; i < favs.length; i++){
+        console.log(favs[i])
+        favs[i].checked = false
+
+    }
+    localStorage[60] = ""
 }
 
 //Fetch IDs for schools in which compare is checked
@@ -858,6 +905,8 @@ function compare(){
         for(i in Shortlist){
             localStorage[i] = Shortlist[i]
         }
+        localStorage[60] = Shortlist
+        localStorage[61] =
         window.location.href = 'comparison.html';
         return Shortlist
     }
@@ -895,9 +944,9 @@ function removeShortList(SchoolID){
 
 var autocomplete;
 function initAutocomplete() {
-    var southWest = new google.maps.LatLng( -39.0777905,148.8913944);
-    var northEast = new google.maps.LatLng( -34.0061134,140.9758421);
-    var vicBounds = new google.maps.LatLngBounds( southWest, northEast )
+    // var southWest = new google.maps.LatLng( -39.0777905,148.8913944);
+    // var northEast = new google.maps.LatLng( -34.0061134,140.9758421);
+    // var vicBounds = new google.maps.LatLngBounds( southWest, northEast )
     autocomplete = new google.maps.places.Autocomplete(
         /** @type {HTMLInputElement} */(document.getElementById('searchbox')),
         { types: ['geocode'],
@@ -906,12 +955,14 @@ function initAutocomplete() {
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
     });
     console.log('Autocomplete Activated')
+    document.getElementById('searchbox').placeholder = localStorage[96]
 }
 
 
 
 function doGeocode() {
     var addr = document.getElementById("searchbox");
+    localStorage[96] = addr.value;
     // Get geocoder instance
     var geocoder = new google.maps.Geocoder();
 
