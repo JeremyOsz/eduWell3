@@ -148,7 +148,6 @@ $.getJSON("data/schoolList.json", function(json) {
     SchoolListJSON = json
 }).done(() => {
     //Initialise map and search
-    mymap = buildMap()
     $.get('connecttest.php', function (json) {
         console.log("adbg;asbd");
         SchoolListJSON = JSON.parse(json)
@@ -161,6 +160,7 @@ $.getJSON("data/schoolList.json", function(json) {
             SchoolListJSON = json
         })
     })
+    mymap = buildMap()
 
 })
 //Establish leaflet map
@@ -697,10 +697,10 @@ $.getJSON("data/schoolList.json", function(json) {
             threshold = 3000
         }
         let nearbySchools = []
-        $.getJSON("data/schoolList.json", function (json) {
-            return json
-        }).then((json) => {
-            json.map((item) => {
+        // $.getJSON("data/schoolList.json", function (json) {
+        //     return json
+        // }).then((json) => {
+            SchoolListJSON.map((item) => {
                 let schoolLoc = L.latLng(item.Latitude, item.Longitude)
                 let distance = area.distanceTo(schoolLoc)
                 if (distance < threshold && distance > 0) {
@@ -768,7 +768,7 @@ $.getJSON("data/schoolList.json", function(json) {
                     clickNearbySchool(e)
                 })
             })
-        })
+        // })
     }
 
 
@@ -958,8 +958,7 @@ $.getJSON("data/schoolList.json", function(json) {
 
             let favNames = []
             Shortlist.map((e) => {
-                $.getJSON("data/schoolList.json", function (json) {
-                    json.map((school) => {
+                SchoolListJSON.map((school) => {
                         if (school.School_Id == e) {
                             favNames.push(school.School_Name)
                         }
@@ -972,9 +971,7 @@ $.getJSON("data/schoolList.json", function(json) {
                         document.getElementById('selectedSchools').innerHTML += "<li>" + favNames[i] + "</li>";
                     }
                 })
-            }).then(() => {
-                localStorage[60] = Shortlist
-            })
+            localStorage[60] = Shortlist
         }
     }
 
@@ -1097,8 +1094,8 @@ $.getJSON("data/schoolList.json", function(json) {
 
     function clickNearbySchool(e) {
         let id = e.currentTarget.id
-        $.getJSON("data/schoolList.json", function (json) {
-            school = json.filter((data) => {
+        // $.getJSON("data/schoolList.json", function (json) {
+            school = SchoolListJSON.filter((data) => {
                 return data.School_Id == id
             })
             let latlon = L.latLng(school[0].Latitude, school[0].Longitude)
@@ -1119,7 +1116,7 @@ $.getJSON("data/schoolList.json", function(json) {
                 }
 
             })
-        })
+        // })
     }
 
     function hoverNearbySchool(e) {
@@ -1196,8 +1193,8 @@ $.getJSON("data/schoolList.json", function(json) {
             "Community Services near <i>" + school.School_Name + ":</i><br><br>";
 
         customRemoveLayer("nearby_service")
-        $.getJSON("data/schoolList.json", function (json) {
-            json.map((d) => {
+        // $.getJSON("data/schoolList.json", function (json) {
+            SchoolListJSON.map((d) => {
                 if (d.School_Id == school.School_Id) {
                     console.log(school)
                     fetchServices(school, "after school care")
@@ -1205,7 +1202,7 @@ $.getJSON("data/schoolList.json", function(json) {
                     fetchServices(school, "community sports club")
                 }
             })
-        })
+        // })
 
         // fetchServices(school, "doctors")
     }
@@ -1276,14 +1273,14 @@ $.getJSON("data/schoolList.json", function(json) {
     function populateShortlist() {
         console.log(Shortlist)
         $('#SchoolListDropdown')[0].innerHTML = ""
-        $.getJSON("data/schoolList.json", function (json) {
-            json.map((d) => {
+        // $.getJSON("data/schoolList.json", function (json) {
+            SchoolListJSON.map((d) => {
                 if (inShortList(d.School_Id)) {
                     $('#SchoolListDropdown')[0].innerHTML += "<li>" + d.School_Name + "</li>"
                     console.log(d.School_Name)
                 }
             })
-        })
+        // })
 
     }
 

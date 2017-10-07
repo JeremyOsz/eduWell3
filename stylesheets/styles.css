@@ -312,7 +312,7 @@ a{
 }
 #content{
     margin: 10px 10px 10px 10px;
-    padding-left: 50px !important;
+    /*padding-left: 50px !important;*/
     padding-right: 50px !important;
     width: -webkit-fill-available;
 }
@@ -674,4 +674,11 @@ background-color: rgba(0, 0, 0, 0.03);
 .disclaimer{
     width: 70%;
     display: inline-block;
+}
+#menu-homepage{
+    margin-right: 5px;
+    background-color: #aee089;
+}
+.menu-item:hover{
+    background-color: #5aa62f
 }
