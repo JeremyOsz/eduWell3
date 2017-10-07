@@ -44,7 +44,7 @@
             margin: 15px;
             padding-top: 40px;
             overflow: auto;
-            height: 1200px;
+            height: 1040px;
         }
 
         .favDel {
@@ -135,10 +135,34 @@
         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
             <button class="eduwellButton" onclick="window.location.href = 'maptest.html'">< Back to Map</button>
         </div>
+<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6" style="float:right">
+            <button class="eduwellButton" onclick="printFunction()">Print The Result ></button>
+        </div>
     </div>
     <div class="row">
         <div class="content1 float-left" id="data"></div>
     </div>
+</section>
+
+<section class="footer header">
+    <div style="padding-left: 20px" class="smalltext">
+        <div class="attribution">
+            <a href="https://developers.google.com/places/" target="_blank"><img src="https://vignette1.wikia.nocookie.net/ichc-channel/images/7/70/Powered_by_google.png/revision/latest?cb=20160331203712">
+            </a>
+        </div>
+        <div class="attribution">
+            <a href="https://icons8.com/" target="_blank">
+                <img src="https://maxcdn.icons8.com/Share/icon/color/Logos//icons8_logo1600.png" height="40" style="display: inline-block;">
+                icons from icons8
+            </a>
+        </div>
+        <div class="disclaimer">
+            This website was created for educational purposes. All data contained within has been included in accordance with open licenses. Any violation of copyright has occured without knowlege and will warrant the immediate removal of infringing material on notification.
+
+        </div>
+    </div>
+
+</section>
 
 
     <!--<script type="text/javascript" src="data/schoolList.json" async></script>-->
@@ -146,6 +170,10 @@
             async defer type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+
+function printFunction() {
+    window.print();
+}
 
         function load() {
 
@@ -250,27 +278,27 @@
                                     "<button class='favDel glyphicon glyphicon-remove' type='checkbox' id=" + x +
                                     "></button>" +
                                     "<h4 style='text-align:center; height:50px; font-size:18pt !important; color:black; font-weight:bold;'>" + data.School_Name + "</h4>" +
-                                    "<img style='height:21%; width:100%;' id='streetviewImg' src='" + streetView_imgURL + "'>" +
+                                    "<img style='height:21%; width:100%;' id='streetview_Img' class='nohover' src='" + streetView_imgURL + "'>" +
                                     "<br><br><b>Sector:</b> " + data.Sector + "<br><br>" +
+                                    "<b>Distance: </b>" + (distance/1000).toFixed(2) + "km from " + areaName + "<br><br>" +
                                     "<b>Students enrolled: </b>" + getStudentsIcon(data) + "<br>" +
-                                        "<b>Average Class Size: </b>" + classSize + "<br><br>" +
+                                    "<b>Average Class Size: </b>" + classSize + "<br><br>" +
                                     "<h4>Gender Balance:</h4>" +
-                                    "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Boy-48.png' height='30'>" +
+                                    "<img src='http://35.189.25.144/EduWell/icons/icons8-Boy-48.png' height='30'>" +
                                     "<b>Male: </b>" + parseInt(data.Male) + "  <div class='chart'><div style='width:" + widthBoy + "'>" + widthBoy + "</div></div><br>" +
-                                    "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Girl-64.png' height='30'>" +
+                                    "<img src='http://35.189.25.144/EduWell/icons/icons8-Girl-64.png' height='30'>" +
                                     "<b>Female: </b>" + parseInt(data.Female) + "  <div class='chart'><div style='width:" + widthGirl + "'>" + widthGirl + "</div></div><br>" +
                                     "<b>Buildings: </b>" + getBuildingsIcon(data) + "<br>" +
                                     "<b>Total building area: </b>" + getFloorAreaIcon(data) + "<br>" +
-                                    "<b>Average Annual Investment <img style='height:18px' src='http://www.eduwell.ga/EduWell/icons/icons8-About-26.png' title='Investments for capital and  maintenance works, &#013;parent contributions received in advance for &#013;curriculum and camps, school specific programs&#013;and on behalf of the school community.' /> : </b> " + getInvestIcon(data) + "<br>" +
+                                    "<b>Average Annual Investment <img style='height:18px' src='http://35.189.25.144/EduWell/icons/icons8-About-26.png' title='Investments for capital and  maintenance works, &#013;parent contributions received in advance for &#013;curriculum and camps, school specific programs&#013;and on behalf of the school community.' /> : </b> " + getInvestIcon(data) + "<br>" +
                                     "<h4>Special Programs:</h4>" +
-                                    "<img src='http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png' height='30'>" +
+                                    "<img src='http://35.189.25.144/EduWell/icons/icons8-LGBT Flag-48.png' height='30'>" +
                                     "<b>Safe Schools (LGBT Support):</b> " + isLGBT(data) + "<br>" +
-                                    "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png' height='30'>" +
+                                    "<img src='http://35.189.25.144/EduWell/icons/icons8-Exercise-48.png' height='30'>" +
                                     "<b>ASPE Support:</b> " + isASPE(data) + "<br>" +
-                                    "<p style='text-align:center; font-style:italic'>" + Address + '<br>' + data.Phone + "<br>" +
-                                    (distance/1000).toFixed(2) + "km from " + areaName + "<br><br>" +
+                                    "<p style='text-align:center; font-style:italic'>" + Address + '<br>' + data.Phone + "<br><br>" +
 
-                                    "<b><a href='" + website + "' target='_blank'><button class='infobutton eduwellButton'>More Information</button></a>"
+                                    "<b><a href='" + website + "' target='_blank'><button class='infobutton eduwellButton'>Visit The School Website</button></a>"
                                 $(".favDel").on('click', function (del) {
                                     let id = del.target.id
                                     let cards = $(".card")
@@ -302,16 +330,16 @@
 
             let isLGBT = (props) => {
                 if (props.LGBT == "Y") {
-                    return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Tick-26.png' height='19'> Yes <br>";
+                    return "<img src='http://35.189.25.144/EduWell/icons/icons8-Tick-26.png' height='19'> Yes <br>";
                 }
                 else {
-                    return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Multiply-26.png' height='19'> No <br>";
+                    return "<img src='http://35.189.25.144/EduWell/icons/icons8-Multiply-26.png' height='19'> No <br>";
                 }
             }
 
 
             function getStudentsIcon(props) {
-                let StudentIcon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Students-48.png' height='19'>";
+                let StudentIcon = "<img src='http://35.189.25.144/EduWell/icons/icons8-Students-48.png' height='19'>";
                 if (props.Total > 1) {
                     if (parseInt(props.Total) > 0 & parseInt(props.Total) < 615) {
                         return StudentIcon + "    (" + parseInt(props.Total) + " Students)" +
@@ -340,7 +368,7 @@
             }
 
             function getBuildingsIcon(props) {
-                let BuildingsIcon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Building-48.png' height='19'>";
+                let BuildingsIcon = "<img src='http://35.189.25.144/EduWell/icons/icons8-Building-48.png' height='19'>";
                 if (props.BuildingNumber > 1) {
                     if (parseInt(props.BuildingNumber) > 0 & parseInt(props.BuildingNumber) < 17) {
                         return BuildingsIcon + "    (" + parseInt(props.BuildingNumber) + " Buildings)" +
@@ -369,7 +397,7 @@
             }
 
             function getFloorAreaIcon(props) {
-                let FloorAreaIcon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Swingset-50.png' height='19'>";
+                let FloorAreaIcon = "<img src='http://35.189.25.144/EduWell/icons/icons8-Swingset-50.png' height='19'>";
                 if (props.FloorArea > 1) {
                     if (parseInt(props.FloorArea) > 0 & parseInt(props.FloorArea) < 5156) {
                         return FloorAreaIcon + "    (" + parseInt(props.FloorArea) + " Square Metres)" +
@@ -398,7 +426,7 @@
             }
 
             function getInvestIcon(props) {
-                let InvestIcon = "<img src='http://www.eduwell.ga/EduWell/icons/icons8-AustralianDollar-64.png' height='19'>";
+                let InvestIcon = "<img src='http://35.189.25.144/EduWell/icons/icons8-AustralianDollar-64.png' height='19'>";
                 if (parseInt(props.Investment) > 1) {
                     if (parseInt(props.Investment) > 0 & parseInt(props.Investment) < 2030218) {
                         return InvestIcon + "    ($" + props.Investment + ")" +
@@ -428,9 +456,9 @@
 
             function isASPE(props) {
                 if (props.AS_Phys == "Y") {
-                    return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Tick-26.png' height='19'> Yes <br>";
+                    return "<img src='http://35.189.25.144/EduWell/icons/icons8-Tick-26.png' height='19'> Yes <br>";
                 } else {
-                    return "<img src='http://www.eduwell.ga/EduWell/icons/icons8-Multiply-26.png' height='19'> No <br>";
+                    return "<img src='http://35.189.25.144/EduWell/icons/icons8-Multiply-26.png' height='19'> No <br>";
                 }
 
             }

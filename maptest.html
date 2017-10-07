@@ -112,14 +112,23 @@
 			</div>
 
 			<div id="community_services_legend" style="width:-webkit-fill-available">
-				<img src="https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png" style="height: 30px;"> <i>Click a school to see nearby Community Services</i>
+				 <i>Click a school to explore and <b>compare</b></i>
 			</div>
 		</div>
-			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rightbutton" style="padding-top: 5px; text-align:center;">
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 rightbutton" style="padding-top: 5px;">
 				<span id="compare_error" class="error"></span>
 				<button class="eduwellButton" id="compare" onclick="compare()">Compare Schools (<span id="numToCompare">0</span>) ></button>
+				<div class="dropdown">
+					<button class="smalldropdown dropdown-toggle" type="button" data-toggle="dropdown" onclick="populateShortlist()"> View Shortlist
+						<span class="caret"></span></button>
+					<ul class="dropdown-menu" id="SchoolListDropdown">
+						<!--<li><a href="#">HTML</a></li>-->
+						<!--<li><a href="#">CSS</a></li>-->
+						<!--<li><a href="#">JavaScript</a></li>-->
+					</ul>
+				</div>
 
-				<button class="smallbutton" onclick="shortlistDelete()">clear comparison list</button>
+				<button class="smallbutton" onclick="shortlistDelete()">Clear</button>
 			</div>
 		</div>
 		<div class = "row" style="height:80%; margin-top: 0;">
@@ -131,20 +140,20 @@
 							<h2>Filters</h2>
 							<div id="Filters">
 							<h4>School Type</h4>
-								<div class="filterinput"><input id="GovernmentCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Govt2.png" height="30">Public <br> </div>
-								<div class="filterinput"><input id="PrivateCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Private.png" height="30">Private/ Independent <br> </div>
-								<div class="filterinput"><input id="CatholicCheck" type="checkbox" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Catholic.png" height="30">Catholic <br></div>
+								<div class="filterinput"><input id="GovernmentCheck" type="checkbox" checked> <img src="http://35.189.25.144/EduWell/icons/icons8-Govt2.png" height="30">Public <br> </div>
+								<div class="filterinput"><input id="PrivateCheck" type="checkbox" checked> <img src="http://35.189.25.144/EduWell/icons/icons8-Private.png" height="30">Private/ Independent <br> </div>
+								<div class="filterinput"><input id="CatholicCheck" type="checkbox" checked> <img src="http://35.189.25.144/EduWell/icons/icons8-Catholic.png" height="30">Catholic <br></div>
 							</div>
 							<p id="DisplayBadges">
 							<h4>Special program availability</h4>
-							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br></div>
-							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="ASPEchecked" checked> <img src="http://www.eduwell.ga/EduWell/icons/icons8-Exercise-48.png" height="30">After School Physical Education (regional only)<br></div>
+							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="LGBTchecked" checked> <img src="http://35.189.25.144/EduWell/icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBTIA Support) <br></div>
+							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="ASPEchecked" checked> <img src="http://35.189.25.144/EduWell/icons/icons8-Exercise-48.png" height="30">After School Physical Education (regional only)<br></div>
 							<div class="filterinput"><input class="filtercheckbox" type="checkbox" id="NAchecked" checked> No programs listed <br></div>
 							</p>
-							<p id="Statistics">
-							<h2>Other Information</h2>
-							<input type="checkbox" id="servicesChecked"> Nearby Community Services <br>
-							</p>
+							<!--<p id="Statistics">-->
+							<!--<h2>Other Information</h2>-->
+							<!--<input type="checkbox" id="servicesChecked"> Nearby Community Services <br>-->
+							<!--</p>-->
 							<p id="Statistics">
 							<h2>Statistics</h2>
 							<input type="checkbox" id="bullyingChecked"> Bullying by Local Government Area <br>
@@ -173,8 +182,18 @@
 						<div id="selectedSchool" class="detailsPane" >
 							<h4><b>Click a school to get more info</b></h4>
 						</div>
+						<div id="buttonPane"></div>
 						<div id="nearby_schools" class="detailsPane">
 							<div id="nearby_schools_to">Nearby Schools to </div> <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
+							km Search Radius
+
+							<div id="schoolDisplay">
+
+							</div>
+
+						</div>
+						<div id="nearby_services" class="detailsPane">
+							<div id="nearby_services_to">Nearby Services to </div> <input id="searchRadius" type="number" id="replyNumber" min="0" max="15" data-bind="value:replyNumber" value="3" />
 							km Search Radius
 
 							<div id="schoolDisplay">
@@ -191,6 +210,24 @@
 
 	</section>
 	<section class="footer header">
+        <div style="padding-left: 20px" CLASS="smalltext">
+            <div class="attribution">
+                <a href="https://developers.google.com/places/" target="_blank"><img src="https://vignette1.wikia.nocookie.net/ichc-channel/images/7/70/Powered_by_google.png/revision/latest?cb=20160331203712">
+                </a>
+            </div>
+            <div class="attribution">
+                <a href="https://icons8.com/" target="_blank">
+                    <img src="https://maxcdn.icons8.com/Share/icon/color/Logos//icons8_logo1600.png" height="40" style="display: inline-block;">
+                    icons from icons8
+                </a>
+            </div>
+            <div class="disclaimer">
+                This website was created for educational purposes. All data contained within has been included in accordance with open licenses. Any violation of copyright has occured without knowlege and will warrant the immediate removal of infringing material on notification.
+            </div>
+
+        </div>
+
+
 		<div id="map"></div>
 
 		<div id="myModal" class="modal">
@@ -203,13 +240,14 @@
 	</section>
 
 	<!-- FEATHERLIGHT for lightboxing images -->
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqwXeBF0eH49temHUaJR49atlSoTgBPzo&libraries=places&callback=initAutocomplete"
-			async defer type="text/javascript"></script>
+
 	<!--<script async defer-->
 			<!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJFCdTyCdRyeBmCQQOOUDBjMjsNluWe28&callback=initialize">-->
 	<!--</script>-->
 	<script type="text/javascript" src="scripts/maptest.js"></script>
 	<script src="scripts/featherlight.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqwXeBF0eH49temHUaJR49atlSoTgBPzo&libraries=places&callback=initAutocomplete"
+			async defer type="text/javascript"></script>
 
 
 

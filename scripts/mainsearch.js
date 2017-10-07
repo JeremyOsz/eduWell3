@@ -39,7 +39,6 @@ function initAutocomplete() {
         });
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
     });
-    });
 }
 
 function doGeocode() {
@@ -182,19 +181,19 @@ function sendSearchQuery(lat, lon, query){
         else{
             localStorage[7] = 0
         }
-        if($('#servicesCheck')[0].checked){
-            localStorage[21] = 1
-        }
-        else{
-            localStorage[21] = 0
-        }
+        // if($('#servicesCheck')[0].checked){
+        //     localStorage[21] = 1
+        // }
+        // else{
+        //     localStorage[21] = 0
+        // }
     }
     else{
         localStorage[5] = 3
         localStorage[6] = 1
         localStorage[8] = 1
         localStorage[7] = 0
-        localStorage[21] = 1
+        // localStorage[21] = 1
         localStorage[20] = 1
     }
     localStorage[99] = 1
