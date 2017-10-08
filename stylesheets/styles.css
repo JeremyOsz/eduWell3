@@ -439,6 +439,7 @@ background-color: rgba(0, 0, 0, 0.03);
 /* 弹窗背景 */
 .modal {
     display: none; /* Hidden by default */
+    hidden: true;
     position: fixed; /* Stay in place */
     z-index: 99999!important; /* Sit on top */
     padding-top: 100px; /* Location of the box */
@@ -595,6 +596,9 @@ background-color: rgba(0, 0, 0, 0.03);
     font-size: 18px;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+gm-style{
+    display: block !important;
 }
 /*#back{*/
     /*font-size: 12pt;*/

@@ -18,7 +18,7 @@ $(document).ready(function() {
         }
     });
 
-    initAutocomplete()
+    // initAutocomplete()
 
 
 
@@ -161,7 +161,7 @@ function sendSearchQuery(lat, lon, query){
     }
 
     if($("#advanced_options").attr("aria-expanded")){
-        localStorage[5] = $('#searchRadius')[0].value
+        localStorage[56] = $('#searchRadius')[0].value
         if($('#LGBTCheck')[0].checked){
             localStorage[6] = 1
         }
@@ -181,15 +181,15 @@ function sendSearchQuery(lat, lon, query){
         else{
             localStorage[7] = 0
         }
-        // if($('#servicesCheck')[0].checked){
-        //     localStorage[21] = 1
-        // }
-        // else{
-        //     localStorage[21] = 0
-        // }
+        if($('#noneCheck')[0].checked){
+            localStorage[20] = 1
+        }
+        else{
+            localStorage[20] = 0
+        }
     }
     else{
-        localStorage[5] = 3
+        localStorage[56] = 3
         localStorage[6] = 1
         localStorage[8] = 1
         localStorage[7] = 0

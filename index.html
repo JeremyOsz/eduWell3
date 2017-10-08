@@ -5,7 +5,7 @@
 
     <!-- Set the page to the width of the device and set the zoon level -->
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>EduWell</title>
+    <title>Yourschool</title>
 
     <!-- LOAD FONTS -->
     <link href='https://fonts.googleapis.com/css?family=Oswald:400' rel='stylesheet' type='text/css'>
@@ -75,6 +75,8 @@
             padding: 0 0 0 0;
             margin: 0 0 0 0;
             background-color: #f5fdf7;
+            position: absolute;
+            padding-bottom: 60px;
         }
         p{
             line-height: 2;
@@ -131,9 +133,11 @@
         }
         #content{
             margin: 0 0 0 0;
+            display: block;
+            position: relative;
         }
         #all{
-            background-color:greenyellow;
+            background-color:#f5fdf7;
             background-image: url(http://35.189.25.144/EduWell/icons/250351505_b25cb20983_o.jpg);
             background-size: cover;
         }
@@ -172,7 +176,15 @@
             margin-top: 20px;
             padding: 30 30 30 30;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            margin-bottom: 60px;
+            margin-bottom: 20px;
+            margin-left: 10%;
+            margin-right: 10%;
+            width: 80VW;
+        }
+        .footer{
+            position: absolute;
+            bottom: 0;
+            height:auto;
         }
 
     </style>
@@ -199,7 +211,7 @@
         </div>
 
     </section>
-
+<section>
     <section id="content" class="container">
         <div class="row" id="main-search-section">
             <div id="title">
@@ -247,6 +259,8 @@
                                     <input class="mainoption" id="LGBTCheck" type="checkbox" checked> <img src="http://35.189.25.144/EduWell/icons/icons8-LGBT Flag-48.png" height="30">Safe Schools (LGBT Support)
                                     <br>
                                     <input class="mainoption" id="ASPECheck" type="checkbox" checked> <img src="http://35.189.25.144/EduWell/icons/icons8-Exercise-48.png" height="30">After School Physical Education
+                                    <br>
+                                    <input class="mainoption" id="noneCheck" type="checkbox" checked> None Available
 
                                     <!--<select id="programs" class="form-control" type="select" data-toggle="dropdown">-->
                                     <!--<option>None</option>-->
@@ -270,7 +284,8 @@
             </div>
         </div>
     </section>
-    <section id="about">
+</section>
+    <!--<section id="about">-->
 
         <div id="about_content" class="col-lg-12 col-m-12 col-sm-12 col-xs-12">
             <h1 style="text-align: center; font-family: josefinsans)">Yourschool believes parents know what is best for their children...</h1>
@@ -320,12 +335,12 @@
         </div>
 
 
-</section>
-</body
-</body>
+    <!--</section>-->
+
 </section>
 
-<section class="smalltext">
+</body>
+<div class="footer smalltext">
     <div style="padding-left: 20px">
         <div class="attribution">
             <a href="https://developers.google.com/places/" target="_blank"><img src="https://vignette1.wikia.nocookie.net/ichc-channel/images/7/70/Powered_by_google.png/revision/latest?cb=20160331203712">
@@ -342,9 +357,10 @@
 
         </div>
 
-        </div>
-</section>
-</section>
+    </div>
+</div>
+
+
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqwXeBF0eH49temHUaJR49atlSoTgBPzo&libraries=places&callback=initAutocomplete"
             async defer type="text/javascript"></script>

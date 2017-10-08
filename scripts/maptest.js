@@ -36,13 +36,13 @@ $(document).ready(function() {
     });
 
     //Set Radius to search value
-    $("#searchRadius")[0].value = localStorage[5]
+    $("#searchRadius")[0].value = localStorage[56]
 
     $("#searchRadius").on('keyup mouseup change click', () => {
         if($("#searchRadius")[0].value > 0){
             console.log("radius changed")
             latlon = L.latLng(localStorage[98],localStorage[97])
-            localStorage[5] = $("#searchRadius")[0].value
+            localStorage[56] = $("#searchRadius")[0].value
             nearbySchools(latlon)
         }
     })
@@ -89,6 +89,12 @@ $(document).ready(function() {
     else{
         $("#bullyingChecked")[0].checked = false
         $('#BullyRate')[0].style.display = "none"
+    }
+    if(localStorage[20] == 1){
+        $("#NAchecked")[0].checked = true
+    }
+    else{
+        $("#NAchecked")[0].checked = false
     }
     // if(localStorage[21] == 1){
     //     $("#servicesChecked")[0].checked = true
@@ -147,10 +153,11 @@ $(document).ready(function() {
 $.getJSON("data/schoolList.json", function(json) {
     SchoolListJSON = json
 }).done(() => {
-    //Initialise map and search
+
     $.get('connecttest.php', function (json) {
         console.log("adbg;asbd");
         SchoolListJSON = JSON.parse(json)
+        SchoolListJSON.pop()
     }).fail(function (jqxhr, textStatus, error) {
         //On failure read from local file
         var err = textStatus + ", " + error;
@@ -160,6 +167,8 @@ $.getJSON("data/schoolList.json", function(json) {
             SchoolListJSON = json
         })
     })
+
+    //Initialise map and search
     mymap = buildMap()
 
 })
@@ -621,6 +630,35 @@ $.getJSON("data/schoolList.json", function(json) {
                 modalImg.src = this.src;
                 captionText.innerHTML = this.alt;
                 console.log("click")
+
+                let geocoder = new google.maps.Geocoder();
+                try {
+                    geocoder.geocode({
+                        'address': (props.School_Name + "," + Address),
+                        region: 'VIC, Aus',
+                        componentRestrictions: {country: 'AU'}
+                    }, (results, status) => {
+                        if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+                            try {
+                                initializeStreetView(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+                            } catch (err) {
+                                console.log(err)
+                                $('#streetviewImg')[0].src = streetView_imgURL
+                            }
+                        }
+                        else {
+                            try {
+                                initializeStreetView(props.Latitude, props.Longitude)
+                            } catch (err) {
+                                console.log(err)
+                                $('#streetviewImg')[0].src = streetView_imgURL
+                            }
+                        }
+                    })
+                } catch (err) {
+                    console.log(err)
+                    $('#streetviewImg')[0].src = streetView_imgURL;
+                }
             })
 
             $('#streetviewInfo').click(function () {
@@ -630,35 +668,40 @@ $.getJSON("data/schoolList.json", function(json) {
                 modalImg.src = this.src;
                 captionText.innerHTML = this.alt;
                 console.log("click")
+
+                let geocoder = new google.maps.Geocoder();
+                try {
+                    geocoder.geocode({
+                        'address': (props.School_Name + "," + Address),
+                        region: 'VIC, Aus',
+                        componentRestrictions: {country: 'AU'}
+                    }, (results, status) => {
+                        if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+                            try {
+                                initializeStreetView(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+                            } catch (err) {
+                                console.log(err)
+                                $('#streetviewImg')[0].src = streetView_imgURL
+                            }
+                        }
+                        else {
+                            try {
+                                initializeStreetView(props.Latitude, props.Longitude)
+                            } catch (err) {
+                                console.log(err)
+                                $('#streetviewImg')[0].src = streetView_imgURL
+                            }
+                        }
+                    })
+                } catch (err) {
+                    console.log(err)
+                    $('#streetviewImg')[0].src = streetView_imgURL;
+                }
             })
         }
 
         // Geocode the address
-        let geocoder = new google.maps.Geocoder();
-        try {
-            geocoder.geocode({
-                'address': (props.School_Name + "," + Address),
-                region: 'VIC, Aus',
-                componentRestrictions: {country: 'AU'}
-            }, (results, status) => {
-                if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-                    try {
-                        initializeStreetView(results[0].geometry.location.lat(), results[0].geometry.location.lng())
-                    } catch (err) {
-                        $('#streetviewImg')[0].src = streetView_imgURL
-                    }
-                }
-                else {
-                    try {
-                        initializeStreetView(props.Latitude, props.Longitude)
-                    } catch (err) {
-                        $('#streetviewImg')[0].src = streetView_imgURL
-                    }
-                }
-            })
-        } catch (err) {
-            $('#streetviewImg')[0].src = streetView_imgURL;
-        }
+
 
         //Nearby Services
         // if(localStorage[21] == 1){
@@ -691,7 +734,7 @@ $.getJSON("data/schoolList.json", function(json) {
     function nearbySchools(latlon) {
         console.log(latlon)
         let area = latlon //Area from which nearby schools is measured
-        let threshold = localStorage[5] * 1000 //Threshold for distance to travel
+        let threshold = localStorage[56] * 1000 //Threshold for distance to travel
         //default to 3000 if invalid
         if (threshold == undefined || threshold < 1000 || threshold > 10000) {
             threshold = 3000
@@ -700,13 +743,15 @@ $.getJSON("data/schoolList.json", function(json) {
         // $.getJSON("data/schoolList.json", function (json) {
         //     return json
         // }).then((json) => {
+        //     console.log(SchoolListJSON)
             SchoolListJSON.map((item) => {
+                // console.log(item)
                 let schoolLoc = L.latLng(item.Latitude, item.Longitude)
                 let distance = area.distanceTo(schoolLoc)
                 if (distance < threshold && distance > 0) {
 
                     item.distance = distance
-                    if (sectorEnabled(item)) {
+                    if (sectorEnabled(item) && programEnabled(item)) {
                         nearbySchools.push(item)
                     }
                 }
@@ -846,14 +891,14 @@ $.getJSON("data/schoolList.json", function(json) {
             // }
             let latlng = mymap.getCenter()
             let zoom = mymap.getZoom()
-            mymap.eachLayer(function (layer) {
-                mymap.removeLayer(layer);
-            });
+            // mymap.eachLayer(function (layer) {
+            //     mymap.removeLayer(layer);
+            // });
 
 
             localStorage[60] = Shortlist
 
-            buildMap(latlng, zoom, true)
+            // buildMap(latlng, zoom, true)
             window.location.reload()
 
         }
@@ -875,6 +920,21 @@ $.getJSON("data/schoolList.json", function(json) {
             false
         }
     }
+
+function programEnabled(item) {
+    if (item.AS_Phys && $("#ASPEchecked")[0].checked) {
+        return true
+    }
+    else if (item.LGBT == "Y" && $("#LGBTchecked")[0].checked) {
+        return true
+    }
+    else if (!(item.AS_Phys || item.LGBT == "Y") && document.getElementById("NAchecked").checked) {
+        return true
+    }
+    else {
+        false
+    }
+}
 
     function getInvest(props) {
         if (parseInt(props.Investment) > 1) {
@@ -959,20 +1019,14 @@ $.getJSON("data/schoolList.json", function(json) {
             let favNames = []
             Shortlist.map((e) => {
                 SchoolListJSON.map((school) => {
-                        if (school.School_Id == e) {
-                            favNames.push(school.School_Name)
-                        }
-                        return (favNames)
-                    })
-                    return (favNames)
-                }).then(() => {
-                    document.getElementById('selectedSchools').innerHTML = "";
-                    for (i = 0; i < favNames.length; i++) {
-                        document.getElementById('selectedSchools').innerHTML += "<li>" + favNames[i] + "</li>";
+                    if (school.School_Id == e) {
+                        favNames.push(school.School_Name)
                     }
+                    return (favNames)
                 })
-            localStorage[60] = Shortlist
-        }
+            })
+                localStorage[60] = Shortlist
+            }
     }
 
     function shortlistDelete() {
@@ -980,7 +1034,6 @@ $.getJSON("data/schoolList.json", function(json) {
         document.getElementById('numToCompare').innerHTML = 0;
         let favs = $(".favcheck")
         for (let i = 0; i < favs.length; i++) {
-            console.log(favs[i])
             favs[i].checked = false
 
         }
@@ -1068,7 +1121,7 @@ $.getJSON("data/schoolList.json", function(json) {
                     console.log("Valid Query")
                     console.log('search success')
                     let searchLocale2 = L.latLng(lat, lon)
-                    localStorage[5] = $("#searchRadius")[0].value
+                    localStorage[56] = $("#searchRadius")[0].value
                     searchMarker = L.marker(searchLocale2).addTo(mymap);
                     searchMarker.bindPopup(addr.value)
                     document.getElementById("selectedSchool").style.height = "15%";

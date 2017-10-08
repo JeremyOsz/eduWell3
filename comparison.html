@@ -6,7 +6,7 @@
 
     <!-- Set the page to the width of the device and set the zoon level -->
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>EduWell</title>
+    <title>Yourschool</title>
 
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -187,6 +187,18 @@ function printFunction() {
             let element = document.getElementById('data');
             $.getJSON("data/schoolList.json", function (json) {
                 var mydata = json
+                $.get('connecttest.php', function(json) {
+                    console.log( "adbg;asbd");
+                    mydata = JSON.parse(json)
+                }).fail(function( jqxhr, textStatus, error ) {
+                    //On failure read from local file
+                    var err = textStatus + ", " + error;
+                    console.log( "Request Failed: " + err );
+                    console.log('Loading data from local JSON')
+                    $.getJSON("data/schoolList.json", function(json) {
+                        mydata = json
+                    })
+                });
                 let datalength = localStorage[100]
                 console.log(datalength)
                 var passdata = [];
@@ -205,12 +217,13 @@ function printFunction() {
 
 
                 //service = new google.maps.places.PlacesService(document.getElementById('map'))
-                //let website = ""
+
 
 
 
                 mydata.map((data) => {
                     x = 1;
+                    let website = ""
                     for (i in passdata) {
                         if (passdata[i] == data.School_Id) {
 
@@ -229,25 +242,38 @@ function printFunction() {
                             try {
                                 service = new google.maps.places.PlacesService(document.getElementById('map'))
                                 service.nearbySearch(request, (results) => {
-                                    placeId = results[0].place_id
+                                    if(results.length > 0){
+                                        placeId = results[0].place_id
 
-                                    service.getDetails({
-                                        placeId: placeId
-                                    }, (details) => {
-                                        website = details.website
-                                        console.log(website)
-                                        if (website == undefined || website == null) {
+                                        service.getDetails({
+                                            placeId: placeId
+                                        }, (details) => {
+                                            if(details != undefined && details != null){
+                                                website = details.website
+                                                console.log(website)
+                                            }
+                                            if (website == undefined || website == null) {
+                                                website = "N/A"
+                                            }
+                                            addDetails()
+                                        })
+                                    }
+                                    else{
+                                        website = data["New.web"]
+                                        if(website == undefined || website == null || website == "")
+                                        {
                                             website = "N/A"
                                         }
                                         addDetails()
-                                    })
+                                    }
+
                                 })
                             }
                             catch (err){
                                 console.log('error')
                                 console.log(err)
-                                website = data.NewWeb
-                                if(website == undefined || website == null)
+                                website = data["New.web"]
+                                if(website == undefined || website == null || website == "")
                                 {
                                 website = "N/A"
                                 }
